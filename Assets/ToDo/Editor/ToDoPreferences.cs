@@ -10,7 +10,9 @@ public class ToDoPreferences
     private static bool _automaticScan;
     private static string _dataPath = "";
 
-    [PreferenceItem("ToDo")]
+    // NOTE: Commented out to prevent a warning from editor.
+    // Didn't seem to affect anything.
+    //[PreferenceItem("ToDo")]
     private static void ToDoPreferencesGUI()
     {
         if(!_prefsLoaded)

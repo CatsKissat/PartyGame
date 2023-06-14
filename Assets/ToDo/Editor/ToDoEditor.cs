@@ -129,8 +129,11 @@ namespace Todo.Editor
             {
                 GUILayout.Label("ToDo");
 
-                if (GUILayout.Button("Force scan", EditorStyles.toolbarButton))
+                if ( GUILayout.Button("Force scan", EditorStyles.toolbarButton) )
+                {
+                    _data.Entries.Clear();
                     ScanAllFiles();
+                }
 
                 GUILayout.FlexibleSpace();
                 SearchString = SearchField(SearchString, GUILayout.Width(250));
