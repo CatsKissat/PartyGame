@@ -17,20 +17,18 @@ public class PlayerMovement : MonoBehaviour
     bool dash = false;
 
     // New Input System
-    [SerializeField] private PlayerInput playerInput;
-    private InputAction inputAction;
     private float moveInput;
 
     //bool dashAxis = false;
 
-    private void OnValidate()
-    {
-        playerInput = GetComponent<PlayerInput>();
-    }
-
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<float>();
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+
     }
 
     // Update is called once per frame
