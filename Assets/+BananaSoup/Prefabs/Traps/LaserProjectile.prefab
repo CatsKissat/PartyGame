@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7639644928918051179}
   - component: {fileID: 5063710698343533523}
   - component: {fileID: 5418411103135741944}
+  - component: {fileID: 8404265415656372151}
   m_Layer: 0
   m_Name: LaserProjectile
   m_TagString: Untagged
@@ -163,3 +164,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e569742af617a974b8c5461314f915c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8404265415656372151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2885277324014943861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc2ce30dfd2df31469d364ea57a212c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isKinematic: 0
+  isUsingPhysics: 0
+  currentModifier: 0
