@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using BananaSoup.Utils;
 
-namespace BananaSoup
+namespace BananaSoup.Traps
 {
     public class LaserProjectile : MonoBehaviour
     {
@@ -13,11 +15,12 @@ namespace BananaSoup
 
         private Vector3 direction = Vector3.zero;
         private bool isLaunched = false;
-        private float aliveTimer = 0;
 
         private Coroutine aliveTimerRoutine = null;
 
         private ProjectileMover projectileMover;
+
+        public event Action<LaserProjectile> Expired;
 
         private void Awake()
         {
@@ -27,13 +30,11 @@ namespace BananaSoup
             {
                 Debug.LogError($"{name} doesn't have a ProjectileMover!");
             }
-            Debug.Log("Projectile awake ready!");
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"{name} collided with {other.gameObject}!");
-            DestroyThis();
+            OnExpired();
         }
 
         private void FixedUpdate()
@@ -44,7 +45,7 @@ namespace BananaSoup
             }
         }
 
-        public void Setup(float speed = -1)
+        public void Setup(float aliveTime, float speed = -1)
         {
             if ( speed < 0 )
             {
@@ -54,19 +55,16 @@ namespace BananaSoup
             projectileMover.Setup(speed);
             isLaunched = false;
 
-            Debug.Log("LaserProjectile setup ready!");
+            aliveTimerRoutine = StartCoroutine(AliveTimer(aliveTime));
         }
 
         public void Launch(Vector3 direction)
         {
             this.direction = direction;
             isLaunched = true;
-
-            aliveTimerRoutine = StartCoroutine(AliveTimer(aliveTime));
         }
 
-        // TODO: Reimplement this to recycle instead of destroying.
-        private void DestroyThis()
+        private void OnExpired()
         {
             if ( aliveTimerRoutine != null )
             {
@@ -74,21 +72,23 @@ namespace BananaSoup
                 aliveTimerRoutine = null;
             }
 
-            Destroy(gameObject);
-            // TODO: Add event trigger to recycle back in.
+            if (Expired != null )
+            {
+                Expired(this);
+            }
         }
 
         private IEnumerator AliveTimer(float aliveTime)
         {
-            aliveTimer = aliveTime;
+            this.aliveTime = aliveTime;
 
-            while (aliveTimer > 0 )
+            while (this.aliveTime > 0)
             {
-                aliveTimer -= Time.deltaTime;
+                this.aliveTime -= Time.deltaTime;
                 yield return null;
             }
 
-            DestroyThis();
+            OnExpired();
         }
     }
 }

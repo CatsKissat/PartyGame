@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4968913344767253761}
   - component: {fileID: 141930729085850063}
   - component: {fileID: 4547904701274502119}
-  m_Layer: 0
+  - component: {fileID: 6916414866261453715}
+  m_Layer: 8
   m_Name: LaserTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,6 +107,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &6916414866261453715
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5949621829698439847}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &9131751137132150074
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8821107875376000346}
   - component: {fileID: 5820730172641411445}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,6 +178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec822993c40135489bb70becd32b2ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectile: {fileID: 5063710698343533523, guid: 5dd39d79d5819be468a1945e1c7e7a3d,
-    type: 3}
+  prefab: {fileID: 5063710698343533523, guid: 5dd39d79d5819be468a1945e1c7e7a3d, type: 3}
+  capacity: 5
   spawnRate: 1

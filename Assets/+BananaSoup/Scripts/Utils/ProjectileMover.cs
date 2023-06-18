@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BananaSoup
+namespace BananaSoup.Utils
 {
     public class ProjectileMover : MonoBehaviour
     {
@@ -27,8 +27,6 @@ namespace BananaSoup
             {
                 Debug.LogError($"{name} doesn't have a Rigidbody!");
             }
-
-            Debug.Log("ProjectileMover setup ready!");
         }
 
         private void FixedUpdate()

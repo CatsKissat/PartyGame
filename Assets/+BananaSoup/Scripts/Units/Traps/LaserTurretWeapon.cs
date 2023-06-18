@@ -1,31 +1,33 @@
 using System.Collections;
 using UnityEngine;
+using BananaSoup.Utils;
 
-namespace BananaSoup
+namespace BananaSoup.Traps
 {
-    public class LaserTurretWeapon : MonoBehaviour
+    public class LaserTurretWeapon : PooledSpawner<LaserProjectile>
     {
-        [SerializeField]
-        private LaserProjectile projectile;
-
         [SerializeField]
         private float spawnRate = 1.0f;
 
+        [Space]
+
+        [SerializeField]
+        private float projectileAliveTime = 2.5f;
+
         private Coroutine shootCoroutine = null;
+
+        // HACK
+        private Vector3 spawnRotation = new Vector3(0f, 0f, 90f);
 
         private void OnDisable()
         {
             TryStopAndNullCoroutine();
         }
 
-        private void Awake()
-        {
-            // TODO: Initialize pool here.
-        }
-
         private void Start()
         {
-            Debug.Log("Starting LaserTurretWeapon ShootCoroutine!");
+            Setup();
+
             shootCoroutine = StartCoroutine(ShootCoroutine());
         }
 
@@ -33,21 +35,25 @@ namespace BananaSoup
         {
             while ( true )
             {
-                // TODO: Get projectile from pool here
+                LaserProjectile projectile = Create(transform.position, Quaternion.Euler(spawnRotation), null);
+
                 if ( projectile != null )
                 {
-                    //projectile.transform.position = transform.position;
-                    //projectile.transform.rotation = transform.rotation;
+                    projectile.Setup(projectileAliveTime);
 
-                    Instantiate(projectile, transform.position, projectile.transform.rotation);
+                    projectile.Launch(transform.forward);
 
-                    projectile.Setup();
-
-                    projectile.Launch(transform.up);
+                    projectile.Expired += OnExpired;
                 }
 
                 yield return new WaitForSeconds(spawnRate);
             }
+        }
+
+        private void OnExpired(LaserProjectile projectile)
+        {
+            projectile.Expired -= OnExpired;
+            Recycle(projectile);
         }
 
         private void TryStopAndNullCoroutine()
