@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2315632402673149450}
-  m_Layer: 1
+  m_Layer: 7
   m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3948131155757632489}
-  m_Layer: 1
+  m_Layer: 7
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 8328646888286644463}
   - component: {fileID: 7195109868780656970}
   - component: {fileID: 456676833849616405}
-  m_Layer: 1
+  m_Layer: 7
   m_Name: SmokeGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4977,7 +4977,7 @@ GameObject:
   - component: {fileID: 6015649532535762815}
   - component: {fileID: 5655243588930166948}
   - component: {fileID: 1677198397323101901}
-  m_Layer: 1
+  m_Layer: 7
   m_Name: PlayerCharacter
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5002,7 +5002,7 @@ Transform:
   - {fileID: 3544108275675571133}
   - {fileID: 8328646888286644463}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1712396818753211553
 SpriteRenderer:
@@ -5366,7 +5366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3900993222774639126}
-  m_Layer: 1
+  m_Layer: 7
   m_Name: AttackCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5399,7 +5399,7 @@ GameObject:
   - component: {fileID: 3544108275675571133}
   - component: {fileID: 2053090010761393909}
   - component: {fileID: 1421484048307930046}
-  m_Layer: 1
+  m_Layer: 7
   m_Name: SmokeTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
