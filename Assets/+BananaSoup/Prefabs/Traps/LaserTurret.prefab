@@ -67,7 +67,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5301414113782829891
 Transform:
   m_ObjectHideFlags: 0
@@ -83,7 +83,7 @@ Transform:
   - {fileID: 5303255028047466637}
   - {fileID: 5018924320542693007}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &8160083421848022802
 Rigidbody:
@@ -111,7 +111,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &2887133816942731609
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc2ce30dfd2df31469d364ea57a212c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isKinematic: 0
+  isKinematic: 1
   isUsingPhysics: 0
   currentModifier: 0
 --- !u!1 &8763143331280937725

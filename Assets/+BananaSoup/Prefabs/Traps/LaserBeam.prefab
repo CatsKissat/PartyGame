@@ -455,8 +455,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc2ce30dfd2df31469d364ea57a212c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isKinematic: 0
-  isUsingPhysics: 0
+  isKinematic: 1
+  isUsingGravity: 0
   currentModifier: 0
 --- !u!114 &1775420642459695968
 MonoBehaviour:
