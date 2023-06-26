@@ -28,7 +28,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-
+        if ( context.performed )
+        {
+            jump = true;
+        }
     }
 
     // Update is called once per frame
