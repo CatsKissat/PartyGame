@@ -12,16 +12,30 @@ namespace BananaSoup.Traps
         [Space]
 
         [SerializeField]
+        private float projectileSpeed = 3.0f;
+        [SerializeField]
         private float projectileAliveTime = 2.5f;
 
         private Coroutine shootCoroutine = null;
 
-        // HACK
-        private Vector3 spawnRotation = new Vector3(0f, 0f, 90f);
+        private GameObject spriteRendererObject = null;
+        private Vector3 spriteRotation = Vector3.zero;
 
         private void OnDisable()
         {
-            TryStopAndNullCoroutine();
+            TryStopAndNullCoroutine(shootCoroutine);
+        }
+
+        private void Awake()
+        {
+            spriteRendererObject = transform.parent.GetComponentInChildren<SpriteRenderer>(true).gameObject;
+
+            if ( spriteRendererObject == null )
+            {
+                Debug.LogError($"{name} couldn't find a object with SpriteRenderer from it's transform!");
+            }
+
+            spriteRotation = spriteRendererObject.transform.rotation.eulerAngles;
         }
 
         private void Start()
@@ -35,11 +49,11 @@ namespace BananaSoup.Traps
         {
             while ( true )
             {
-                LaserProjectile projectile = Create(transform.position, Quaternion.Euler(spawnRotation), null);
+                LaserProjectile projectile = Create(transform.position, Quaternion.Euler(spriteRotation), null);
 
                 if ( projectile != null )
                 {
-                    projectile.Setup(projectileAliveTime);
+                    projectile.Setup(projectileAliveTime, projectileSpeed);
 
                     projectile.Launch(transform.forward);
 
@@ -56,12 +70,12 @@ namespace BananaSoup.Traps
             Recycle(projectile);
         }
 
-        private void TryStopAndNullCoroutine()
+        private void TryStopAndNullCoroutine(Coroutine routine)
         {
-            if ( shootCoroutine != null )
+            if ( routine != null )
             {
-                StopCoroutine(shootCoroutine);
-                shootCoroutine = null;
+                StopCoroutine(routine);
+                routine = null;
             }
         }
     }
