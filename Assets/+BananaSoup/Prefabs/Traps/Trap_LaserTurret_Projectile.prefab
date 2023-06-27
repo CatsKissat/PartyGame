@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4210886052473396040}
   - component: {fileID: 672362461458125091}
   m_Layer: 9
-  m_Name: LaserProjectile
+  m_Name: Trap_LaserTurret_Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

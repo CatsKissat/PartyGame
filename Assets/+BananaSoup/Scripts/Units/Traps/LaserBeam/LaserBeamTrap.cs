@@ -1,12 +1,18 @@
+using BananaSoup.Units;
 using System.Collections;
 using UnityEngine;
 
 namespace BananaSoup.Traps
 {
-    public class LaserBeam : MonoBehaviour
+    public class LaserBeamTrap : TrapBase
     {
+        [Space]
         [SerializeField]
-        private GameObject leftBeamer, rightBeamer, beam;
+        private GameObject leftBeamer;
+        [SerializeField]
+        private GameObject rightBeamer;
+        [SerializeField]
+        private GameObject beam;
 
         [Space]
 
@@ -26,15 +32,38 @@ namespace BananaSoup.Traps
             TryStopAndNullCoroutine(beamRoutine);
         }
 
-        void Start()
+        public override void Setup()
         {
             beam.SetActive(false);
-            SetBeamScale();
+
+            if ( ModifiedSpeed > 0 )
+            {
+                beamDuration -= ModifiedSpeed;
+                beamCooldown -= ModifiedSpeed;
+            }
             
-            if (beamRoutine == null )
+            if ( ModifiedSize > 0 ) 
+            {
+                SetBeamSize(ModifiedSize);
+            }
+
+            SetBeamScale();
+
+            if ( beamRoutine == null )
             {
                 beamRoutine = StartCoroutine(BeamRoutine());
             }
+        }
+
+        private void SetBeamSize(float offset)
+        {
+            Vector3 leftBeamerOffset = leftBeamer.transform.position;
+            leftBeamerOffset.x -= offset;
+            leftBeamer.transform.position = leftBeamerOffset;
+
+            Vector3 rightBeamerOffset = rightBeamer.transform.position;
+            rightBeamerOffset.x += offset;
+            rightBeamer.transform.position = rightBeamerOffset;
         }
 
         private void SetBeamScale()

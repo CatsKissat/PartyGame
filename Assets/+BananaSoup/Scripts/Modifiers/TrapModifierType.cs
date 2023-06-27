@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace BananaSoup.Modifiers
 {
-    public class ModifierType : MonoBehaviour
+    public class TrapModifierType : MonoBehaviour
     {
         public enum Modifier
         {
-            Damage,
+            Basic,
             Freeze,
             Electric,
             Speed,

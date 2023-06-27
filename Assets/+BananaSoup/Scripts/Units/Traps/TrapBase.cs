@@ -1,17 +1,50 @@
 using UnityEngine;
 using BananaSoup.Modifiers;
+using BananaSoup.Traps;
 
 namespace BananaSoup.Units
 {
     public class TrapBase : UnitBase
     {
         [SerializeField]
-        private ModifierType.Modifier currentModifier;
+        private TrapModifierType.Modifier trapModifier;
 
+        private bool modifierSelected = false;
+
+        // Variables used to store and forward speed or size if they should be
+        // modified.
+        private float modifiedSpeed = 0f;
+        private float modifiedSize = 0f;
+
+        // References
         private Rigidbody rb = null;
         private Rigidbody[] childRigidbodies = null;
 
-        private void Start()
+        private ModifierActions modActions = null;
+
+        public bool ModifierSelected
+        {
+            get => modifierSelected;
+        }
+
+        public TrapModifierType.Modifier TrapModifier
+        {
+            get => trapModifier;
+        }
+
+        public float ModifiedSpeed
+        {
+            get => modifiedSpeed;
+            set => modifiedSpeed = value;
+        }
+
+        public float ModifiedSize
+        {
+            get => modifiedSize;
+            set => modifiedSize = value;
+        }
+
+        protected virtual void Start()
         {
             rb = GetComponent<Rigidbody>();
 
@@ -35,6 +68,29 @@ namespace BananaSoup.Units
                     rb.isKinematic = isKinematic;
                 } 
             }
+
+            modActions = GetComponent<ModifierActions>();
+            if ( modActions == null )
+            {
+                Debug.LogError($"TrapBase on {name} couldn't find a component of type ModifierActions!");
+            }
+
+            SelectRandomModifier();
+        }
+
+        public virtual void Setup()
+        {
+
+        }
+
+        // Debug for testing modifier randomising.
+        //[ContextMenu("Randomize mod")]
+        private void SelectRandomModifier()
+        {
+            trapModifier = (TrapModifierType.Modifier)Random.Range(0, System.Enum.GetValues(typeof(TrapModifierType.Modifier)).Length);
+            modifierSelected = true;
+            Debug.Log($"Current modifier for {name} is: {trapModifier}");
+            modActions.SetupModifier();
         }
     }
 }
