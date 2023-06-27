@@ -4977,6 +4977,7 @@ GameObject:
   - component: {fileID: 6015649532535762815}
   - component: {fileID: 5655243588930166948}
   - component: {fileID: 1677198397323101901}
+  - component: {fileID: 7469713052844442294}
   m_Layer: 7
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -5105,7 +5106,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &2427284683606847513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5180,9 +5181,73 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9d6c907c-58c2-4cd5-b85c-7d7f401f3951
     m_ActionName: Gameplay/Run[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1677198397323101901}
+        m_TargetAssemblyTypeName: BananaSoup.PlayerMovement, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9889e9f8-9d14-4661-b67d-30924ae9e010
+    m_ActionName: MainMenu/Move[/Keyboard/a,/Keyboard/d,/XInputControllerWindows/dpad/left,/XInputControllerWindows/dpad/right,/XInputControllerWindows/leftStick/x,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1677198397323101901}
+        m_TargetAssemblyTypeName: BananaSoup.PlayerMovement, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d2f5208b-14d7-4f0f-a9f7-20d2e5de5ae5
+    m_ActionName: MainMenu/Jump[/Keyboard/space,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1677198397323101901}
+        m_TargetAssemblyTypeName: BananaSoup.PlayerMovement, Assembly-CSharp
+        m_MethodName: OnRun
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 22f896b8-dcad-49f0-9a59-eab1573fdd86
+    m_ActionName: MainMenu/Run[/Keyboard/shift,/XInputControllerWindows/buttonWest]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1677198397323101901}
+        m_TargetAssemblyTypeName: BananaSoup.PlayerMovement, Assembly-CSharp
+        m_MethodName: OnLeaveGame
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5180dff3-3c56-4d5f-a4c9-0d5003f9c40d
+    m_ActionName: MainMenu/LeaveGame[/XInputControllerWindows/buttonEast,/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Gameplay
+  m_DefaultActionMap: MainMenu
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!95 &2758117638130736043
@@ -5370,8 +5435,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8644d33345e77614ba3ace9c18398d0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 40
+  walkSpeed: 40
   runSpeed: 70
+--- !u!114 &7469713052844442294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7534548236268666769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057874ad28a94e1428ec4f7c5c4134a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8074560050486849551
 GameObject:
   m_ObjectHideFlags: 0

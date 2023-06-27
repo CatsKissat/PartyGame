@@ -19,7 +19,7 @@ public class PlayerCharacterController : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     private float limitFallSpeed = 25f; // Limit fall speed
 
-    public bool canDoubleJump = true; //If player can double jump
+    [SerializeField] private bool canDoubleJump = false; //If player can double jump
     [SerializeField] private float m_DashForce = 25f;
     private bool canDash = true;
     private bool isDashing = false; //If player is dashing
@@ -28,13 +28,13 @@ public class PlayerCharacterController : MonoBehaviour
     private bool oldWallSlidding = false; //If player is sliding in a wall in the previous frame
     private bool canCheck = false; //For check if player is wallsliding
 
-    public float life = 10f; //Life of the player
-    public bool invincible = false; //If player can die
+    [SerializeField] private float life = 10f; //Life of the player
+    [SerializeField] private bool invincible = false; //If player can die
     private bool canMove = true; //If player can move
 
     private Animator animator;
-    public ParticleSystem particleJumpUp; //Trail particles
-    public ParticleSystem particleJumpDown; //Explosion particles
+    [SerializeField] private ParticleSystem particleJumpUp; //Trail particles
+    [SerializeField] private ParticleSystem particleJumpDown; //Explosion particles
 
     private float jumpWallStartX = 0;
     private float jumpWallDistX = 0; //Distance between player and wall
