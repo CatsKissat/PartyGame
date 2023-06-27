@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using BananaSoup.Units;
 
-public class PlayerCharacterController : MonoBehaviour
+public class PlayerCharacterController : PlayerBase
 {
     [SerializeField] private float m_JumpForce = 400f;                          // Amount of force added when the player jumps.
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f;   // How much to smooth out the movement
@@ -14,7 +15,6 @@ public class PlayerCharacterController : MonoBehaviour
 
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded;            // Whether or not the player is grounded.
-    private Rigidbody m_Rigidbody;
     private bool m_FacingRight = true;  // For determining which way the player is currently facing.
     private Vector3 velocity = Vector3.zero;
     private float limitFallSpeed = 25f; // Limit fall speed
@@ -51,7 +51,6 @@ public class PlayerCharacterController : MonoBehaviour
 
     private void Awake()
     {
-        m_Rigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
 
         if ( OnFallEvent == null )
@@ -90,7 +89,7 @@ public class PlayerCharacterController : MonoBehaviour
 
                 canDoubleJump = true;
 
-                if ( m_Rigidbody.velocity.y < 0f )
+                if ( rb.velocity.y < 0f )
                 {
                     limitVelOnWallJump = false;
                 }
@@ -115,7 +114,7 @@ public class PlayerCharacterController : MonoBehaviour
 
         if ( limitVelOnWallJump )
         {
-            if ( m_Rigidbody.velocity.y < -0.5f )
+            if ( rb.velocity.y < -0.5f )
             {
                 limitVelOnWallJump = false;
             }
@@ -129,17 +128,17 @@ public class PlayerCharacterController : MonoBehaviour
             else if ( jumpWallDistX < -1f && jumpWallDistX >= -2f )
             {
                 canMove = true;
-                m_Rigidbody.velocity = new Vector2(10f * transform.localScale.x, m_Rigidbody.velocity.y);
+                rb.velocity = new Vector2(10f * transform.localScale.x, rb.velocity.y);
             }
             else if ( jumpWallDistX < -2f )
             {
                 limitVelOnWallJump = false;
-                m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
+                rb.velocity = new Vector2(0, rb.velocity.y);
             }
             else if ( jumpWallDistX > 0 )
             {
                 limitVelOnWallJump = false;
-                m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
+                rb.velocity = new Vector2(0, rb.velocity.y);
             }
         }
     }
@@ -157,17 +156,17 @@ public class PlayerCharacterController : MonoBehaviour
             // If crouching, check to see if the character can stand up
             if ( isDashing )
             {
-                m_Rigidbody.velocity = new Vector2(transform.localScale.x * m_DashForce, 0);
+                rb.velocity = new Vector2(transform.localScale.x * m_DashForce, 0);
             }
             //only control the player if grounded or airControl is turned on
             else if ( m_Grounded || m_AirControl )
             {
-                if ( m_Rigidbody.velocity.y < -limitFallSpeed )
-                    m_Rigidbody.velocity = new Vector2(m_Rigidbody.velocity.x, -limitFallSpeed);
+                if ( rb.velocity.y < -limitFallSpeed )
+                    rb.velocity = new Vector2(rb.velocity.x, -limitFallSpeed);
                 // Move the character by finding the target velocity
-                Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody.velocity.y);
+                Vector3 targetVelocity = new Vector2(move * 10f, rb.velocity.y);
                 // And then smoothing it out and applying it to the character
-                m_Rigidbody.velocity = Vector3.SmoothDamp(m_Rigidbody.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
+                rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
 
                 // If the input is moving the player right and the player is facing left...
                 if ( move > 0 && !m_FacingRight && !isWallSliding )
@@ -190,7 +189,7 @@ public class PlayerCharacterController : MonoBehaviour
                 animator.SetBool("IsJumping", true);
                 animator.SetBool("JumpUp", true);
                 m_Grounded = false;
-                m_Rigidbody.AddForce(new Vector2(0f, m_JumpForce));
+                rb.AddForce(new Vector2(0f, m_JumpForce));
                 canDoubleJump = true;
                 particleJumpDown.Play();
                 particleJumpUp.Play();
@@ -198,13 +197,13 @@ public class PlayerCharacterController : MonoBehaviour
             else if ( !m_Grounded && jump && canDoubleJump && !isWallSliding )
             {
                 canDoubleJump = false;
-                m_Rigidbody.velocity = new Vector2(m_Rigidbody.velocity.x, 0);
-                m_Rigidbody.AddForce(new Vector2(0f, m_JumpForce / 1.2f));
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+                rb.AddForce(new Vector2(0f, m_JumpForce / 1.2f));
                 animator.SetBool("IsDoubleJumping", true);
             }
             else if ( m_IsWall && !m_Grounded )
             {
-                if ( !oldWallSlidding && m_Rigidbody.velocity.y < 0 || isDashing )
+                if ( !oldWallSlidding && rb.velocity.y < 0 || isDashing )
                 {
                     isWallSliding = true;
                     m_WallCheck.localPosition = new Vector3(-m_WallCheck.localPosition.x, m_WallCheck.localPosition.y, 0);
@@ -224,7 +223,7 @@ public class PlayerCharacterController : MonoBehaviour
                     else
                     {
                         oldWallSlidding = true;
-                        m_Rigidbody.velocity = new Vector2(-transform.localScale.x * 2, -5);
+                        rb.velocity = new Vector2(-transform.localScale.x * 2, -5);
                     }
                 }
 
@@ -232,8 +231,8 @@ public class PlayerCharacterController : MonoBehaviour
                 {
                     animator.SetBool("IsJumping", true);
                     animator.SetBool("JumpUp", true);
-                    m_Rigidbody.velocity = new Vector2(0f, 0f);
-                    m_Rigidbody.AddForce(new Vector2(transform.localScale.x * m_JumpForce * 1.2f, m_JumpForce));
+                    rb.velocity = new Vector2(0f, 0f);
+                    rb.AddForce(new Vector2(transform.localScale.x * m_JumpForce * 1.2f, m_JumpForce));
                     jumpWallStartX = transform.position.x;
                     limitVelOnWallJump = true;
                     canDoubleJump = true;
@@ -282,8 +281,8 @@ public class PlayerCharacterController : MonoBehaviour
             animator.SetBool("Hit", true);
             life -= damage;
             Vector2 damageDir = Vector3.Normalize(transform.position - position) * 40f;
-            m_Rigidbody.velocity = Vector2.zero;
-            m_Rigidbody.AddForce(damageDir * 10);
+            rb.velocity = Vector2.zero;
+            rb.AddForce(damageDir * 10);
             if ( life <= 0 )
             {
                 StartCoroutine(WaitToDead());
@@ -344,7 +343,7 @@ public class PlayerCharacterController : MonoBehaviour
         invincible = true;
         GetComponent<Attack>().enabled = false;
         yield return new WaitForSeconds(0.4f);
-        m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
+        rb.velocity = new Vector2(0, rb.velocity.y);
         yield return new WaitForSeconds(1.1f);
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }

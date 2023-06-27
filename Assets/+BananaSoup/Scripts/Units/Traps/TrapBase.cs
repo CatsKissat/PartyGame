@@ -17,7 +17,6 @@ namespace BananaSoup.Units
         private float modifiedSize = 0f;
 
         // References
-        private Rigidbody rb = null;
         private Rigidbody[] childRigidbodies = null;
 
         private ModifierActions modActions = null;
@@ -44,19 +43,9 @@ namespace BananaSoup.Units
             set => modifiedSize = value;
         }
 
-        protected virtual void Start()
+        protected override void Start()
         {
-            rb = GetComponent<Rigidbody>();
-
-            if ( rb == null )
-            {
-                Debug.LogWarning($"There is no Rigidbody on {name} is this on purpose?");
-            }
-            else
-            {
-                rb.useGravity = isUsingGravity;
-                rb.isKinematic = isKinematic;
-            }
+            base.Start();
 
             childRigidbodies = GetComponentsInChildren<Rigidbody>();
 
