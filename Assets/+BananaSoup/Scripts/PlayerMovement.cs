@@ -23,15 +23,6 @@ namespace BananaSoup
             {
                 Debug.LogError($"{name}'s PlayerInput is null!");
             }
-
-            Debug.Log($"{name} is subscribing to a OnDeviceLost event.");
-            playerInput.onDeviceLost += OnDeviceLost;
-        }
-
-        private void OnDisable()
-        {
-            Debug.Log($"{name} is desubscribing to a OnDeviceLost event.");
-            playerInput.onDeviceLost -= OnDeviceLost;
         }
 
         private void Start()
@@ -106,18 +97,16 @@ namespace BananaSoup
         }
         #endregion OnInputs
 
-        //public void OnDeviceLost()
-        //{
-        //    //DisablePlayerGameObject();
-        //    Debug.Log("Input device disconnected");
-        //}
-
-        private void OnDeviceLost(PlayerInput input)
+        public void OnDeviceLost()
         {
-            Debug.Log("Input device lost for player: " + input.playerIndex);
-            DisablePlayerGameObject();
+            //DisablePlayerGameObject();
+            Debug.LogWarning($"PlayerID {playerInput.playerIndex} input device disconnected.");
         }
 
+        public void OnDeviceReconnect()
+        {
+            Debug.LogWarning($"PlayerID {playerInput.playerIndex} reconnected.");
+        }
         private void DisablePlayerGameObject()
         {
             gameObject.SetActive(false);
