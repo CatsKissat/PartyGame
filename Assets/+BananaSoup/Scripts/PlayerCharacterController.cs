@@ -20,9 +20,6 @@ public class PlayerCharacterController : PlayerBase
     private float limitFallSpeed = 25f; // Limit fall speed
 
     [SerializeField] private bool canDoubleJump = false; //If player can double jump
-    [SerializeField] private float m_DashForce = 25f;
-    private bool canDash = true;
-    private bool isDashing = false; //If player is dashing
     private bool m_IsWall = false; //If there is a wall in front of the player
     private bool isWallSliding = false; //If player is sliding in a wall
     private bool oldWallSlidding = false; //If player is sliding in a wall in the previous frame
@@ -82,7 +79,7 @@ public class PlayerCharacterController : PlayerBase
             if ( !wasGrounded )
             {
                 OnLandEvent.Invoke();
-                if ( !m_IsWall && !isDashing )
+                if ( !m_IsWall )
                 {
                     particleJumpDown.Play();
                 }
@@ -106,7 +103,6 @@ public class PlayerCharacterController : PlayerBase
             {
                 if ( collidersWall[i].gameObject != null )
                 {
-                    isDashing = false;
                     m_IsWall = true;
                 }
             }
@@ -143,23 +139,12 @@ public class PlayerCharacterController : PlayerBase
         }
     }
 
-    public void Move(float move, bool jump, bool dash)
+    public void Move(float move, bool jump)
     {
         if ( canMove )
         {
-            if ( dash && canDash && !isWallSliding )
-            {
-                //m_Rigidbody2D.AddForce(new Vector2(transform.localScale.x * m_DashForce, 0f));
-                StartCoroutine(DashCooldown());
-            }
-
-            // If crouching, check to see if the character can stand up
-            if ( isDashing )
-            {
-                rb.velocity = new Vector2(transform.localScale.x * m_DashForce, 0);
-            }
             //only control the player if grounded or airControl is turned on
-            else if ( m_Grounded || m_AirControl )
+            if ( m_Grounded || m_AirControl )
             {
                 if ( rb.velocity.y < -limitFallSpeed )
                     rb.velocity = new Vector2(rb.velocity.x, -limitFallSpeed);
@@ -203,7 +188,7 @@ public class PlayerCharacterController : PlayerBase
             }
             else if ( m_IsWall && !m_Grounded )
             {
-                if ( !oldWallSlidding && rb.velocity.y < 0 || isDashing )
+                if ( !oldWallSlidding && rb.velocity.y < 0 )
                 {
                     isWallSliding = true;
                     m_WallCheck.localPosition = new Vector3(-m_WallCheck.localPosition.x, m_WallCheck.localPosition.y, 0);
@@ -212,7 +197,6 @@ public class PlayerCharacterController : PlayerBase
                     canDoubleJump = true;
                     animator.SetBool("IsWallSliding", true);
                 }
-                isDashing = false;
 
                 if ( isWallSliding )
                 {
@@ -241,15 +225,6 @@ public class PlayerCharacterController : PlayerBase
                     oldWallSlidding = false;
                     m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
                     canMove = false;
-                }
-                else if ( dash && canDash )
-                {
-                    isWallSliding = false;
-                    animator.SetBool("IsWallSliding", false);
-                    oldWallSlidding = false;
-                    m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
-                    canDoubleJump = true;
-                    StartCoroutine(DashCooldown());
                 }
             }
             else if ( isWallSliding && !m_IsWall && canCheck )
@@ -293,17 +268,6 @@ public class PlayerCharacterController : PlayerBase
                 StartCoroutine(MakeInvincible(1f));
             }
         }
-    }
-
-    IEnumerator DashCooldown()
-    {
-        animator.SetBool("IsDashing", true);
-        isDashing = true;
-        canDash = false;
-        yield return new WaitForSeconds(0.1f);
-        isDashing = false;
-        yield return new WaitForSeconds(0.5f);
-        canDash = true;
     }
 
     IEnumerator Stun(float time)

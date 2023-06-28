@@ -13,7 +13,6 @@ namespace BananaSoup
         private float horizontalMove = 0.0f;
         private float moveInput;
         private bool jump = false;
-        private bool dash = false;
         private PlayerInput playerInput;
 
         private void OnEnable()
@@ -40,11 +39,8 @@ namespace BananaSoup
         void FixedUpdate()
         {
             // Move our character
-            controller.Move(horizontalMove * Time.fixedDeltaTime, jump, dash);
+            controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
             jump = false;
-
-            // TODO: Remove dash and its references
-            dash = false;
         }
 
         private void GetReferences()
