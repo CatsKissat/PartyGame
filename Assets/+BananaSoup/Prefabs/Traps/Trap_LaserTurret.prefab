@@ -9,11 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5018924320542693007}
-  - component: {fileID: 8937661176854612027}
   m_Layer: 8
-  m_Name: Weapon
+  m_Name: Firing Point
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -32,23 +31,6 @@ Transform:
   m_Father: {fileID: 5301414113782829891}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8937661176854612027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 343556514780627762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ec822993c40135489bb70becd32b2ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 4210886052473396040, guid: 6749f4d6d57a8ff45b27b876feff16f4, type: 3}
-  capacity: 5
-  spawnRate: 2.5
-  projectileSpeed: 1.75
-  projectileAliveTime: 5
 --- !u!1 &8058663720326001947
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,14 +42,16 @@ GameObject:
   - component: {fileID: 5301414113782829891}
   - component: {fileID: 8160083421848022802}
   - component: {fileID: 2887133816942731609}
-  - component: {fileID: 4519728896570349475}
+  - component: {fileID: 3058492579256728135}
+  - component: {fileID: 5240230966973845400}
+  - component: {fileID: 669678462395152440}
   m_Layer: 8
   m_Name: Trap_LaserTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5301414113782829891
 Transform:
   m_ObjectHideFlags: 0
@@ -75,7 +59,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8058663720326001947}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -2.5, y: 1, z: -3.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -83,7 +67,7 @@ Transform:
   - {fileID: 5303255028047466637}
   - {fileID: 5018924320542693007}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &8160083421848022802
 Rigidbody:
@@ -133,7 +117,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4519728896570349475
+--- !u!114 &3058492579256728135
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,12 +126,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 8058663720326001947}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc2ce30dfd2df31469d364ea57a212c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ec822993c40135489bb70becd32b2ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isKinematic: 1
-  isUsingPhysics: 0
-  currentModifier: 0
+  isUsingGravity: 0
+  rb: {fileID: 0}
+  trapModifier: 0
+  modActions: {fileID: 0}
+  fireRate: 1.5
+  firingPoint: {fileID: 343556514780627762}
+  projectileSpeed: 3
+  projectileAliveTime: 4
+--- !u!114 &5240230966973845400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058663720326001947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef9173a38f338e147a9839bdeb3db97c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 4210886052473396040, guid: 6749f4d6d57a8ff45b27b876feff16f4, type: 3}
+  capacity: 5
+--- !u!114 &669678462395152440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058663720326001947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db10db8f64957bc429066fcf9dec8a17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1.5
+  sizeChange: 0.05
+  slowAmount: 0.5
+  slowDuration: 2.5
+  stunDuration: 1.5
+  playersLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &8763143331280937725
 GameObject:
   m_ObjectHideFlags: 0

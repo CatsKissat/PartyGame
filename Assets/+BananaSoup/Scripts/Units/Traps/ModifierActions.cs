@@ -12,7 +12,7 @@ namespace BananaSoup.Traps
 
         [Space]
 
-        [SerializeField, Tooltip("How much should the traps size be changed by.")]
+        [SerializeField, Tooltip("How much should the traps size/projectile size be changed by.")]
         private float sizeChange = 0.5f;
 
         [Space]
@@ -37,6 +37,10 @@ namespace BananaSoup.Traps
         // References
         private TrapBase trapBase;
 
+        public LayerMask PlayersLayerMask => playersLayerMask;
+        public float SlowAmount => slowAmount;
+        public float SlowDuration => slowDuration;
+        public float StunDuration => stunDuration;
 
         // Constants for modifier types for readability
         private const TrapModifierType.Modifier basicMod = TrapModifierType.Modifier.Basic;
@@ -77,7 +81,6 @@ namespace BananaSoup.Traps
 
             CheckForSizeOrSpeedMod();
 
-            Debug.Log($"Starting trapBase Setup on {name}!");
             trapBase.Setup();
         }
 
