@@ -46,19 +46,24 @@ public class PlayerCharacterController : PlayerBase
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
 
+    private Coroutine stunRoutine = null;
+    private Coroutine invincibleRoutine = null;
+    private Coroutine waitToCheckRoutine = null;
+    private Coroutine waitToEndSlidingRoutine = null;
+    private Coroutine waitToDeadRoutine = null;
+
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+        Setup();
+    }
 
-        if ( OnFallEvent == null )
-        {
-            OnFallEvent = new UnityEvent();
-        }
-
-        if ( OnLandEvent == null )
-        {
-            OnLandEvent = new UnityEvent();
-        }
+    private void OnDisable()
+    {
+        TryStopCoroutine(ref stunRoutine);
+        TryStopCoroutine(ref invincibleRoutine);
+        TryStopCoroutine(ref waitToCheckRoutine);
+        TryStopCoroutine(ref waitToEndSlidingRoutine);
+        TryStopCoroutine(ref waitToDeadRoutine);
     }
 
     private void FixedUpdate()
@@ -139,102 +144,123 @@ public class PlayerCharacterController : PlayerBase
         }
     }
 
+    private void Setup()
+    {
+        animator = GetComponent<Animator>();
+        if ( animator == null )
+        {
+            Debug.LogError($"{name} is missing a Animator!");
+        }
+
+        if ( OnFallEvent == null )
+        {
+            OnFallEvent = new UnityEvent();
+        }
+
+        if ( OnLandEvent == null )
+        {
+            OnLandEvent = new UnityEvent();
+        }
+    }
+
     public void Move(float move, bool jump)
     {
-        if ( canMove )
+        if ( !canMove )
         {
-            //only control the player if grounded or airControl is turned on
-            if ( m_Grounded || m_AirControl )
-            {
-                if ( rb.velocity.y < -limitFallSpeed )
-                    rb.velocity = new Vector2(rb.velocity.x, -limitFallSpeed);
-                // Move the character by finding the target velocity
-                Vector3 targetVelocity = new Vector2(move * 10f, rb.velocity.y);
-                // And then smoothing it out and applying it to the character
-                rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
+            return;
+        }
 
-                // If the input is moving the player right and the player is facing left...
-                if ( move > 0 && !m_FacingRight && !isWallSliding )
+        //only control the player if grounded or airControl is turned on
+        if ( m_Grounded || m_AirControl )
+        {
+            if ( rb.velocity.y < -limitFallSpeed )
+                rb.velocity = new Vector2(rb.velocity.x, -limitFallSpeed);
+            // Move the character by finding the target velocity
+            Vector3 targetVelocity = new Vector2(move * 10f, rb.velocity.y);
+            // And then smoothing it out and applying it to the character
+            rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
+
+            // If the input is moving the player right and the player is facing left...
+            if ( move > 0 && !m_FacingRight && !isWallSliding )
+            {
+                // ... flip the player.
+                Flip();
+            }
+            // Otherwise if the input is moving the player left and the player is facing right...
+            else if ( move < 0 && m_FacingRight && !isWallSliding )
+            {
+                // ... flip the player.
+                Flip();
+            }
+        }
+
+        // If the player should jump...
+        if ( m_Grounded && jump )
+        {
+            // Add a vertical force to the player.
+            animator.SetBool("IsJumping", true);
+            animator.SetBool("JumpUp", true);
+            m_Grounded = false;
+            rb.AddForce(new Vector2(0f, m_JumpForce));
+            canDoubleJump = true;
+            particleJumpDown.Play();
+            particleJumpUp.Play();
+        }
+        else if ( !m_Grounded && jump && canDoubleJump && !isWallSliding )
+        {
+            canDoubleJump = false;
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.AddForce(new Vector2(0f, m_JumpForce / 1.2f));
+            animator.SetBool("IsDoubleJumping", true);
+        }
+        else if ( m_IsWall && !m_Grounded )
+        {
+            if ( !oldWallSlidding && rb.velocity.y < 0 )
+            {
+                isWallSliding = true;
+                m_WallCheck.localPosition = new Vector3(-m_WallCheck.localPosition.x, m_WallCheck.localPosition.y, 0);
+                Flip();
+                StartCoroutine(WaitToCheck(0.1f));
+                canDoubleJump = true;
+                animator.SetBool("IsWallSliding", true);
+            }
+
+            if ( isWallSliding )
+            {
+                if ( move * transform.localScale.x > 0.1f )
                 {
-                    // ... flip the player.
-                    Flip();
+                    StartCoroutine(WaitToEndSliding());
                 }
-                // Otherwise if the input is moving the player left and the player is facing right...
-                else if ( move < 0 && m_FacingRight && !isWallSliding )
+                else
                 {
-                    // ... flip the player.
-                    Flip();
+                    oldWallSlidding = true;
+                    rb.velocity = new Vector2(-transform.localScale.x * 2, -5);
                 }
             }
 
-            // If the player should jump...
-            if ( m_Grounded && jump )
+            if ( jump && isWallSliding )
             {
-                // Add a vertical force to the player.
                 animator.SetBool("IsJumping", true);
                 animator.SetBool("JumpUp", true);
-                m_Grounded = false;
-                rb.AddForce(new Vector2(0f, m_JumpForce));
+                rb.velocity = new Vector2(0f, 0f);
+                rb.AddForce(new Vector2(transform.localScale.x * m_JumpForce * 1.2f, m_JumpForce));
+                jumpWallStartX = transform.position.x;
+                limitVelOnWallJump = true;
                 canDoubleJump = true;
-                particleJumpDown.Play();
-                particleJumpUp.Play();
-            }
-            else if ( !m_Grounded && jump && canDoubleJump && !isWallSliding )
-            {
-                canDoubleJump = false;
-                rb.velocity = new Vector2(rb.velocity.x, 0);
-                rb.AddForce(new Vector2(0f, m_JumpForce / 1.2f));
-                animator.SetBool("IsDoubleJumping", true);
-            }
-            else if ( m_IsWall && !m_Grounded )
-            {
-                if ( !oldWallSlidding && rb.velocity.y < 0 )
-                {
-                    isWallSliding = true;
-                    m_WallCheck.localPosition = new Vector3(-m_WallCheck.localPosition.x, m_WallCheck.localPosition.y, 0);
-                    Flip();
-                    StartCoroutine(WaitToCheck(0.1f));
-                    canDoubleJump = true;
-                    animator.SetBool("IsWallSliding", true);
-                }
-
-                if ( isWallSliding )
-                {
-                    if ( move * transform.localScale.x > 0.1f )
-                    {
-                        StartCoroutine(WaitToEndSliding());
-                    }
-                    else
-                    {
-                        oldWallSlidding = true;
-                        rb.velocity = new Vector2(-transform.localScale.x * 2, -5);
-                    }
-                }
-
-                if ( jump && isWallSliding )
-                {
-                    animator.SetBool("IsJumping", true);
-                    animator.SetBool("JumpUp", true);
-                    rb.velocity = new Vector2(0f, 0f);
-                    rb.AddForce(new Vector2(transform.localScale.x * m_JumpForce * 1.2f, m_JumpForce));
-                    jumpWallStartX = transform.position.x;
-                    limitVelOnWallJump = true;
-                    canDoubleJump = true;
-                    isWallSliding = false;
-                    animator.SetBool("IsWallSliding", false);
-                    oldWallSlidding = false;
-                    m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
-                    canMove = false;
-                }
-            }
-            else if ( isWallSliding && !m_IsWall && canCheck )
-            {
                 isWallSliding = false;
                 animator.SetBool("IsWallSliding", false);
                 oldWallSlidding = false;
                 m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
-                canDoubleJump = true;
+                canMove = false;
             }
+        }
+        else if ( isWallSliding && !m_IsWall && canCheck )
+        {
+            isWallSliding = false;
+            animator.SetBool("IsWallSliding", false);
+            oldWallSlidding = false;
+            m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
+            canDoubleJump = true;
         }
     }
 
@@ -270,27 +296,45 @@ public class PlayerCharacterController : PlayerBase
         }
     }
 
-    IEnumerator Stun(float time)
+    // For debug only
+    [ContextMenu("Stun player")]
+    private void StunPlayerButton()
+    {
+        float time = 2.0f;
+        StunPlayer(time);
+    }
+
+    public void StunPlayer(float time)
+    {
+        if ( stunRoutine == null )
+        {
+            stunRoutine = StartCoroutine(Stun(time));
+        }
+    }
+
+    private IEnumerator Stun(float time)
     {
         canMove = false;
         yield return new WaitForSeconds(time);
         canMove = true;
+        TryStopCoroutine(ref stunRoutine);
     }
-    IEnumerator MakeInvincible(float time)
+
+    private IEnumerator MakeInvincible(float time)
     {
         invincible = true;
         yield return new WaitForSeconds(time);
         invincible = false;
     }
 
-    IEnumerator WaitToCheck(float time)
+    private IEnumerator WaitToCheck(float time)
     {
         canCheck = false;
         yield return new WaitForSeconds(time);
         canCheck = true;
     }
 
-    IEnumerator WaitToEndSliding()
+    private IEnumerator WaitToEndSliding()
     {
         yield return new WaitForSeconds(0.1f);
         canDoubleJump = true;
@@ -300,7 +344,7 @@ public class PlayerCharacterController : PlayerBase
         m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
     }
 
-    IEnumerator WaitToDead()
+    private IEnumerator WaitToDead()
     {
         animator.SetBool("IsDead", true);
         canMove = false;
@@ -310,5 +354,14 @@ public class PlayerCharacterController : PlayerBase
         rb.velocity = new Vector2(0, rb.velocity.y);
         yield return new WaitForSeconds(1.1f);
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void TryStopCoroutine(ref Coroutine routine)
+    {
+        if ( routine != null )
+        {
+            StopCoroutine(routine);
+            routine = null;
+        }
     }
 }
