@@ -13,6 +13,8 @@ public class PlayerCharacterController : PlayerBase
     [SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
     [SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
     [SerializeField] private Transform m_WallCheck;                             //Posicion que controla si el personaje toca una pared
+    [SerializeField] private bool isWallSlidingEnabled;
+    [SerializeField] private bool isWallJumpingEnabled;
 
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded;            // Whether or not the player is grounded.
@@ -245,8 +247,12 @@ public class PlayerCharacterController : PlayerBase
         }
         else if ( m_IsWall && !m_Grounded )
         {
+            Debug.Log("Wall");
+
             if ( !oldWallSlidding && rb.velocity.y < 0 )
             {
+                Debug.Log("Snap the wall");
+
                 isWallSliding = true;
                 m_WallCheck.localPosition = new Vector3(-m_WallCheck.localPosition.x, m_WallCheck.localPosition.y, 0);
                 Flip();
@@ -255,11 +261,17 @@ public class PlayerCharacterController : PlayerBase
                 {
                     canDoubleJump = true;
                 }
-                animator.SetBool(isWallSlidingParam, true);
+                if ( isWallSlidingEnabled )
+                {
+                    animator.SetBool(isWallSlidingParam, true);
+                }
             }
 
+            // Player slides down the wall
             if ( isWallSliding )
             {
+                Debug.Log("Player slides down the wall");
+
                 if ( move * transform.localScale.x > 0.1f )
                 {
                     StartCoroutine(WaitToEndSliding());
@@ -267,12 +279,23 @@ public class PlayerCharacterController : PlayerBase
                 else
                 {
                     oldWallSlidding = true;
-                    rb.velocity = new Vector2(-transform.localScale.x * 2, -5);
+                    if ( isWallSlidingEnabled )
+                    {
+                        rb.velocity = new Vector2(-transform.localScale.x * 2, -5);
+                    }
+                    else
+                    {
+                        Debug.Log("Wall Sliding NOT Enabled");
+                        float yVelocity = rb.velocity.y;
+                        rb.velocity = new Vector2(-transform.localScale.x * 2, -9.8f);
+                    }
                 }
             }
 
-            if ( jump && isWallSliding )
+            if ( jump && isWallSliding && isWallJumpingEnabled )
             {
+                Debug.Log("Player jumps of the wall");
+
                 animator.SetBool(isJumpingParam, true);
                 animator.SetBool(jumpUpParam, true);
                 rb.velocity = new Vector2(0f, 0f);
@@ -289,9 +312,28 @@ public class PlayerCharacterController : PlayerBase
                 m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
                 canMove = false;
             }
+
+            //if ( !isWallSlidingEnabled )
+            //{
+            //    Debug.Log("Wall Sliding NOT Enabled");
+            //    float yVelocity = rb.velocity.y;
+            //    //rb.velocity = new Vector2(-transform.localScale.x * 2, yVelocity);
+
+            //    if ( move * transform.localScale.x > 0.1f )
+            //    {
+            //        StartCoroutine(WaitToEndSliding());
+            //    }
+            //    else
+            //    {
+            //        oldWallSlidding = true;
+            //        rb.velocity = new Vector2(-transform.localScale.x * 2, -5);
+            //    }
+            //}
         }
         else if ( isWallSliding && !m_IsWall && canCheck )
         {
+            Debug.Log("Sliding ended");
+
             isWallSliding = false;
             animator.SetBool(isWallSlidingParam, false);
             oldWallSlidding = false;
