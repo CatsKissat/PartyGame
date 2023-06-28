@@ -6,6 +6,7 @@ using BananaSoup.Units;
 
 public class PlayerCharacterController : PlayerBase
 {
+    [Space]
     [SerializeField] private float m_JumpForce = 400f;                          // Amount of force added when the player jumps.
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f;   // How much to smooth out the movement
     [SerializeField] private bool m_AirControl = false;                         // Whether or not a player can steer while jumping;
@@ -47,6 +48,7 @@ public class PlayerCharacterController : PlayerBase
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
 
+    // Coroutines
     private Coroutine stunRoutine = null;
     private Coroutine invincibleRoutine = null;
     private Coroutine waitToCheckRoutine = null;
@@ -68,6 +70,50 @@ public class PlayerCharacterController : PlayerBase
     }
 
     private void FixedUpdate()
+    {
+        GroundCheck();
+        WallCheck();
+        LimitWallJumpVelocity();
+    }
+
+    private void Setup()
+    {
+        animator = GetComponent<Animator>();
+        if ( animator == null )
+        {
+            Debug.LogError($"{name} is missing a Animator!");
+        }
+
+        if ( OnFallEvent == null )
+        {
+            OnFallEvent = new UnityEvent();
+        }
+
+        if ( OnLandEvent == null )
+        {
+            OnLandEvent = new UnityEvent();
+        }
+    }
+
+    private void WallCheck()
+    {
+        m_IsWall = false;
+
+        if ( !m_Grounded )
+        {
+            OnFallEvent.Invoke();
+            Collider[] collidersWall = Physics.OverlapSphere(m_WallCheck.position, k_GroundedRadius, m_WhatIsGround);
+            for ( int i = 0; i < collidersWall.Length; i++ )
+            {
+                if ( collidersWall[i].gameObject != null )
+                {
+                    m_IsWall = true;
+                }
+            }
+        }
+    }
+
+    private void GroundCheck()
     {
         bool wasGrounded = m_Grounded;
         m_Grounded = false;
@@ -101,22 +147,10 @@ public class PlayerCharacterController : PlayerBase
                 }
             }
         }
+    }
 
-        m_IsWall = false;
-
-        if ( !m_Grounded )
-        {
-            OnFallEvent.Invoke();
-            Collider[] collidersWall = Physics.OverlapSphere(m_WallCheck.position, k_GroundedRadius, m_WhatIsGround);
-            for ( int i = 0; i < collidersWall.Length; i++ )
-            {
-                if ( collidersWall[i].gameObject != null )
-                {
-                    m_IsWall = true;
-                }
-            }
-        }
-
+    private void LimitWallJumpVelocity()
+    {
         if ( limitVelOnWallJump )
         {
             if ( rb.velocity.y < -0.5f )
@@ -145,25 +179,6 @@ public class PlayerCharacterController : PlayerBase
                 limitVelOnWallJump = false;
                 rb.velocity = new Vector2(0, rb.velocity.y);
             }
-        }
-    }
-
-    private void Setup()
-    {
-        animator = GetComponent<Animator>();
-        if ( animator == null )
-        {
-            Debug.LogError($"{name} is missing a Animator!");
-        }
-
-        if ( OnFallEvent == null )
-        {
-            OnFallEvent = new UnityEvent();
-        }
-
-        if ( OnLandEvent == null )
-        {
-            OnLandEvent = new UnityEvent();
         }
     }
 
@@ -328,6 +343,7 @@ public class PlayerCharacterController : PlayerBase
         }
     }
 
+    #region Coroutines
     private IEnumerator Stun(float time)
     {
         canMove = false;
@@ -383,4 +399,5 @@ public class PlayerCharacterController : PlayerBase
             routine = null;
         }
     }
+    #endregion Coroutines
 }
