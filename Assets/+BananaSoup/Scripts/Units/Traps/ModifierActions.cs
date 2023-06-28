@@ -31,7 +31,10 @@ namespace BananaSoup.Traps
         [SerializeField]
         private LayerMask playersLayerMask;
 
+        // Variable used to store the currentModifier of the trap.
         private TrapModifierType.Modifier currentModifier;
+
+        // References
         private TrapBase trapBase;
 
 
@@ -52,34 +55,37 @@ namespace BananaSoup.Traps
             GetTrapBaseReference();
         }
 
+        /// <summary>
+        /// Method used to get a reference of the objects TrapBase component.
+        /// </summary>
         private void GetTrapBaseReference()
         {
+            trapBase = GetComponent<TrapBase>();
             if ( trapBase == null )
             {
-                trapBase = GetComponent<TrapBase>();
-            }
-
-            // TODO: Determine if this is needed, if not remove.
-            //if ( trapBase == null )
-            //{
-            //    trapBase = transform.parent.GetComponent<TrapBase>();
-            //}
-
-            if ( trapBase == null )
-            {
-                Debug.LogError($"{name}'s parent doesn't have a TrapBase component!");
+                Debug.LogError($"{name} doesn't have a TrapBase component!");
             }
         }
 
+        /// <summary>
+        /// Method called from TrapBase to setup the modifier and check if the modifier
+        /// is a size or a speed modifier and then call TrapBase's Setup method.
+        /// </summary>
         public void SetupModifier()
         {
             currentModifier = trapBase.TrapModifier;
 
             CheckForSizeOrSpeedMod();
 
+            Debug.Log($"Starting trapBase Setup on {name}!");
             trapBase.Setup();
         }
 
+        /// <summary>
+        /// Used to check if an object on the playersLayerMask is entering the trigger.
+        /// If yes then call the DetermineModAction method.
+        /// </summary>
+        /// <param name="other">The other GameObjects collider, usually a players.</param>
         private void OnTriggerEnter(Collider other)
         {
             if ((playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0 )

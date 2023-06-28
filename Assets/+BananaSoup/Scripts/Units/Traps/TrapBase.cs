@@ -9,6 +9,7 @@ namespace BananaSoup.Units
         [SerializeField]
         private TrapModifierType.Modifier trapModifier;
 
+        // Bool to track if a modifier is selected.
         private bool modifierSelected = false;
 
         // Variables used to store and forward speed or size if they should be
@@ -18,7 +19,6 @@ namespace BananaSoup.Units
 
         // References
         private Rigidbody[] childRigidbodies = null;
-
         private ModifierActions modActions = null;
 
         public bool ModifierSelected
@@ -31,12 +31,16 @@ namespace BananaSoup.Units
             get => trapModifier;
         }
 
+        // Property used to store the modifiedSpeed value for the trap, which is
+        // used in the actual trap functionality to effect the speed of the trap.
         public float ModifiedSpeed
         {
             get => modifiedSpeed;
             set => modifiedSpeed = value;
         }
 
+        // Property used to store the modifiedSize valuefor the trap, which is
+        // used in the actual trap functionality to effect the size of the trap.
         public float ModifiedSize
         {
             get => modifiedSize;
@@ -74,6 +78,11 @@ namespace BananaSoup.Units
 
         // Debug for testing modifier randomising.
         //[ContextMenu("Randomize mod")]
+        /// <summary>
+        /// Method used to select a random modifier for the trap out of all the 
+        /// TrapModifierType.Modifiers.
+        /// Then the ModifierActions scripts SetupModifier is called from here.
+        /// </summary>
         private void SelectRandomModifier()
         {
             trapModifier = (TrapModifierType.Modifier)Random.Range(0, System.Enum.GetValues(typeof(TrapModifierType.Modifier)).Length);

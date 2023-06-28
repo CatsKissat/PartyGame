@@ -6,6 +6,8 @@ namespace BananaSoup.Units
     {
         public bool isKinematic;
         public bool isUsingGravity;
+
+        [HideInInspector]
         public Rigidbody rb;
 
         protected virtual void Start()
