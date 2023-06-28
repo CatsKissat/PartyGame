@@ -5411,11 +5411,11 @@ MonoBehaviour:
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
-    m_Bits: 53
+    m_Bits: 65
   m_GroundCheck: {fileID: 3948131155757632489}
   m_WallCheck: {fileID: 2315632402673149450}
-  canDoubleJump: 0
-  life: 10
+  isDoubleJumpEnabled: 0
+  life: 1
   invincible: 0
   particleJumpUp: {fileID: 2053090010761393909}
   particleJumpDown: {fileID: 7195109868780656970}
