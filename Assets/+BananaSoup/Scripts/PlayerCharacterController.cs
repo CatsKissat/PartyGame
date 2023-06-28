@@ -19,7 +19,8 @@ public class PlayerCharacterController : PlayerBase
     private Vector3 velocity = Vector3.zero;
     private float limitFallSpeed = 25f; // Limit fall speed
 
-    [SerializeField] private bool canDoubleJump = false; //If player can double jump
+    [SerializeField] private bool isDoubleJumpEnabled = false;
+    private bool canDoubleJump = false; //If player can double jump
     private bool m_IsWall = false; //If there is a wall in front of the player
     private bool isWallSliding = false; //If player is sliding in a wall
     private bool oldWallSlidding = false; //If player is sliding in a wall in the previous frame
@@ -89,7 +90,10 @@ public class PlayerCharacterController : PlayerBase
                     particleJumpDown.Play();
                 }
 
-                canDoubleJump = true;
+                if ( isDoubleJumpEnabled )
+                {
+                    canDoubleJump = true;
+                }
 
                 if ( rb.velocity.y < 0f )
                 {
@@ -202,7 +206,10 @@ public class PlayerCharacterController : PlayerBase
             animator.SetBool("JumpUp", true);
             m_Grounded = false;
             rb.AddForce(new Vector2(0f, m_JumpForce));
-            canDoubleJump = true;
+            if ( isDoubleJumpEnabled )
+            {
+                canDoubleJump = true;
+            }
             particleJumpDown.Play();
             particleJumpUp.Play();
         }
@@ -221,7 +228,10 @@ public class PlayerCharacterController : PlayerBase
                 m_WallCheck.localPosition = new Vector3(-m_WallCheck.localPosition.x, m_WallCheck.localPosition.y, 0);
                 Flip();
                 StartCoroutine(WaitToCheck(0.1f));
-                canDoubleJump = true;
+                if ( isDoubleJumpEnabled )
+                {
+                    canDoubleJump = true;
+                }
                 animator.SetBool("IsWallSliding", true);
             }
 
@@ -246,7 +256,10 @@ public class PlayerCharacterController : PlayerBase
                 rb.AddForce(new Vector2(transform.localScale.x * m_JumpForce * 1.2f, m_JumpForce));
                 jumpWallStartX = transform.position.x;
                 limitVelOnWallJump = true;
-                canDoubleJump = true;
+                if ( isDoubleJumpEnabled )
+                {
+                    canDoubleJump = true;
+                }
                 isWallSliding = false;
                 animator.SetBool("IsWallSliding", false);
                 oldWallSlidding = false;
@@ -260,7 +273,10 @@ public class PlayerCharacterController : PlayerBase
             animator.SetBool("IsWallSliding", false);
             oldWallSlidding = false;
             m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
-            canDoubleJump = true;
+            if ( isDoubleJumpEnabled )
+            {
+                canDoubleJump = true;
+            }
         }
     }
 
@@ -337,7 +353,10 @@ public class PlayerCharacterController : PlayerBase
     private IEnumerator WaitToEndSliding()
     {
         yield return new WaitForSeconds(0.1f);
-        canDoubleJump = true;
+        if ( isDoubleJumpEnabled )
+        {
+            canDoubleJump = true;
+        }
         isWallSliding = false;
         animator.SetBool("IsWallSliding", false);
         oldWallSlidding = false;
