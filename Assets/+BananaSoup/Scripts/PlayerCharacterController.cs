@@ -55,6 +55,14 @@ public class PlayerCharacterController : PlayerBase
     private Coroutine waitToEndSlidingRoutine = null;
     private Coroutine waitToDeadRoutine = null;
 
+    // Animation strings
+    private const string isJumpingParam = "IsJumping";
+    private const string jumpUpParam = "JumpUp";
+    private const string isWallSlidingParam = "IsWallSliding";
+    private const string isDoubleJumpingParam = "IsDoubleJumping";
+    private const string hitParam = "Hit";
+    private const string isDeadParam = "IsDead";
+
     private void Awake()
     {
         Setup();
@@ -217,8 +225,8 @@ public class PlayerCharacterController : PlayerBase
         if ( m_Grounded && jump )
         {
             // Add a vertical force to the player.
-            animator.SetBool("IsJumping", true);
-            animator.SetBool("JumpUp", true);
+            animator.SetBool(isJumpingParam, true);
+            animator.SetBool(jumpUpParam, true);
             m_Grounded = false;
             rb.AddForce(new Vector2(0f, m_JumpForce));
             if ( isDoubleJumpEnabled )
@@ -233,7 +241,7 @@ public class PlayerCharacterController : PlayerBase
             canDoubleJump = false;
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(0f, m_JumpForce / 1.2f));
-            animator.SetBool("IsDoubleJumping", true);
+            animator.SetBool(isDoubleJumpingParam, true);
         }
         else if ( m_IsWall && !m_Grounded )
         {
@@ -247,7 +255,7 @@ public class PlayerCharacterController : PlayerBase
                 {
                     canDoubleJump = true;
                 }
-                animator.SetBool("IsWallSliding", true);
+                animator.SetBool(isWallSlidingParam, true);
             }
 
             if ( isWallSliding )
@@ -265,8 +273,8 @@ public class PlayerCharacterController : PlayerBase
 
             if ( jump && isWallSliding )
             {
-                animator.SetBool("IsJumping", true);
-                animator.SetBool("JumpUp", true);
+                animator.SetBool(isJumpingParam, true);
+                animator.SetBool(jumpUpParam, true);
                 rb.velocity = new Vector2(0f, 0f);
                 rb.AddForce(new Vector2(transform.localScale.x * m_JumpForce * 1.2f, m_JumpForce));
                 jumpWallStartX = transform.position.x;
@@ -276,7 +284,7 @@ public class PlayerCharacterController : PlayerBase
                     canDoubleJump = true;
                 }
                 isWallSliding = false;
-                animator.SetBool("IsWallSliding", false);
+                animator.SetBool(isWallSlidingParam, false);
                 oldWallSlidding = false;
                 m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
                 canMove = false;
@@ -285,7 +293,7 @@ public class PlayerCharacterController : PlayerBase
         else if ( isWallSliding && !m_IsWall && canCheck )
         {
             isWallSliding = false;
-            animator.SetBool("IsWallSliding", false);
+            animator.SetBool(isWallSlidingParam, false);
             oldWallSlidding = false;
             m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
             if ( isDoubleJumpEnabled )
@@ -310,7 +318,7 @@ public class PlayerCharacterController : PlayerBase
     {
         if ( !invincible )
         {
-            animator.SetBool("Hit", true);
+            animator.SetBool(hitParam, true);
             life -= damage;
             Vector2 damageDir = Vector3.Normalize(transform.position - position) * 40f;
             rb.velocity = Vector2.zero;
@@ -374,14 +382,14 @@ public class PlayerCharacterController : PlayerBase
             canDoubleJump = true;
         }
         isWallSliding = false;
-        animator.SetBool("IsWallSliding", false);
+        animator.SetBool(isWallSlidingParam, false);
         oldWallSlidding = false;
         m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
     }
 
     private IEnumerator WaitToDead()
     {
-        animator.SetBool("IsDead", true);
+        animator.SetBool(isDeadParam, true);
         canMove = false;
         invincible = true;
         GetComponent<Attack>().enabled = false;
