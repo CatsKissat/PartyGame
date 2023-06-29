@@ -84,7 +84,7 @@ namespace BananaSoup.Utils
         /// <summary>
         /// Call this method to return all currently active objects.
         /// </summary>
-        /// <returns>List of active objects.</returns>
+        /// <returns>List of active objects in the pool.</returns>
         public List<T> GetActiveItems()
         {
             List<T> activeItems = new List<T>();
@@ -97,6 +97,34 @@ namespace BananaSoup.Utils
             }
 
             return activeItems;
+        }
+
+        /// <summary>
+        /// Call this method to return all objects.
+        /// </summary>
+        /// <returns>List of all objects in the pool.</returns>
+        public List<T> GetAllItems()
+        {
+            List<T> allItems = new List<T>();
+            foreach ( T item in items )
+            {
+                allItems.Add(item);
+            }
+
+            return allItems;
+        }
+
+        /// <summary>
+        /// Method that can be used to set pooled objects parent to be the given transform.
+        /// </summary>
+        /// <param name="itemsTransforms">Transform array of the items for which you want to set the parent.</param>
+        /// <param name="parent">The parent transform to be set for the items.</param>
+        public virtual void SetPooledObjectsParent(Transform[] itemsTransforms, Transform parent)
+        {
+            foreach ( Transform transform in itemsTransforms )
+            {
+                transform.parent = parent;
+            }
         }
 
         /// <summary>

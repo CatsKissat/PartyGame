@@ -79,13 +79,11 @@ namespace BananaSoup.Traps
         {
             while ( true )
             {
-                LaserProjectile projectile = spawner.Create(firingPoint.transform.position,
-                                                    Quaternion.Euler(spriteRotation),
-                                                    null);
+                LaserProjectile projectile = spawner.Create(firingPoint.transform.position);
 
                 if ( projectile != null )
                 {
-                    projectile.Setup(projectileAliveTime, projectileSpeed);
+                    projectile.Setup(projectileAliveTime, spriteRotation, projectileSpeed);
 
                     projectile.Launch(transform.forward);
 

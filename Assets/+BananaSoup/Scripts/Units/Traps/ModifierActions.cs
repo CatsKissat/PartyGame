@@ -49,16 +49,6 @@ namespace BananaSoup.Traps
         private const TrapModifierType.Modifier speedMod = TrapModifierType.Modifier.Speed;
         private const TrapModifierType.Modifier sizeMod = TrapModifierType.Modifier.Size;
 
-        private void Start()
-        {
-            Setup();
-        }
-
-        private void Setup()
-        {
-            GetTrapBaseReference();
-        }
-
         /// <summary>
         /// Method used to get a reference of the objects TrapBase component.
         /// </summary>
@@ -77,6 +67,8 @@ namespace BananaSoup.Traps
         /// </summary>
         public void SetupModifier()
         {
+            GetTrapBaseReference();
+
             currentModifier = trapBase.TrapModifier;
 
             CheckForSizeOrSpeedMod();

@@ -106,12 +106,14 @@ namespace BananaSoup.Traps
             }
         }
 
-        public void Setup(float aliveTime, float speed = -1)
+        public void Setup(float aliveTime, Vector3 rotation, float speed = -1)
         {
             if ( speed < 0 )
             {
                 speed = movementSpeed;
             }
+
+            transform.rotation = Quaternion.Euler(rotation);
 
             projectileMover.Setup(speed);
             isLaunched = false;
