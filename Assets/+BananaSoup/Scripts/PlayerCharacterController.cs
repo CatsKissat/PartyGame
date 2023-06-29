@@ -247,11 +247,11 @@ public class PlayerCharacterController : PlayerBase
         }
         else if ( m_IsWall && !m_Grounded )
         {
-            Debug.Log("Wall");
+            //Debug.Log("Wall");
 
             if ( !oldWallSlidding && rb.velocity.y < 0 )
             {
-                Debug.Log("Snap the wall");
+                //Debug.Log("Snap the wall");
 
                 isWallSliding = true;
                 m_WallCheck.localPosition = new Vector3(-m_WallCheck.localPosition.x, m_WallCheck.localPosition.y, 0);
@@ -270,7 +270,7 @@ public class PlayerCharacterController : PlayerBase
             // Player slides down the wall
             if ( isWallSliding )
             {
-                Debug.Log("Player slides down the wall");
+                //Debug.Log("Player slides down the wall");
 
                 if ( move * transform.localScale.x > 0.1f )
                 {
@@ -285,8 +285,7 @@ public class PlayerCharacterController : PlayerBase
                     }
                     else
                     {
-                        Debug.Log("Wall Sliding NOT Enabled");
-                        float yVelocity = rb.velocity.y;
+                        //Debug.Log("Wall Sliding NOT Enabled");
                         rb.velocity = new Vector2(-transform.localScale.x * 2, -9.8f);
                     }
                 }
@@ -294,7 +293,7 @@ public class PlayerCharacterController : PlayerBase
 
             if ( jump && isWallSliding && isWallJumpingEnabled )
             {
-                Debug.Log("Player jumps of the wall");
+                //Debug.Log("Player jumps of the wall");
 
                 animator.SetBool(isJumpingParam, true);
                 animator.SetBool(jumpUpParam, true);
@@ -312,27 +311,10 @@ public class PlayerCharacterController : PlayerBase
                 m_WallCheck.localPosition = new Vector3(Mathf.Abs(m_WallCheck.localPosition.x), m_WallCheck.localPosition.y, 0);
                 canMove = false;
             }
-
-            //if ( !isWallSlidingEnabled )
-            //{
-            //    Debug.Log("Wall Sliding NOT Enabled");
-            //    float yVelocity = rb.velocity.y;
-            //    //rb.velocity = new Vector2(-transform.localScale.x * 2, yVelocity);
-
-            //    if ( move * transform.localScale.x > 0.1f )
-            //    {
-            //        StartCoroutine(WaitToEndSliding());
-            //    }
-            //    else
-            //    {
-            //        oldWallSlidding = true;
-            //        rb.velocity = new Vector2(-transform.localScale.x * 2, -5);
-            //    }
-            //}
         }
         else if ( isWallSliding && !m_IsWall && canCheck )
         {
-            Debug.Log("Sliding ended");
+            //Debug.Log("Sliding ended");
 
             isWallSliding = false;
             animator.SetBool(isWallSlidingParam, false);
