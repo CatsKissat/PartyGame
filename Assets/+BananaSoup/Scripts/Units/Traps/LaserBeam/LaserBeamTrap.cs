@@ -52,8 +52,8 @@ namespace BananaSoup.Traps
                 beamDuration -= ModifiedSpeed;
                 beamCooldown -= ModifiedSpeed;
             }
-            
-            if ( ModifiedSize > 0 ) 
+
+            if ( ModifiedSize > 0 )
             {
                 SetBeamerPositions(ModifiedSize);
             }
@@ -100,17 +100,17 @@ namespace BananaSoup.Traps
         {
             while ( true )
             {
-                if ( !onCooldown )
+                if ( onCooldown )
+                {
+                    yield return new WaitForSeconds(beamCooldown);
+                    onCooldown = false;
+                }
+                else if ( !onCooldown )
                 {
                     beam.SetActive(true);
                     yield return new WaitForSeconds(beamDuration);
                     onCooldown = true;
                     beam.SetActive(false);
-                }
-                else
-                {
-                    yield return new WaitForSeconds(beamCooldown);
-                    onCooldown = false;
                 }
             }
         }
