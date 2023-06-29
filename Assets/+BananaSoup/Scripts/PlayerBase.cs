@@ -6,19 +6,28 @@ namespace BananaSoup.Units
     public class PlayerBase : UnitBase
     {
         private PlayerInput playerInput;
-        private int playerId;
+        private int playerID;
         private PlayerSpriteSelector playerSpriteSelector;
+
+        [HideInInspector]
+        public bool isStunned = false;
+        [HideInInspector]
+        public bool isFrozen = false;
+        [HideInInspector]
+        public bool isDead = false;
+
+        public int PlayerID => playerID;
 
         private void OnEnable()
         {
             GetInputReference();
 
-            Debug.Log($"PlayerID {playerId} joined the game.");
+            Debug.Log($"PlayerID {playerID} joined the game.");
         }
 
         private void OnDisable()
         {
-            Debug.Log($"PlayerID {playerId} left the game.");
+            Debug.Log($"PlayerID {playerID} left the game.");
         }
 
         protected override void Start()
@@ -34,7 +43,7 @@ namespace BananaSoup.Units
             if ( playerInput == null )
             {
                 playerInput = GetComponent<PlayerInput>();
-                playerId = playerInput.playerIndex;
+                playerID = playerInput.playerIndex;
 
                 if ( playerInput == null )
                 {
