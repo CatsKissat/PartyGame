@@ -5,10 +5,6 @@ namespace BananaSoup.Units
 {
     public class PlayerBase : UnitBase
     {
-        private PlayerInput playerInput;
-        private int playerID;
-        private PlayerSpriteSelector playerSpriteSelector;
-
         [HideInInspector]
         public bool isStunned = false;
         [HideInInspector]
@@ -16,17 +12,31 @@ namespace BananaSoup.Units
         [HideInInspector]
         public bool isDead = false;
 
+        private PlayerInput playerInput;
+        private int playerID;
+        private PlayerSpriteSelector playerSpriteSelector;
+        private PlayerMovement playerMovement;
+        private CameraTargetAssigner cameraTargetAssigner;
+
         public int PlayerID => playerID;
 
         private void OnEnable()
         {
-            GetInputReference();
+            TryGetReferences();
+
+            playerMovement.LeaveGame += OnLeave;
+
+            GameObject cameraTargetGroup = GameObject.FindGameObjectWithTag("CameraTargetGroup");
+            cameraTargetAssigner = cameraTargetGroup.GetComponent<CameraTargetAssigner>();
+            cameraTargetAssigner.AssingPlayer(transform);
 
             Debug.Log($"PlayerID {playerID} joined the game.");
         }
 
-        private void OnDisable()
+        private void OnLeave()
         {
+            cameraTargetAssigner.RemovePlayerTarget(transform);
+
             Debug.Log($"PlayerID {playerID} left the game.");
         }
 
@@ -38,7 +48,7 @@ namespace BananaSoup.Units
             playerSpriteSelector.AssingSprite();
         }
 
-        private void GetInputReference()
+        private void TryGetReferences()
         {
             if ( playerInput == null )
             {
@@ -48,6 +58,15 @@ namespace BananaSoup.Units
                 if ( playerInput == null )
                 {
                     Debug.LogError($"{name} is missing a PlayerInput!");
+                }
+            }
+
+            if ( playerMovement == null )
+            {
+                playerMovement = GetComponent<PlayerMovement>();
+                if ( playerMovement == null )
+                {
+                    Debug.LogError($"{name} is missing a PlayerMovement!");
                 }
             }
         }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace BananaSoup
@@ -14,6 +15,7 @@ namespace BananaSoup
         private float moveInput;
         private bool jump = false;
         private PlayerInput playerInput;
+        public UnityAction LeaveGame;
 
         private void OnEnable()
         {
@@ -88,6 +90,7 @@ namespace BananaSoup
         {
             if ( context.performed )
             {
+                LeaveGame.Invoke();
                 DisablePlayerGameObject();
             }
         }
