@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 namespace BananaSoup
 {
@@ -17,6 +18,8 @@ namespace BananaSoup
         private PlayerInput playerInput;
         public UnityAction LeaveGame;
 
+        private Coroutine freezeRoutine = null;
+
         private void OnEnable()
         {
             playerInput = GetComponent<PlayerInput>();
@@ -26,10 +29,18 @@ namespace BananaSoup
             }
         }
 
+        private void OnDisable()
+        {
+            controller.Frozen -= FreezePlayer;
+            TryStopAndNullCoroutine(ref freezeRoutine);
+        }
+
         private void Start()
         {
             GetReferences();
             moveSpeed = walkSpeed;
+
+            controller.Frozen += FreezePlayer;
         }
 
         void Update()
@@ -120,6 +131,37 @@ namespace BananaSoup
         public void OnLanding()
         {
             animator.SetBool("IsJumping", false);
+        }
+
+        public void FreezePlayer(float duration, float slowMultiplier)
+        {
+            if ( freezeRoutine == null )
+            {
+                freezeRoutine = StartCoroutine(FreezeRoutine(duration, slowMultiplier, walkSpeed, runSpeed));
+            }
+        }
+
+        private IEnumerator FreezeRoutine(float duration, float slowMultiplier, float walkSpeed, float runSpeed)
+        {
+            float previousWalkSpeed = walkSpeed;
+            float previousRunSpeed = runSpeed;
+
+            this.walkSpeed = slowMultiplier * walkSpeed;
+            this.runSpeed = slowMultiplier * runSpeed;
+
+            yield return new WaitForSeconds(duration);
+
+            this.walkSpeed = previousWalkSpeed;
+            this.runSpeed = previousRunSpeed;
+        }
+
+        private void TryStopAndNullCoroutine(ref Coroutine routine)
+        {
+            if ( routine != null )
+            {
+                StopCoroutine(routine);
+                routine = null;
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ namespace BananaSoup.Traps
         [Space]
 
         [SerializeField, Tooltip("The percentage how much the slow should affect the player(s).")]
-        private float slowAmount = 0.5f;
+        private float slowMultiplier = 0.5f;
         [SerializeField, Tooltip("The duration of the slow effect.")]
         private float slowDuration = 2.5f;
 
@@ -38,7 +38,7 @@ namespace BananaSoup.Traps
         private TrapBase trapBase;
 
         public LayerMask PlayersLayerMask => playersLayerMask;
-        public float SlowAmount => slowAmount;
+        public float SlowAmount => slowMultiplier;
         public float SlowDuration => slowDuration;
         public float StunDuration => stunDuration;
 
@@ -109,17 +109,29 @@ namespace BananaSoup.Traps
                 case speedMod:
                 case sizeMod:
                     {
-                        Debug.Log($"{other.name} should get killed!");
+                        if ( other.gameObject.GetComponent<PlayerBase>() )
+                        {
+                            other.GetComponent<PlayerBase>().Kill();
+                        }
+
                         break;
                     }
                 case freezeMod:
                     {
-                        Debug.Log($"{other.name} should get frozen!");
+                        if ( other.gameObject.GetComponent<PlayerBase>() )
+                        {
+                            other.GetComponent<PlayerBase>().Freeze(slowDuration, slowMultiplier);
+                        }
+
                         break;
                     }
                 case electricMod:
                     {
-                        Debug.Log($"{other.name} should get stunned!");
+                        if ( other.gameObject.GetComponent<PlayerBase>() )
+                        {
+                            other.GetComponent<PlayerBase>().Stun(stunDuration);
+                        }
+
                         break;
                     }
                 default:

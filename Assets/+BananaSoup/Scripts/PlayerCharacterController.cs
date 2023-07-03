@@ -70,6 +70,11 @@ public class PlayerCharacterController : PlayerBase
         Setup();
     }
 
+    private void OnEnable()
+    {
+        Stunned += StunPlayer;
+    }
+
     private void OnDisable()
     {
         TryStopCoroutine(ref stunRoutine);
@@ -77,6 +82,8 @@ public class PlayerCharacterController : PlayerBase
         TryStopCoroutine(ref waitToCheckRoutine);
         TryStopCoroutine(ref waitToEndSlidingRoutine);
         TryStopCoroutine(ref waitToDeadRoutine);
+
+        Stunned -= StunPlayer;
     }
 
     private void FixedUpdate()
@@ -353,7 +360,7 @@ public class PlayerCharacterController : PlayerBase
             }
             else
             {
-                StartCoroutine(Stun(0.25f));
+                StartCoroutine(StunRoutine(0.25f));
                 StartCoroutine(MakeInvincible(1f));
             }
         }
@@ -371,12 +378,12 @@ public class PlayerCharacterController : PlayerBase
     {
         if ( stunRoutine == null )
         {
-            stunRoutine = StartCoroutine(Stun(time));
+            stunRoutine = StartCoroutine(StunRoutine(time));
         }
     }
 
     #region Coroutines
-    private IEnumerator Stun(float time)
+    private IEnumerator StunRoutine(float time)
     {
         canMove = false;
         yield return new WaitForSeconds(time);

@@ -1,16 +1,15 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace BananaSoup.Units
 {
     public class PlayerBase : UnitBase
     {
-        [HideInInspector]
-        public bool isStunned = false;
-        [HideInInspector]
-        public bool isFrozen = false;
-        [HideInInspector]
-        public bool isDead = false;
+        private bool isStunned = false;
+        private bool isFrozen = false;
+        private bool isDead = false;
 
         private PlayerInput playerInput;
         private int playerID;
@@ -19,6 +18,13 @@ namespace BananaSoup.Units
         private CameraTargetAssigner cameraTargetAssigner;
 
         public int PlayerID => playerID;
+        public bool IsStunned => isStunned;
+        public bool IsFrozen => isFrozen;
+        public bool IsDead => isDead;
+
+        public event Action<float> Stunned;
+        public event Action<float, float> Frozen;
+        public event Action Killed;
 
         private void OnEnable()
         {
@@ -77,6 +83,25 @@ namespace BananaSoup.Units
             if ( playerSpriteSelector == null )
             {
                 Debug.Log($"{name} is missing a PlayerSpriteSelector!");
+            }
+        }
+
+        public void Stun(float duration)
+        {
+            Stunned(duration);
+        }
+
+        public void Freeze(float duration, float slowMultiplier)
+        {
+            Frozen(duration, slowMultiplier);
+        }
+
+        public void Kill()
+        {
+            if ( !isDead )
+            {
+                isDead = true;
+                Killed();
             }
         }
     }
