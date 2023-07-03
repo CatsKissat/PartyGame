@@ -32,7 +32,7 @@ namespace BananaSoup
         private void OnDisable()
         {
             controller.Frozen -= FreezePlayer;
-            TryStopAndNullCoroutine(ref freezeRoutine);
+            TryStopCoroutine(ref freezeRoutine);
         }
 
         private void Start()
@@ -153,9 +153,11 @@ namespace BananaSoup
 
             this.walkSpeed = previousWalkSpeed;
             this.runSpeed = previousRunSpeed;
+
+            TryStopCoroutine(ref freezeRoutine);
         }
 
-        private void TryStopAndNullCoroutine(ref Coroutine routine)
+        private void TryStopCoroutine(ref Coroutine routine)
         {
             if ( routine != null )
             {
