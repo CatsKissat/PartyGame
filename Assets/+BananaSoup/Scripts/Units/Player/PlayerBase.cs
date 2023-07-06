@@ -26,7 +26,7 @@ namespace BananaSoup.Units
         public event Action<float, float> Frozen;
         public event Action Killed;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             TryGetReferences();
             playerID = playerInput.playerIndex;
