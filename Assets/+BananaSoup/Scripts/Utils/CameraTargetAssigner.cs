@@ -1,7 +1,7 @@
 using UnityEngine;
 using Cinemachine;
 
-namespace BananaSoup
+namespace BananaSoup.Utils
 {
     public class CameraTargetAssigner : MonoBehaviour
     {

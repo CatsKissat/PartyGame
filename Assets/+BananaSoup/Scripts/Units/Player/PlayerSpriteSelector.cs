@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-namespace BananaSoup
+namespace BananaSoup.Units
 {
     public class PlayerSpriteSelector : MonoBehaviour
     {

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using BananaSoup.Utils;
 
 namespace BananaSoup.Units
 {
@@ -28,11 +29,22 @@ namespace BananaSoup.Units
         private void OnEnable()
         {
             TryGetReferences();
+            playerID = playerInput.playerIndex;
 
             playerMovement.LeaveGame += OnLeave;
 
             GameObject cameraTargetGroup = GameObject.FindGameObjectWithTag("CameraTargetGroup");
+            if ( cameraTargetGroup == null )
+            {
+                Debug.LogError($"{name} is missing reference to CameraTargetGroup GameObject!");
+            }
+
             cameraTargetAssigner = cameraTargetGroup.GetComponent<CameraTargetAssigner>();
+            if ( cameraTargetAssigner == null )
+            {
+                Debug.LogError($"{name} is missing reference to the CameraTargetAssigner!");
+            }
+
             cameraTargetAssigner.AssingPlayer(transform);
 
             Debug.Log($"PlayerID {playerID} joined the game.");
@@ -58,7 +70,6 @@ namespace BananaSoup.Units
             if ( playerInput == null )
             {
                 playerInput = GetComponent<PlayerInput>();
-                playerID = playerInput.playerIndex;
 
                 if ( playerInput == null )
                 {

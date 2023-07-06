@@ -1,9 +1,7 @@
 using BananaSoup.Units;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace BananaSoup
+namespace BananaSoup.LevelLogic
 {
     public class OutOfZoneKiller : MonoBehaviour
     {

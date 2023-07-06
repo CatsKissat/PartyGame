@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using System.Collections;
 
-namespace BananaSoup
+namespace BananaSoup.Units
 {
     public class PlayerMovement : MonoBehaviour
     {
