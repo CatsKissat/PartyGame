@@ -1,8 +1,8 @@
 using UnityEngine;
 using BananaSoup.Modifiers;
-using BananaSoup.Traps;
+using BananaSoup.Units;
 
-namespace BananaSoup.Units
+namespace BananaSoup.Traps
 {
     public class TrapBase : UnitBase
     {

@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using BananaSoup.Units;
 
 namespace BananaSoup.Traps
 {

@@ -1,6 +1,6 @@
 using UnityEngine;
-using BananaSoup.Units;
 using BananaSoup.Modifiers;
+using BananaSoup.Units;
 
 namespace BananaSoup.Traps
 {
@@ -8,31 +8,31 @@ namespace BananaSoup.Traps
     {
         [Header("Modifier variables")]
         [SerializeField, Tooltip("Bonus speed for the traps action/projectile.")]
-        private float speed = 0.5f;
+        protected float speed = 0.5f;
 
         [Space]
 
         [SerializeField, Tooltip("How much should the traps size/projectile size be changed by.")]
-        private float sizeChange = 0.5f;
+        protected float sizeChange = 0.5f;
 
         [Space]
 
         [SerializeField, Tooltip("The percentage how much the slow should affect the player(s).")]
-        private float slowMultiplier = 0.5f;
+        protected float slowMultiplier = 0.5f;
         [SerializeField, Tooltip("The duration of the slow effect.")]
-        private float slowDuration = 2.5f;
+        protected float slowDuration = 2.5f;
 
         [Space]
 
         [SerializeField, Tooltip("The duration of the stun effect.")]
-        private float stunDuration = 1.5f;
+        protected float stunDuration = 1.5f;
 
         [Header("Player variables")]
         [SerializeField]
-        private LayerMask playersLayerMask;
+        protected LayerMask playersLayerMask;
 
         // Variable used to store the currentModifier of the trap.
-        private TrapModifierType.Modifier currentModifier;
+        protected TrapModifierType.Modifier currentModifier;
 
         // References
         private TrapBase trapBase;
@@ -43,11 +43,11 @@ namespace BananaSoup.Traps
         public float StunDuration => stunDuration;
 
         // Constants for modifier types for readability
-        private const TrapModifierType.Modifier basicMod = TrapModifierType.Modifier.Basic;
-        private const TrapModifierType.Modifier freezeMod = TrapModifierType.Modifier.Freeze;
-        private const TrapModifierType.Modifier electricMod = TrapModifierType.Modifier.Electric;
-        private const TrapModifierType.Modifier speedMod = TrapModifierType.Modifier.Speed;
-        private const TrapModifierType.Modifier sizeMod = TrapModifierType.Modifier.Size;
+        protected const TrapModifierType.Modifier basicMod = TrapModifierType.Modifier.Basic;
+        protected const TrapModifierType.Modifier freezeMod = TrapModifierType.Modifier.Freeze;
+        protected const TrapModifierType.Modifier electricMod = TrapModifierType.Modifier.Electric;
+        protected const TrapModifierType.Modifier speedMod = TrapModifierType.Modifier.Speed;
+        protected const TrapModifierType.Modifier sizeMod = TrapModifierType.Modifier.Size;
 
         /// <summary>
         /// Method used to get a reference of the objects TrapBase component.
@@ -81,9 +81,10 @@ namespace BananaSoup.Traps
         /// If yes then call the DetermineModAction method.
         /// </summary>
         /// <param name="other">The other GameObjects collider, usually a players.</param>
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
-            if ((playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0 )
+            if ((playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0
+                && other.GetComponent<PlayerBase>())
             {
                 DetermineModAction(other);
             }
@@ -101,7 +102,7 @@ namespace BananaSoup.Traps
         /// Default case is a bug, where the trap has no active modifier.
         /// </summary>
         /// <param name="other">The other object which the trap is colliding with.</param>
-        private void DetermineModAction(Collider other)
+        protected virtual void DetermineModAction(Collider other)
         {
             switch ( currentModifier )
             {
@@ -109,28 +110,19 @@ namespace BananaSoup.Traps
                 case speedMod:
                 case sizeMod:
                     {
-                        if ( other.gameObject.GetComponent<PlayerBase>() )
-                        {
-                            other.GetComponent<PlayerBase>().Kill();
-                        }
+                        other.GetComponent<PlayerBase>().Kill();
 
                         break;
                     }
                 case freezeMod:
                     {
-                        if ( other.gameObject.GetComponent<PlayerBase>() )
-                        {
-                            other.GetComponent<PlayerBase>().Freeze(slowDuration, slowMultiplier);
-                        }
+                        other.GetComponent<PlayerBase>().Freeze(slowDuration, slowMultiplier);
 
                         break;
                     }
                 case electricMod:
                     {
-                        if ( other.gameObject.GetComponent<PlayerBase>() )
-                        {
-                            other.GetComponent<PlayerBase>().Stun(stunDuration);
-                        }
+                        other.GetComponent<PlayerBase>().Stun(stunDuration);
 
                         break;
                     }

@@ -4,11 +4,12 @@ namespace BananaSoup.Units
 {
     public class UnitBase : MonoBehaviour
     {
-        public bool isKinematic;
-        public bool isUsingGravity;
+        [SerializeField]
+        protected bool isKinematic;
+        [SerializeField]
+        protected bool isUsingGravity;
 
-        [HideInInspector]
-        public Rigidbody rb;
+        protected Rigidbody rb;
 
         protected virtual void Start()
         {

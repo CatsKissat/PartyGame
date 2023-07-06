@@ -98,12 +98,18 @@ namespace BananaSoup.Units
 
         public void Stun(float duration)
         {
-            Stunned(duration);
+            if ( Stunned != null )
+            {
+                Stunned(duration); 
+            }
         }
 
         public void Freeze(float duration, float slowMultiplier)
         {
-            Frozen(duration, slowMultiplier);
+            if ( Frozen != null )
+            {
+                Frozen(duration, slowMultiplier); 
+            }
         }
 
         public void Kill()
@@ -111,8 +117,17 @@ namespace BananaSoup.Units
             if ( !isDead )
             {
                 isDead = true;
-                Killed();
+
+                if ( Killed != null )
+                {
+                    Killed(); 
+                }
             }
+        }
+
+        public void Pushback(Vector3 direction, float pushbackStrength)
+        {
+            rb.AddForce(direction * pushbackStrength);
         }
     }
 }
