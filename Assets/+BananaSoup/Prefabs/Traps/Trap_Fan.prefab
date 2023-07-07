@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3822827561328393473}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000000059604645, y: 0, z: 0.50000006}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 7802749073688640610}
   - component: {fileID: 7562560505547877490}
   - component: {fileID: 7746861479939600750}
-  - component: {fileID: 2471742760899327350}
+  - component: {fileID: 690111953236087959}
   - component: {fileID: 4661014735815434371}
   m_Layer: 8
   m_Name: Trap_Fan
@@ -67,7 +67,7 @@ Transform:
   - {fileID: 863147840803906307}
   - {fileID: 5953922110255346068}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!54 &7562560505547877490
 Rigidbody:
@@ -95,7 +95,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &7746861479939600750
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -117,7 +117,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2471742760899327350
+--- !u!114 &690111953236087959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,13 +126,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6112442737874006747}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc2ce30dfd2df31469d364ea57a212c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 06d7df703f3dd3d4aa280b69ab347404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isKinematic: 1
   isUsingGravity: 0
   trapModifier: 0
-  modActions: {fileID: 0}
 --- !u!114 &4661014735815434371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,17 +144,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553788166fb3c1e4da36f7cc8cadf62f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
+  speed: 50
   sizeChange: 0.5
   slowMultiplier: 0.5
   slowDuration: 2.5
   stunDuration: 1.5
   playersLayerMask:
     serializedVersion: 2
-    m_Bits: 0
-  pushbackStrength: 1.5
-  spawnDebugPlayersOnStart: 0
-  amountOfDebugPlayers: 1
+    m_Bits: 128
+  pushbackStrength: 100
 --- !u!1 &8439169285542302339
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +162,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5953922110255346068}
-  - component: {fileID: 2054148295262647195}
   - component: {fileID: 5890072063560335062}
   m_Layer: 8
   m_Name: PushbackArea
@@ -189,33 +185,6 @@ Transform:
   m_Father: {fileID: 7802749073688640610}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &2054148295262647195
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8439169285542302339}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 1
 --- !u!65 &5890072063560335062
 BoxCollider:
   m_ObjectHideFlags: 0

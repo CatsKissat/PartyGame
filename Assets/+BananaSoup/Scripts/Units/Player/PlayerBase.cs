@@ -24,6 +24,7 @@ namespace BananaSoup.Units
 
         public event Action<float> Stunned;
         public event Action<float, float> Frozen;
+        public event Action<float> FrozenContinuously;
         public event Action Killed;
 
         protected virtual void OnEnable()
@@ -108,7 +109,15 @@ namespace BananaSoup.Units
         {
             if ( Frozen != null )
             {
-                Frozen(duration, slowMultiplier); 
+                Frozen(duration, slowMultiplier);
+            }
+        }
+
+        public void FreezeContinously(float slowMultiplier)
+        {
+            if ( FrozenContinuously != null )
+            {
+                FrozenContinuously(slowMultiplier);
             }
         }
 

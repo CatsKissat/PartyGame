@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BananaSoup.Traps
 {
-    public class LaserBeamTrap : TrapBase
+    public class LaserBeam : TrapBase
     {
         [Space]
         // References to traps different parts.

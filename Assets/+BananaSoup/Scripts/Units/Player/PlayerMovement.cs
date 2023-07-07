@@ -2,13 +2,18 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using System.Collections;
+using Unity.VisualScripting;
 
 namespace BananaSoup.Units
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private float walkSpeed = 40.0f;
-        [SerializeField] private float runSpeed = 60.0f;
+        [SerializeField] private const float walkSpeed = 40.0f;
+        [SerializeField] private const float runSpeed = 60.0f;
+
+        private float currentWalkSpeed = 0f;
+        private float currentRunSpeed = 0f;
+
         private PlayerCharacterController controller;
         private Animator animator;
         private float moveSpeed = 0.0f;
@@ -32,15 +37,21 @@ namespace BananaSoup.Units
         private void OnDisable()
         {
             controller.Frozen -= FreezePlayer;
+            controller.FrozenContinuously -= FreezePlayerContinuously;
             TryStopCoroutine(ref freezeRoutine);
         }
 
         private void Start()
         {
             GetReferences();
-            moveSpeed = walkSpeed;
+
+            currentWalkSpeed = walkSpeed;
+            currentRunSpeed = runSpeed;
+
+            moveSpeed = currentWalkSpeed;
 
             controller.Frozen += FreezePlayer;
+            controller.FrozenContinuously += FreezePlayerContinuously;
         }
 
         void Update()
@@ -81,11 +92,11 @@ namespace BananaSoup.Units
         {
             if ( context.performed )
             {
-                moveSpeed = runSpeed;
+                moveSpeed = currentRunSpeed;
             }
             else if ( context.canceled )
             {
-                moveSpeed = walkSpeed;
+                moveSpeed = currentWalkSpeed;
             }
         }
 
@@ -146,22 +157,30 @@ namespace BananaSoup.Units
         {
             if ( freezeRoutine == null )
             {
-                freezeRoutine = StartCoroutine(FreezeRoutine(duration, slowMultiplier, walkSpeed, runSpeed));
+                freezeRoutine = StartCoroutine(FreezeRoutine(duration, slowMultiplier));
+            }
+            else if ( freezeRoutine != null )
+            {
+                TryStopCoroutine(ref freezeRoutine);
+                freezeRoutine = StartCoroutine(FreezeRoutine(duration, slowMultiplier));
             }
         }
 
-        private IEnumerator FreezeRoutine(float duration, float slowMultiplier, float walkSpeed, float runSpeed)
+        public void FreezePlayerContinuously(float slowMultiplier)
         {
-            float previousWalkSpeed = walkSpeed;
-            float previousRunSpeed = runSpeed;
+            currentWalkSpeed = slowMultiplier * walkSpeed;
+            currentRunSpeed = slowMultiplier * runSpeed;
+        }
 
-            this.walkSpeed = slowMultiplier * walkSpeed;
-            this.runSpeed = slowMultiplier * runSpeed;
+        private IEnumerator FreezeRoutine(float duration, float slowMultiplier)
+        {
+            currentWalkSpeed = slowMultiplier * walkSpeed;
+            currentRunSpeed = slowMultiplier * runSpeed;
 
             yield return new WaitForSeconds(duration);
 
-            this.walkSpeed = previousWalkSpeed;
-            this.runSpeed = previousRunSpeed;
+            currentWalkSpeed = walkSpeed;
+            currentRunSpeed = runSpeed;
 
             TryStopCoroutine(ref freezeRoutine);
         }

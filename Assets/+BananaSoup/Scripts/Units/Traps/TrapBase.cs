@@ -9,6 +9,9 @@ namespace BananaSoup.Traps
         [SerializeField]
         private TrapModifierType.Modifier trapModifier;
 
+        // Variable used to store the player ID of the player who places the trap.
+        private int placerID = -1;
+
         // Variables used to store and forward speed or size if they should be
         // modified.
         private float modifiedSpeed = 0f;
@@ -16,8 +19,7 @@ namespace BananaSoup.Traps
 
         // References
         private Rigidbody[] childRigidbodies = null;
-        [HideInInspector]
-        public ModifierActions modActions = null;
+        protected ModifierActions modActions = null;
 
         public TrapModifierType.Modifier TrapModifier
         {
@@ -81,6 +83,14 @@ namespace BananaSoup.Traps
             trapModifier = (TrapModifierType.Modifier)Random.Range(0, System.Enum.GetValues(typeof(TrapModifierType.Modifier)).Length);
             Debug.Log($"Current modifier for {name} is: {trapModifier}");
             modActions.SetupModifier();
+        }
+
+        public void StorePlayerID(int ID)
+        {
+            if ( placerID < 0 )
+            {
+                placerID = ID; 
+            }
         }
     }
 }

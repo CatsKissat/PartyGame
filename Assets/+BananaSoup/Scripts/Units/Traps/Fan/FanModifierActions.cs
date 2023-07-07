@@ -61,10 +61,9 @@ namespace BananaSoup.Traps
                 int playerID = player.PlayerID;
 
                 playersInTriggerzone[playerID] = players[playerID];
-                //while ( playersInTriggerzone[playerID] != null )
-                //{
-                //    DetermineModAction(other);
-                //}
+
+                Debug.Log($"Player with ID: {playerID} entered the trigger of {name}!");
+
                 amountOfPlayersInTrigger++;
             }
             else
@@ -82,6 +81,11 @@ namespace BananaSoup.Traps
 
                 playersInTriggerzone[playerID] = null;
                 amountOfPlayersInTrigger--;
+
+                if ( currentModifier == freezeMod )
+                {
+                    FreezeOnExit(player);
+                }
             }
             else
             {
@@ -89,15 +93,15 @@ namespace BananaSoup.Traps
             }
         }
 
-        private void OnTriggerStay(Collider other)
+        private void FixedUpdate()
         {
             if ( amountOfPlayersInTrigger > 0 )
             {
-                DetermineModAction(other);
+                DetermineModAction();
             }
         }
 
-        protected override void DetermineModAction(Collider other)
+        private void DetermineModAction()
         {
             switch ( currentModifier )
             {
@@ -105,25 +109,21 @@ namespace BananaSoup.Traps
                 case speedMod:
                 case sizeMod:
                     {
-                        DefaultAction();
+                        PushbackAction();
 
                         break;
                     }
                 case freezeMod:
                     {
-                        if ( other.gameObject.GetComponent<PlayerBase>() )
-                        {
-                            other.GetComponent<PlayerBase>().Freeze(slowDuration, slowMultiplier);
-                        }
+                        FreezeAction();
+                        PushbackAction();
 
                         break;
                     }
                 case electricMod:
                     {
-                        if ( other.gameObject.GetComponent<PlayerBase>() )
-                        {
-                            other.GetComponent<PlayerBase>().Stun(stunDuration);
-                        }
+                        StunAction();
+                        PushbackAction();
 
                         break;
                     }
@@ -135,12 +135,38 @@ namespace BananaSoup.Traps
             }
         }
 
-        private void DefaultAction()
+        private void PushbackAction()
         {
             foreach ( PlayerBase player in playersInTriggerzone )
             {
                 player.Pushback(transform.forward, pushbackStrength);
             }
+        }
+
+        private void FreezeAction()
+        {
+            foreach ( PlayerBase player in playersInTriggerzone )
+            {
+                player.FreezeContinously(slowMultiplier);
+            }
+        }
+
+        private void FreezeOnExit(PlayerBase player)
+        {
+            player.Freeze(slowDuration, slowMultiplier);
+        }
+
+        private void StunAction()
+        {
+            foreach ( PlayerBase player in playersInTriggerzone )
+            {
+                player.Stun(stunDuration);
+            }
+        }
+
+        public void IncreasePushback()
+        {
+            pushbackStrength += speed;
         }
     }
 }

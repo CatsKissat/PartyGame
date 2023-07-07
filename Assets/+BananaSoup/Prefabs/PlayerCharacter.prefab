@@ -5412,7 +5412,7 @@ MonoBehaviour:
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 321
   m_GroundCheck: {fileID: 3948131155757632489}
   m_WallCheck: {fileID: 2315632402673149450}
   isWallSlidingEnabled: 0

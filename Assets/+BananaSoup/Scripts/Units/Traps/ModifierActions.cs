@@ -84,9 +84,9 @@ namespace BananaSoup.Traps
         protected virtual void OnTriggerEnter(Collider other)
         {
             if ((playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0
-                && other.GetComponent<PlayerBase>())
+                && other.TryGetComponent(out PlayerBase player))
             {
-                DetermineModAction(other);
+                DetermineModAction(player);
             }
             else
             {
@@ -101,8 +101,8 @@ namespace BananaSoup.Traps
         /// Electric mod stuns the player.
         /// Default case is a bug, where the trap has no active modifier.
         /// </summary>
-        /// <param name="other">The other object which the trap is colliding with.</param>
-        protected virtual void DetermineModAction(Collider other)
+        /// <param name="player">The PlayerBase of the targeted player.</param>
+        protected virtual void DetermineModAction(PlayerBase player)
         {
             switch ( currentModifier )
             {
@@ -110,19 +110,19 @@ namespace BananaSoup.Traps
                 case speedMod:
                 case sizeMod:
                     {
-                        other.GetComponent<PlayerBase>().Kill();
+                        player.Kill();
 
                         break;
                     }
                 case freezeMod:
                     {
-                        other.GetComponent<PlayerBase>().Freeze(slowDuration, slowMultiplier);
+                        player.Freeze(slowDuration, slowMultiplier);
 
                         break;
                     }
                 case electricMod:
                     {
-                        other.GetComponent<PlayerBase>().Stun(stunDuration);
+                        player.Stun(stunDuration);
 
                         break;
                     }
