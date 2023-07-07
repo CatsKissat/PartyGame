@@ -46,6 +46,8 @@ namespace BananaSoup.LevelLogic
                 UpdateJoinedPlayer();
 
                 TryEndCoroutine(ref startCountdownRoutine);
+
+                Debug.Log("Not enough players. Countdown stopped.");
             }
         }
 

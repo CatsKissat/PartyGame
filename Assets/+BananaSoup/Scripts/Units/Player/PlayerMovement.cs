@@ -102,7 +102,10 @@ namespace BananaSoup.Units
             if ( context.performed )
             {
                 LeaveGame.Invoke();
-                DisablePlayerGameObject();
+
+                // NOTE: Fast fix to handle Unity getting bloated to destroy the player GameObject instead of pooling it.
+                //DisablePlayerGameObject();
+                DestroyPlayerGameObject();
             }
         }
         #endregion OnInputs
@@ -117,9 +120,15 @@ namespace BananaSoup.Units
         {
             Debug.LogWarning($"PlayerID {playerInput.playerIndex} reconnected.");
         }
+
         private void DisablePlayerGameObject()
         {
             gameObject.SetActive(false);
+        }
+
+        private void DestroyPlayerGameObject()
+        {
+            Destroy(gameObject);
         }
 
         // TODO: Move animation calls to corresponding place
