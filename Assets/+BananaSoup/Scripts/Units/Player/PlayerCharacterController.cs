@@ -368,6 +368,16 @@ public class PlayerCharacterController : PlayerBase
         }
     }
 
+    public override void PlayerFinished()
+    {
+        canMove = false;
+        invincible = true;
+
+        Debug.Log($"PlayerID {PlayerID} reached the goal!");
+
+        // TODO: Launch event to inform GameManager that the player has finished
+    }
+
     // For debug only
     [ContextMenu("Stun player")]
     private void StunPlayerButton()

@@ -13,11 +13,13 @@ namespace BananaSoup
 
         public bool SkipAutoChangeActionMap
         {
+            get { return skipAutoChangeActionMap; }
             set { skipAutoChangeActionMap = value; }
         }
 
         public bool EnableJoining
         {
+            get { return enableJoining; }
             set { enableJoining = value; }
         }
         #endregion Debug

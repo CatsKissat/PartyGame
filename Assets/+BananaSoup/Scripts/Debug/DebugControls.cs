@@ -19,17 +19,17 @@ namespace BananaSoup.Debugging
         private GameManager gameManager;
 
         [SerializeField]
-        [ShowIf("HasGameManager")]
-        [Tooltip("If enabled PlayerCharacters' Action Map doesn't change to the correct one when loading a scene with the GameManager.")]
+        [ShowIf(nameof(HasGameManager))]
+        [Tooltip("If true PlayerCharacters' Action Map doesn't change to the correct one when loading a scene with the GameManager.")]
         private bool skipAutoChangeActionMap = false;
 
         [SerializeField]
-        [ShowIf("HasGameManager")]
-        [Tooltip("If enabled the players can join the game e.g. in gameplay level.")]
+        [ShowIf(nameof(HasGameManager))]
+        [Tooltip("If true the players can join the game e.g. in gameplay level.")]
         private bool enableJoining = false;
         #endregion GameManager
 
-        public bool HasGameManager => gameManager && areDebugControlsEnabled;
+        private bool HasGameManager => gameManager && areDebugControlsEnabled;
 
         private void Awake()
         {
@@ -42,17 +42,16 @@ namespace BananaSoup.Debugging
             {
                 if ( skipAutoChangeActionMap )
                 {
-                    Debug.Log("Enabling SkipAutoChangeActionMap");
                     gameManager.SkipAutoChangeActionMap = true;
+                    Debug.Log($"{this} set {nameof(gameManager)}'s SkipAutoChangeActionMap to {gameManager.SkipAutoChangeActionMap}");
                 }
 
                 if ( enableJoining )
                 {
-                    Debug.Log("Enabling EnableJoining");
                     gameManager.EnableJoining = true;
+                    Debug.Log($"{this} set {nameof(gameManager)}'s EnableJoining to {gameManager.EnableJoining}");
                 }
             }
-
         }
     }
 }

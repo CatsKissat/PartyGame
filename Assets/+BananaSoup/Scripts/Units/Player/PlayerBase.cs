@@ -27,6 +27,8 @@ namespace BananaSoup.Units
         public event Action<float> FrozenContinuously;
         public event Action Killed;
 
+        public virtual void PlayerFinished() { }
+
         protected virtual void OnEnable()
         {
             TryGetReferences();
@@ -101,7 +103,7 @@ namespace BananaSoup.Units
         {
             if ( Stunned != null )
             {
-                Stunned(duration); 
+                Stunned(duration);
             }
         }
 
@@ -129,7 +131,7 @@ namespace BananaSoup.Units
 
                 if ( Killed != null )
                 {
-                    Killed(); 
+                    Killed();
                 }
             }
         }
