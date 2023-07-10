@@ -14,7 +14,7 @@ namespace BananaSoup
         private const string mainMenuActionMapName = "MainMenu";
         private const string gameplayActionMapName = "Gameplay";
 
-        private void Start()
+        public void Setup()
         {
             GetReferences();
 
