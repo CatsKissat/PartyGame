@@ -18,7 +18,8 @@ namespace BananaSoup
 
         private void GetReferences()
         {
-            inputManager = GetComponent<PlayerInputManager>();
+            GameObject playerManager = GameObject.FindGameObjectWithTag("PlayerManager");
+            inputManager = playerManager.GetComponent<PlayerInputManager>();
             if ( inputManager == null )
             {
                 Debug.LogError($"{name} is missing a reference to PlayerInputManager!");
