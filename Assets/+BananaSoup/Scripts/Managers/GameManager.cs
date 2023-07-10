@@ -7,6 +7,21 @@ namespace BananaSoup
     {
         private PlayerInputManager inputManager;
 
+        #region Debug
+        private bool skipAutoChangeActionMap;
+        private bool enableJoining;
+
+        public bool SkipAutoChangeActionMap
+        {
+            set { skipAutoChangeActionMap = value; }
+        }
+
+        public bool EnableJoining
+        {
+            set { enableJoining = value; }
+        }
+        #endregion Debug
+
         void Start()
         {
             GetReferences();
@@ -31,6 +46,11 @@ namespace BananaSoup
 
         private void SetActionMapForPlayers()
         {
+            if ( skipAutoChangeActionMap )
+            {
+                return;
+            }
+
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
             if ( players.Length <= 0 )
             {
@@ -51,6 +71,11 @@ namespace BananaSoup
 
         private void DisableJoining()
         {
+            if ( enableJoining )
+            {
+                return;
+            }
+
             inputManager.DisableJoining();
         }
     }

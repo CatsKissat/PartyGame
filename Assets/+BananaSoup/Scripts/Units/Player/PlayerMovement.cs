@@ -11,9 +11,10 @@ namespace BananaSoup.Units
         [SerializeField] private const float walkSpeed = 40.0f;
         [SerializeField] private const float runSpeed = 60.0f;
 
+        public UnityAction LeaveGame;
+
         private float currentWalkSpeed = 0f;
         private float currentRunSpeed = 0f;
-
         private PlayerCharacterController controller;
         private Animator animator;
         private float moveSpeed = 0.0f;
@@ -21,8 +22,6 @@ namespace BananaSoup.Units
         private float moveInput;
         private bool jump = false;
         private PlayerInput playerInput;
-        public UnityAction LeaveGame;
-
         private Coroutine freezeRoutine = null;
 
         private void OnEnable()

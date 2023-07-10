@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2160.0588, g: 2263.8167, b: 3286.5435, a: 1}
+  m_IndirectSpecularColor: {r: 2158.3987, g: 2260.5706, b: 3278.4263, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1134,7 +1134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1238238407}
   m_Layer: 0
-  m_Name: SpawnPoint (2)
+  m_Name: SpawnPoint (1)
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1165,7 +1165,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1271294382}
   m_Layer: 0
-  m_Name: SpawnPoint (4)
+  m_Name: SpawnPoint (3)
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1573,7 +1573,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1489177963}
   m_Layer: 0
-  m_Name: SpawnPoint (1)
+  m_Name: SpawnPoint (0)
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1604,7 +1604,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1527859063}
   m_Layer: 0
-  m_Name: SpawnPoint (3)
+  m_Name: SpawnPoint (2)
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
