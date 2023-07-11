@@ -7,6 +7,9 @@ namespace BananaSoup.Units
 {
     public class PlayerBase : UnitBase
     {
+        [SerializeField]
+        protected float stunCooldown = 1.0f;
+
         private bool isStunned = false;
         private bool isFrozen = false;
         private bool isDead = false;
@@ -101,14 +104,29 @@ namespace BananaSoup.Units
 
         public void Stun(float duration)
         {
+            if ( !isStunned )
+            {
+                isStunned = true;
+            }
+
             if ( Stunned != null )
             {
                 Stunned(duration);
             }
         }
 
+        public void SetIsStunnedFalse()
+        {
+            isStunned = false;
+        }
+
         public void Freeze(float duration, float slowMultiplier)
         {
+            if ( !isFrozen )
+            {
+                isFrozen = true;
+            }
+
             if ( Frozen != null )
             {
                 Frozen(duration, slowMultiplier);
@@ -117,9 +135,22 @@ namespace BananaSoup.Units
 
         public void FreezeContinously(float slowMultiplier)
         {
+            if ( !isFrozen )
+            {
+                isFrozen = true;
+            }
+
             if ( FrozenContinuously != null )
             {
                 FrozenContinuously(slowMultiplier);
+            }
+        }
+
+        public void SetIsFrozenFalse()
+        {
+            if ( isFrozen )
+            {
+                isFrozen = false;
             }
         }
 

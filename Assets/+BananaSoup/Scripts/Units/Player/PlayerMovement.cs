@@ -8,8 +8,8 @@ namespace BananaSoup.Units
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private const float walkSpeed = 40.0f;
-        [SerializeField] private const float runSpeed = 60.0f;
+        [SerializeField] private float walkSpeed = 40.0f;
+        [SerializeField] private float runSpeed = 60.0f;
 
         public UnityAction LeaveGame;
 
@@ -21,6 +21,7 @@ namespace BananaSoup.Units
         private float horizontalMove = 0.0f;
         private float moveInput;
         private bool jump = false;
+        private bool isRunning = false;
         private PlayerInput playerInput;
         private Coroutine freezeRoutine = null;
 
@@ -35,7 +36,7 @@ namespace BananaSoup.Units
 
         private void OnDisable()
         {
-            controller.Frozen -= FreezePlayer;
+            controller.Frozen -= FreezePlayerOnExit;
             controller.FrozenContinuously -= FreezePlayerContinuously;
             TryStopCoroutine(ref freezeRoutine);
         }
@@ -49,7 +50,7 @@ namespace BananaSoup.Units
 
             moveSpeed = currentWalkSpeed;
 
-            controller.Frozen += FreezePlayer;
+            controller.Frozen += FreezePlayerOnExit;
             controller.FrozenContinuously += FreezePlayerContinuously;
         }
 
@@ -61,6 +62,12 @@ namespace BananaSoup.Units
 
         void FixedUpdate()
         {
+            // Check if the player is dead, if yes don't allow movement or jumping.
+            if ( controller.IsDead )
+            {
+                return;
+            }
+
             // Move our character
             controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
             jump = false;
@@ -92,10 +99,12 @@ namespace BananaSoup.Units
             if ( context.performed )
             {
                 moveSpeed = currentRunSpeed;
+                isRunning = true;
             }
             else if ( context.canceled )
             {
                 moveSpeed = currentWalkSpeed;
+                isRunning = false;
             }
         }
 
@@ -152,7 +161,7 @@ namespace BananaSoup.Units
             animator.SetBool("IsJumping", false);
         }
 
-        public void FreezePlayer(float duration, float slowMultiplier)
+        public void FreezePlayerOnExit(float duration, float slowMultiplier)
         {
             if ( freezeRoutine == null )
             {
@@ -169,6 +178,8 @@ namespace BananaSoup.Units
         {
             currentWalkSpeed = slowMultiplier * walkSpeed;
             currentRunSpeed = slowMultiplier * runSpeed;
+
+            TryUpdateMoveSpeed();
         }
 
         private IEnumerator FreezeRoutine(float duration, float slowMultiplier)
@@ -176,12 +187,17 @@ namespace BananaSoup.Units
             currentWalkSpeed = slowMultiplier * walkSpeed;
             currentRunSpeed = slowMultiplier * runSpeed;
 
+            TryUpdateMoveSpeed();
+
             yield return new WaitForSeconds(duration);
 
             currentWalkSpeed = walkSpeed;
             currentRunSpeed = runSpeed;
 
+            TryUpdateMoveSpeed();
+
             TryStopCoroutine(ref freezeRoutine);
+            controller.SetIsFrozenFalse();
         }
 
         private void TryStopCoroutine(ref Coroutine routine)
@@ -190,6 +206,28 @@ namespace BananaSoup.Units
             {
                 StopCoroutine(routine);
                 routine = null;
+            }
+        }
+
+        private void TryUpdateMoveSpeed()
+        {
+            switch ( isRunning )
+            {
+                case false:
+                    if ( moveSpeed != currentWalkSpeed )
+                    {
+                        moveSpeed = currentWalkSpeed;
+                    }
+
+                    break;
+
+                case true:
+                    if ( moveSpeed != currentRunSpeed )
+                    {
+                        moveSpeed = currentRunSpeed;
+                    }
+
+                    break;
             }
         }
     }

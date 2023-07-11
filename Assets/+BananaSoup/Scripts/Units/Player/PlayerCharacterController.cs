@@ -41,6 +41,8 @@ public class PlayerCharacterController : PlayerBase
     private float jumpWallDistX = 0; //Distance between player and wall
     private bool limitVelOnWallJump = false; //For limit wall jump distance with low fps
 
+    private bool canBeStunned = true;
+
     [Header("Events")]
     [Space]
 
@@ -52,6 +54,7 @@ public class PlayerCharacterController : PlayerBase
 
     // Coroutines
     private Coroutine stunRoutine = null;
+    private Coroutine stunCooldownRoutine = null;
     private Coroutine invincibleRoutine = null;
     private Coroutine waitToCheckRoutine = null;
     private Coroutine waitToEndSlidingRoutine = null;
@@ -388,8 +391,9 @@ public class PlayerCharacterController : PlayerBase
 
     public void StunPlayer(float time)
     {
-        if ( stunRoutine == null )
+        if ( stunRoutine == null && canBeStunned )
         {
+            canBeStunned = false;
             stunRoutine = StartCoroutine(StunRoutine(time));
         }
     }
@@ -401,6 +405,19 @@ public class PlayerCharacterController : PlayerBase
         yield return new WaitForSeconds(time);
         canMove = true;
         TryStopCoroutine(ref stunRoutine);
+        SetIsStunnedFalse();
+        
+        if ( stunCooldownRoutine == null )
+        {
+            stunCooldownRoutine = StartCoroutine(StunCooldownRoutine(stunCooldown));
+        }
+    }
+
+    private IEnumerator StunCooldownRoutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        canBeStunned = true;
+        TryStopCoroutine(ref stunCooldownRoutine);
     }
 
     private IEnumerator MakeInvincible(float time)
