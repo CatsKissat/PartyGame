@@ -1,4 +1,5 @@
 using UnityEngine;
+using BananaSoup.Managers;
 using NaughtyAttributes;
 
 namespace BananaSoup.Debugging

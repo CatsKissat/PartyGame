@@ -6,7 +6,6 @@ namespace BananaSoup
 {
     public class Goal : MonoBehaviour
     {
-        private int playerCount;
         private int finishedPlayers;
         private PlayerInputManager inputManager;
 

@@ -17,19 +17,7 @@ namespace BananaSoup
         public void Setup()
         {
             GetReferences();
-
-            string currentSceneName = SceneManager.GetActiveScene().name;
-
-            if ( currentSceneName == mainMenuSceneName )
-            {
-                //Debug.Log($"Changing {name}'s Action Map to {mainMenuActionMapName}");
-                playerInput.SwitchCurrentActionMap(mainMenuActionMapName);
-            }
-            else if ( currentSceneName == gameplayLevelSceneName )
-            {
-                //Debug.Log($"Changing {name}'s Action Map to {gameplayActionMapName}");
-                playerInput.SwitchCurrentActionMap(gameplayActionMapName);
-            }
+            SetActionMap();
         }
 
         private void GetReferences()
@@ -43,6 +31,22 @@ namespace BananaSoup
             if ( inputActions == null )
             {
                 Debug.LogError($"{name} is missing reference to a {typeof(InputActionAsset)}!");
+            }
+        }
+
+        private void SetActionMap()
+        {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+
+            if ( currentSceneName == mainMenuSceneName )
+            {
+                //Debug.Log($"Changing {name}'s Action Map to {mainMenuActionMapName}");
+                playerInput.SwitchCurrentActionMap(mainMenuActionMapName);
+            }
+            else if ( currentSceneName == gameplayLevelSceneName )
+            {
+                //Debug.Log($"Changing {name}'s Action Map to {gameplayActionMapName}");
+                playerInput.SwitchCurrentActionMap(gameplayActionMapName);
             }
         }
     }

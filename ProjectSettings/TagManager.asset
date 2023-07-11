@@ -7,6 +7,7 @@ TagManager:
   - ProjectilePool
   - CameraTargetGroup
   - PlayerManager
+  - GameManager
   layers:
   - Default
   - TransparentFX
