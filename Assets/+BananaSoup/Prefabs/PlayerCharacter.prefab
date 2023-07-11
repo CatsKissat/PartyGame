@@ -5407,12 +5407,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isKinematic: 0
   isUsingGravity: 1
+  stunCooldown: 1
   m_JumpForce: 400
   m_MovementSmoothing: 0.05
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
-    m_Bits: 321
+    m_Bits: 1345
   m_GroundCheck: {fileID: 3948131155757632489}
   m_WallCheck: {fileID: 2315632402673149450}
   isWallSlidingEnabled: 0
