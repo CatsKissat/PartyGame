@@ -69,7 +69,7 @@ namespace BananaSoup.Units
             }
 
             // Move our character
-            controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
+            controller.Move(horizontalMove, jump);
             jump = false;
         }
 
