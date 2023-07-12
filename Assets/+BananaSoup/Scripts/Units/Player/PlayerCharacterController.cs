@@ -215,7 +215,9 @@ public class PlayerCharacterController : PlayerBase
         if ( m_Grounded || m_AirControl )
         {
             if ( rb.velocity.y < -limitFallSpeed )
+            {
                 rb.velocity = new Vector2(rb.velocity.x, -limitFallSpeed);
+            }
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2(move, rb.velocity.y);
             // And then smoothing it out and applying it to the character
@@ -406,7 +408,7 @@ public class PlayerCharacterController : PlayerBase
         canMove = true;
         TryStopCoroutine(ref stunRoutine);
         SetIsStunnedFalse();
-        
+
         if ( stunCooldownRoutine == null )
         {
             stunCooldownRoutine = StartCoroutine(StunCooldownRoutine(stunCooldown));

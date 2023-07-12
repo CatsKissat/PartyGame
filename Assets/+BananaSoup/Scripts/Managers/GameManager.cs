@@ -99,7 +99,7 @@ namespace BananaSoup.Managers
         }
 
         /// <summary>
-        /// Disable player joining in the game.
+        /// Disable player joining in the game for example, in the gameplay Level.
         /// </summary>
         private void DisableJoining()
         {
