@@ -1,20 +1,26 @@
 using UnityEngine;
+using NaughtyAttributes;
 
 namespace BananaSoup.Units
 {
     public class UnitBase : MonoBehaviour
     {
         [SerializeField]
+        protected bool baseHasRigidbody = true;
+        [SerializeField, ShowIf("baseHasRigidbody")]
         protected bool isKinematic;
-        [SerializeField]
+        [SerializeField, ShowIf("baseHasRigidbody")]
         protected bool isUsingGravity;
 
         protected Rigidbody rb;
 
         protected virtual void Start()
         {
-            GetReferences();
-            SetupRigidbody();
+            if ( baseHasRigidbody )
+            {
+                GetReferences();
+                SetupRigidbody(); 
+            }
         }
 
         private void GetReferences()
