@@ -30,6 +30,7 @@ namespace BananaSoup.Traps
             }
         }
 
+        //TODO: Where and when is this called?
         public void GetPlayers()
         {
             if ( players == null )
