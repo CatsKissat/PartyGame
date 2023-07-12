@@ -217,7 +217,7 @@ public class PlayerCharacterController : PlayerBase
             if ( rb.velocity.y < -limitFallSpeed )
                 rb.velocity = new Vector2(rb.velocity.x, -limitFallSpeed);
             // Move the character by finding the target velocity
-            Vector3 targetVelocity = new Vector2(move * 10f, rb.velocity.y);
+            Vector3 targetVelocity = new Vector2(move, rb.velocity.y);
             // And then smoothing it out and applying it to the character
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
 
