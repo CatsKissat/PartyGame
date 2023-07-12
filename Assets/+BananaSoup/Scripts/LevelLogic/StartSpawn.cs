@@ -14,6 +14,8 @@ namespace BananaSoup.LevelLogic
         {
             GetReferences();
 
+            Initialize();
+
             gameManager.SetupNewRound += SetPlayersToSpawnPoints;
         }
 
@@ -24,12 +26,14 @@ namespace BananaSoup.LevelLogic
 
         private void GetReferences()
         {
+            // GameManager GameObject
             GameObject gameManagerObject = GameObject.FindGameObjectWithTag("GameManager");
             if ( gameManagerObject == null )
             {
                 Debug.LogError($"{name} is missing a reference to the GameManager GameObject!");
             }
 
+            // GameManager component
             gameManager = gameManagerObject.GetComponent<GameManager>();
             if ( gameManager == null )
             {
@@ -54,7 +58,14 @@ namespace BananaSoup.LevelLogic
 
         private void SetPlayersToSpawnPoints()
         {
-
+            for ( int i = 0; i < gameManager.Players.Length; i++ )
+            {
+                Debug.Log("gameManager.Players[i - 1]: " + gameManager.Players[i]);
+                Debug.Log("spawnPoints[i].position: " + spawnPoints[i].position);
+                Debug.Log("Current position: " + gameManager.Players[i].SetPosition);
+                gameManager.Players[i].SetPosition = spawnPoints[i].position;
+                Debug.Log("New position: " + gameManager.Players[i].SetPosition);
+            }
         }
     }
 }
