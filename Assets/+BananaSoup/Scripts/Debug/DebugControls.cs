@@ -39,6 +39,8 @@ namespace BananaSoup.Debugging
                 return;
             }
 
+            Debug.LogWarning("Debug Controls are enabled");
+
             if ( gameManager != null )
             {
                 if ( skipAutoChangeActionMap )

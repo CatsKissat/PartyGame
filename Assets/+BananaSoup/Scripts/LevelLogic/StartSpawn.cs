@@ -7,7 +7,7 @@ namespace BananaSoup.LevelLogic
 {
     public class StartSpawn : MonoBehaviour
     {
-        [SerializeField] private Transform[] spawnPoints;
+        private Transform[] spawnPoints;
         private GameManager gameManager;
 
         private void Awake()
@@ -43,28 +43,32 @@ namespace BananaSoup.LevelLogic
 
         public void Initialize()
         {
+            //Debug.Log("Initialize()");
             FindSpawnPoints();
         }
 
         private void FindSpawnPoints()
         {
+            //Debug.Log("FindSpawnPoints()");
             SpawnPoint[] spawns = transform.GetComponentsInChildren<SpawnPoint>();
             spawnPoints = new Transform[spawns.Length];
             for ( int i = 0; i < spawns.Length; i++ )
             {
                 spawnPoints[i] = spawns[i].transform;
+                //Debug.Log($"SpawnPoint[{i}] added");
             }
         }
 
         private void SetPlayersToSpawnPoints()
         {
+            //Debug.Log("SetPlayersToSpawnPoints()");
             for ( int i = 0; i < gameManager.Players.Length; i++ )
             {
-                Debug.Log("gameManager.Players[i - 1]: " + gameManager.Players[i]);
-                Debug.Log("spawnPoints[i].position: " + spawnPoints[i].position);
-                Debug.Log("Current position: " + gameManager.Players[i].SetPosition);
-                gameManager.Players[i].SetPosition = spawnPoints[i].position;
-                Debug.Log("New position: " + gameManager.Players[i].SetPosition);
+                //Debug.Log("gameManager.Players[i]: " + gameManager.Players[i].name);
+                //Debug.Log($"spawnPoints[i] -> {spawnPoints[i].name}'s {spawnPoints[i].position}");
+                //Debug.Log($"Player {gameManager.Players[i].name}'s old position: " + gameManager.Players[i].Position);
+                gameManager.Players[i].SetPosition(spawnPoints[i]);
+                //Debug.Log($"Player {gameManager.Players[i].name}'s new position: " + gameManager.Players[i].Position);
             }
         }
     }

@@ -30,18 +30,6 @@ namespace BananaSoup.Units
         public event Action<float> FrozenContinuously;
         public event Action Killed;
 
-        public Vector3 SetPosition
-        {
-            get
-            {
-                return transform.position;
-            }
-            set
-            {
-                transform.position = value;
-            }
-        }
-
         public virtual void PlayerFinished() { }
 
         protected virtual void OnEnable()
@@ -182,6 +170,14 @@ namespace BananaSoup.Units
         public void Pushback(Vector3 direction, float pushbackStrength)
         {
             rb.AddForce(direction * pushbackStrength);
+        }
+
+        public void SetPosition(Transform newPosition)
+        {
+            //Debug.Log("Player's old position: " + transform.position);
+            //Debug.Log("SpawnPoint's position: " + newPosition.position);
+            transform.position = newPosition.position;
+            //Debug.Log("Player's new position: " + transform.position);
         }
     }
 }
