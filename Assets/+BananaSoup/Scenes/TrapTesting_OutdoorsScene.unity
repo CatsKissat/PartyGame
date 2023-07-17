@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2158.307, g: 2260.555, b: 3278.3794, a: 1}
+  m_IndirectSpecularColor: {r: 2158.2913, g: 2260.5627, b: 3278.399, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1732,7 +1732,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &540993093371297407
+--- !u!1001 &485073717085459215
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1740,62 +1740,62 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3702392239617126288, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 5824614014092011702, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_Name
-      value: Platform_Hanging
+      value: PlaceableSelector
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.167086
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7372466050929528492, guid: b7d06ca57153b3940926ff11f5cd3209,
+    - target: {fileID: 8105568864338011410, guid: 519ab4a9f2c4d814a91209ff02f9900b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
@@ -1804,4 +1804,4 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b7d06ca57153b3940926ff11f5cd3209, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 519ab4a9f2c4d814a91209ff02f9900b, type: 3}
