@@ -1,7 +1,5 @@
-using BananaSoup.Managers;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using BananaSoup.Managers;
 
 namespace BananaSoup.LevelLogic
 {
@@ -47,6 +45,9 @@ namespace BananaSoup.LevelLogic
             FindSpawnPoints();
         }
 
+        /// <summary>
+        /// Finds and add to a list all the Spawn Points in children.
+        /// </summary>
         private void FindSpawnPoints()
         {
             //Debug.Log("FindSpawnPoints()");
@@ -59,6 +60,9 @@ namespace BananaSoup.LevelLogic
             }
         }
 
+        /// <summary>
+        /// Goes through the list of players and sets a new position aka starting position for each of them.
+        /// </summary>
         private void SetPlayersToSpawnPoints()
         {
             //Debug.Log("SetPlayersToSpawnPoints()");
