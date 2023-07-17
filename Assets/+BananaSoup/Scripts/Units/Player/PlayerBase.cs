@@ -172,6 +172,10 @@ namespace BananaSoup.Units
             rb.AddForce(direction * pushbackStrength);
         }
 
+        /// <summary>
+        /// Sets the position of the player.
+        /// </summary>
+        /// <param name="newPosition">New position of the player.</param>
         public void SetPosition(Transform newPosition)
         {
             //Debug.Log("Player's old position: " + transform.position);
