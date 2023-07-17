@@ -25,6 +25,12 @@ MonoBehaviour:
     File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\LevelLogic\OutOfZoneKiller.cs
     Line: 12
     PathToShow: Assets/+BananaSoup/Scripts/LevelLogic/OutOfZoneKiller.cs(12)
+  - Text: ": Get the amount of players automatically to numberOfPlayers.\r"
+    Note: 
+    Tag: TODO
+    File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\PreBuildMode\SelectPlaceables.cs
+    Line: 40
+    PathToShow: Assets/+BananaSoup/Scripts/PreBuildMode/SelectPlaceables.cs(40)
   - Text: ": Launch event to inform GameManager that the player has finished\r"
     Note: 
     Tag: TODO

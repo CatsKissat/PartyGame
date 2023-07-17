@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using NaughtyAttributes;
-using BananaSoup.Modifiers;
 using BananaSoup.Traps;
 using BananaSoup.Blocks;
 using BananaSoup.Platforms;
@@ -25,9 +24,9 @@ namespace BananaSoup.PreBuildMode
         [SerializeField, Tooltip("Toggle debugging on or off.")]
         private bool debugThis = false;
 
-        [SerializeField, ShowIf("debugThis")]
+        [SerializeField, ShowIf(nameof(debugThis))]
         private int numberOfPlayers = 0;
-        [SerializeField, ShowIf("debugThis")]
+        [SerializeField, ShowIf(nameof(debugThis))]
         private int extraPlaceables = 2;
 
         private List<UnitBase> selectedPlaceables = new List<UnitBase>();
@@ -36,7 +35,16 @@ namespace BananaSoup.PreBuildMode
 
         private void Start()
         {
-            prefabsNeeded = numberOfPlayers + extraPlaceables;
+            if ( !debugThis )
+            {
+                // TODO: Get the amount of players automatically to numberOfPlayers.
+                //numberOfPlayers = GetSecretHiddenNumberOfPlayersFromSomewhereWhereItExists.
+                //prefabsNeeded = numberOfPlayers + extraPlaceables;
+            }
+            else if ( debugThis )
+            {
+                prefabsNeeded = numberOfPlayers + extraPlaceables;
+            }
 
             SelectPrefabs();
         }
