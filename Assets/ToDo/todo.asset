@@ -16,43 +16,37 @@ MonoBehaviour:
   - Text: ": Give results (scores)\r"
     Note: 
     Tag: TODO
-    File: C:\Unity\TAMK\PartyGame\Assets\+BananaSoup\Scripts\LevelLogic\Goal.cs
+    File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\LevelLogic\Goal.cs
     Line: 33
     PathToShow: Assets/+BananaSoup/Scripts/LevelLogic/Goal.cs(33)
   - Text: ": Add methdod to kill player and call it here.\r"
     Note: 
     Tag: TODO
-    File: C:\Unity\TAMK\PartyGame\Assets\+BananaSoup\Scripts\LevelLogic\OutOfZoneKiller.cs
+    File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\LevelLogic\OutOfZoneKiller.cs
     Line: 12
     PathToShow: Assets/+BananaSoup/Scripts/LevelLogic/OutOfZoneKiller.cs(12)
-  - Text: ": Local or global positions?\r"
-    Note: 
-    Tag: TODO
-    File: C:\Unity\TAMK\PartyGame\Assets\+BananaSoup\Scripts\Utils\PooledSpawner.cs
-    Line: 41
-    PathToShow: Assets/+BananaSoup/Scripts/Utils/PooledSpawner.cs(41)
   - Text: ": Launch event to inform GameManager that the player has finished\r"
     Note: 
     Tag: TODO
-    File: C:\Unity\TAMK\PartyGame\Assets\+BananaSoup\Scripts\Units\Player\PlayerCharacterController.cs
+    File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\Units\Player\PlayerCharacterController.cs
     Line: 383
     PathToShow: Assets/+BananaSoup/Scripts/Units/Player/PlayerCharacterController.cs(383)
   - Text: ": Move animation calls to corresponding place\r"
     Note: 
     Tag: TODO
-    File: C:\Unity\TAMK\PartyGame\Assets\+BananaSoup\Scripts\Units\Player\PlayerMovement.cs
+    File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\Units\Player\PlayerMovement.cs
     Line: 153
     PathToShow: Assets/+BananaSoup/Scripts/Units/Player/PlayerMovement.cs(153)
   - Text: ": Assing correct sprite to the player.\r"
     Note: 
     Tag: TODO
-    File: C:\Unity\TAMK\PartyGame\Assets\+BananaSoup\Scripts\Units\Player\PlayerSpriteSelector.cs
+    File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\Units\Player\PlayerSpriteSelector.cs
     Line: 9
     PathToShow: Assets/+BananaSoup/Scripts/Units/Player/PlayerSpriteSelector.cs(9)
   - Text: ": Where and when is this called?\r"
     Note: 
     Tag: TODO
-    File: C:\Unity\TAMK\PartyGame\Assets\+BananaSoup\Scripts\Units\Traps\Fan\FanModifierActions.cs
+    File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\Units\Traps\Fan\FanModifierActions.cs
     Line: 33
     PathToShow: Assets/+BananaSoup/Scripts/Units/Traps/Fan/FanModifierActions.cs(33)
   TagsList:

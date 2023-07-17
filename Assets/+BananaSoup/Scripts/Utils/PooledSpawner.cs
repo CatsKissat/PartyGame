@@ -38,7 +38,6 @@ namespace BananaSoup.Utils
             if ( item != null )
             {
                 // If the parent is null, Unity will put the GameObject to scene's root level.
-                // TODO: Local or global positions?
                 item.transform.parent = parent;
                 item.transform.localPosition = position;
                 item.transform.localRotation = rotation;
