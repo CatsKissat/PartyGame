@@ -1,4 +1,5 @@
 using UnityEngine;
+using NaughtyAttributes;
 using BananaSoup.Modifiers;
 using BananaSoup.Units;
 
@@ -7,7 +8,11 @@ namespace BananaSoup.Traps
     public class TrapBase : UnitBase
     {
         [SerializeField]
+        private bool selectRandomMod = false;
+
+        [SerializeField, HideIf(nameof(selectRandomMod))]
         private TrapModifierType.Modifier trapModifier;
+
 
         // Variable used to store the player ID of the player who places the trap.
         private int placerID = -1;
@@ -54,7 +59,7 @@ namespace BananaSoup.Traps
                 {
                     rb.useGravity = isUsingGravity;
                     rb.isKinematic = isKinematic;
-                } 
+                }
             }
 
             modActions = GetComponent<ModifierActions>();
@@ -63,7 +68,15 @@ namespace BananaSoup.Traps
                 Debug.LogError($"TrapBase on {name} couldn't find a component of type ModifierActions!");
             }
 
-            SelectRandomModifier();
+            if ( selectRandomMod )
+            {
+                SelectRandomModifier();
+            }
+            else
+            {
+                Debug.Log($"Current modifier for {name} is: {trapModifier}");
+                modActions.SetupModifier();
+            }
         }
 
         public virtual void Setup()
@@ -71,8 +84,6 @@ namespace BananaSoup.Traps
 
         }
 
-        // Debug for testing modifier randomising.
-        //[ContextMenu("Randomize mod")]
         /// <summary>
         /// Method used to select a random modifier for the trap out of all the 
         /// TrapModifierType.Modifiers.
@@ -85,12 +96,12 @@ namespace BananaSoup.Traps
             modActions.SetupModifier();
         }
 
-        public void StorePlayerID(int ID)
-        {
-            if ( placerID < 0 )
-            {
-                placerID = ID; 
-            }
-        }
+        //public void StorePlayerID(int ID)
+        //{
+        //    if ( placerID < 0 )
+        //    {
+        //        placerID = ID;
+        //    }
+        //}
     }
 }
