@@ -28,21 +28,21 @@ MonoBehaviour:
   - Text: ": Get the amount of players automatically to numberOfPlayers.\r"
     Note: 
     Tag: TODO
-    File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\PreBuildMode\SelectPlaceables.cs
+    File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\Omitted\PreBuildMode\SelectPlaceables.cs
     Line: 40
-    PathToShow: Assets/+BananaSoup/Scripts/PreBuildMode/SelectPlaceables.cs(40)
+    PathToShow: Assets/+BananaSoup/Scripts/Omitted/PreBuildMode/SelectPlaceables.cs(40)
   - Text: ": Launch event to inform GameManager that the player has finished\r"
     Note: 
     Tag: TODO
     File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\Units\Player\PlayerCharacterController.cs
-    Line: 383
-    PathToShow: Assets/+BananaSoup/Scripts/Units/Player/PlayerCharacterController.cs(383)
+    Line: 382
+    PathToShow: Assets/+BananaSoup/Scripts/Units/Player/PlayerCharacterController.cs(382)
   - Text: ": Move animation calls to corresponding place\r"
     Note: 
     Tag: TODO
     File: D:\Repositoriot\PartyGame\Assets\+BananaSoup\Scripts\Units\Player\PlayerMovement.cs
-    Line: 153
-    PathToShow: Assets/+BananaSoup/Scripts/Units/Player/PlayerMovement.cs(153)
+    Line: 152
+    PathToShow: Assets/+BananaSoup/Scripts/Units/Player/PlayerMovement.cs(152)
   - Text: ": Assing correct sprite to the player.\r"
     Note: 
     Tag: TODO

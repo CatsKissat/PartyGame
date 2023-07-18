@@ -15,7 +15,7 @@ namespace BananaSoup.Traps
 
 
         // Variable used to store the player ID of the player who places the trap.
-        private int placerID = -1;
+        //private int placerID = -1;
 
         // Variables used to store and forward speed or size if they should be
         // modified.
