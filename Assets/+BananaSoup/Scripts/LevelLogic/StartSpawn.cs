@@ -41,7 +41,6 @@ namespace BananaSoup.LevelLogic
 
         public void Initialize()
         {
-            //Debug.Log("Initialize()");
             FindSpawnPoints();
         }
 
@@ -50,13 +49,11 @@ namespace BananaSoup.LevelLogic
         /// </summary>
         private void FindSpawnPoints()
         {
-            //Debug.Log("FindSpawnPoints()");
             SpawnPoint[] spawns = transform.GetComponentsInChildren<SpawnPoint>();
             spawnPoints = new Transform[spawns.Length];
             for ( int i = 0; i < spawns.Length; i++ )
             {
                 spawnPoints[i] = spawns[i].transform;
-                //Debug.Log($"SpawnPoint[{i}] added");
             }
         }
 
@@ -65,14 +62,10 @@ namespace BananaSoup.LevelLogic
         /// </summary>
         private void SetPlayersToSpawnPoints()
         {
-            //Debug.Log("SetPlayersToSpawnPoints()");
             for ( int i = 0; i < gameManager.Players.Length; i++ )
             {
-                //Debug.Log("gameManager.Players[i]: " + gameManager.Players[i].name);
-                //Debug.Log($"spawnPoints[i] -> {spawnPoints[i].name}'s {spawnPoints[i].position}");
-                //Debug.Log($"Player {gameManager.Players[i].name}'s old position: " + gameManager.Players[i].Position);
                 gameManager.Players[i].SetPosition(spawnPoints[i]);
-                //Debug.Log($"Player {gameManager.Players[i].name}'s new position: " + gameManager.Players[i].Position);
+                Physics.SyncTransforms();
             }
         }
     }

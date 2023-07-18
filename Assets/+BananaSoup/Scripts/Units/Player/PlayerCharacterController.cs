@@ -220,8 +220,9 @@ public class PlayerCharacterController : PlayerBase
             }
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2(move, rb.velocity.y);
-            // And then smoothing it out and applying it to the character
-            rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
+
+            // Update player's velocity
+            rb.velocity = targetVelocity;
 
             // If the input is moving the player right and the player is facing left...
             if ( move > 0 && !m_FacingRight && !isWallSliding )
