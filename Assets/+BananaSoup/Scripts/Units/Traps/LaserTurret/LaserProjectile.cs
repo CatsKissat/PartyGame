@@ -1,22 +1,12 @@
 using System;
-using System.Collections;
 using UnityEngine;
-using BananaSoup.Utils;
 using BananaSoup.Modifiers;
+using BananaSoup.Units;
 
 namespace BananaSoup.Traps
 {
-    public class LaserProjectile : MonoBehaviour
+    public class LaserProjectile : ProjectileBase
     {
-        [SerializeField]
-        private float movementSpeed = 2.5f;
-
-        [SerializeField]
-        private float aliveTime = 5.0f;
-
-        private Vector3 direction = Vector3.zero;
-        private bool isLaunched = false;
-
         private float sizeIncrement = 0f;
 
         // Action variables
@@ -25,14 +15,7 @@ namespace BananaSoup.Traps
 
         private float stunDuration;
 
-        private LayerMask playersLayerMask;
         private TrapModifierType.Modifier currentModifier = TrapModifierType.Modifier.Basic;
-
-        // Coroutine used to store AliveTimerRoutine.
-        private Coroutine aliveTimerRoutine = null;
-
-        // References
-        private ProjectileMover projectileMover;
         
         // Event used to track Expiration of a projectile
         public event Action<LaserProjectile> Expired;
@@ -44,17 +27,7 @@ namespace BananaSoup.Traps
         private const TrapModifierType.Modifier speedMod = TrapModifierType.Modifier.Speed;
         private const TrapModifierType.Modifier sizeMod = TrapModifierType.Modifier.Size;
 
-        private void Awake()
-        {
-            projectileMover = GetComponent<ProjectileMover>();
-
-            if ( projectileMover == null )
-            {
-                Debug.LogError($"{name} doesn't have a ProjectileMover!");
-            }
-        }
-
-        private void OnTriggerEnter(Collider other)
+        protected override void OnTriggerEnter(Collider other)
         {
             if ( (playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0 )
             {
@@ -65,7 +38,7 @@ namespace BananaSoup.Traps
                 return;
             }
 
-            OnExpired();
+            base.OnTriggerEnter(other);
         }
 
         private void FixedUpdate()
@@ -76,12 +49,10 @@ namespace BananaSoup.Traps
             }
         }
 
-        public void SetupModifierVariables(LayerMask playersLayerMask, float slowAmount,
-                                                    float slowDuration, float stunDuration,
+        public void SetupModifierVariables(float slowAmount, float slowDuration, float stunDuration,
                                                     TrapModifierType.Modifier modifier, float sizeModifier)
         {
             currentModifier = modifier;
-            this.playersLayerMask = playersLayerMask;
 
             this.slowAmount = slowAmount;
             this.slowDuration = slowDuration;
@@ -106,52 +77,14 @@ namespace BananaSoup.Traps
             }
         }
 
-        public void Setup(float aliveTime, Vector3 rotation, float speed = -1)
+        protected override void OnExpired()
         {
-            if ( speed < 0 )
-            {
-                speed = movementSpeed;
-            }
-
-            transform.rotation = Quaternion.Euler(rotation);
-
-            projectileMover.Setup(speed);
-            isLaunched = false;
-
-            aliveTimerRoutine = StartCoroutine(AliveTimer(aliveTime));
-        }
-
-        public void Launch(Vector3 direction)
-        {
-            this.direction = direction;
-            isLaunched = true;
-        }
-
-        private void OnExpired()
-        {
-            if ( aliveTimerRoutine != null )
-            {
-                StopCoroutine(aliveTimerRoutine);
-                aliveTimerRoutine = null;
-            }
+            base.OnExpired();
 
             if (Expired != null )
             {
                 Expired(this);
             }
-        }
-
-        private IEnumerator AliveTimer(float aliveTime)
-        {
-            this.aliveTime = aliveTime;
-
-            while (this.aliveTime > 0)
-            {
-                this.aliveTime -= Time.deltaTime;
-                yield return null;
-            }
-
-            OnExpired();
         }
 
         /// <summary>

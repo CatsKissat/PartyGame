@@ -12,7 +12,7 @@ GameObject:
   m_Layer: 8
   m_Name: Firing Point
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -67,7 +67,7 @@ Transform:
   - {fileID: 5303255028047466637}
   - {fileID: 5018924320542693007}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!54 &8160083421848022802
 Rigidbody:
@@ -129,11 +129,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec822993c40135489bb70becd32b2ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseHasRigidbody: 1
   isKinematic: 1
   isUsingGravity: 0
-  rb: {fileID: 0}
-  trapModifier: 0
-  modActions: {fileID: 0}
+  selectRandomMod: 0
+  trapModifier: 1
+  playersLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
   fireRate: 1.5
   firingPoint: {fileID: 343556514780627762}
   projectileSpeed: 3
@@ -150,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef9173a38f338e147a9839bdeb3db97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4210886052473396040, guid: 6749f4d6d57a8ff45b27b876feff16f4, type: 3}
+  prefab: {fileID: 7842575432593704518, guid: 6749f4d6d57a8ff45b27b876feff16f4, type: 3}
   capacity: 5
 --- !u!114 &669678462395152440
 MonoBehaviour:
@@ -169,9 +172,6 @@ MonoBehaviour:
   slowMultiplier: 0.5
   slowDuration: 2.5
   stunDuration: 1.5
-  playersLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &8763143331280937725
 GameObject:
   m_ObjectHideFlags: 0

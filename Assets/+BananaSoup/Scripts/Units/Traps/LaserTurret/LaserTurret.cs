@@ -82,7 +82,7 @@ namespace BananaSoup.Traps
 
                 if ( projectile != null )
                 {
-                    projectile.Setup(projectileAliveTime, spriteRotation, projectileSpeed);
+                    projectile.Setup(projectileAliveTime, spriteRotation, playersLayerMask, projectileSpeed);
 
                     projectile.Launch(transform.forward);
 

@@ -455,11 +455,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98028ea442712f8498638e86e6cc490a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseHasRigidbody: 1
   isKinematic: 1
   isUsingGravity: 0
-  rb: {fileID: 0}
+  selectRandomMod: 0
   trapModifier: 0
-  modActions: {fileID: 0}
+  playersLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
   leftBeamer: {fileID: 2218407241353880164}
   rightBeamer: {fileID: 1554724589265907567}
   beam: {fileID: 7015326781126950274}
@@ -479,9 +482,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.5
   sizeChange: 0.5
-  slowAmount: 0.5
+  slowMultiplier: 0.5
   slowDuration: 2.5
   stunDuration: 1.5
-  playersLayerMask:
-    serializedVersion: 2
-    m_Bits: 128

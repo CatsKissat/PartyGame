@@ -8,10 +8,13 @@ namespace BananaSoup.Traps
     public class TrapBase : UnitBase
     {
         [SerializeField]
-        private bool selectRandomMod = false;
+        protected bool selectRandomMod = false;
 
         [SerializeField, HideIf(nameof(selectRandomMod))]
-        private TrapModifierType.Modifier trapModifier;
+        protected TrapModifierType.Modifier trapModifier;
+
+        [SerializeField]
+        protected LayerMask playersLayerMask;
 
 
         // Variable used to store the player ID of the player who places the trap.
@@ -19,17 +22,16 @@ namespace BananaSoup.Traps
 
         // Variables used to store and forward speed or size if they should be
         // modified.
-        private float modifiedSpeed = 0f;
-        private float modifiedSize = 0f;
+        protected float modifiedSpeed = 0f;
+        protected float modifiedSize = 0f;
 
         // References
         private Rigidbody[] childRigidbodies = null;
         protected ModifierActions modActions = null;
 
-        public TrapModifierType.Modifier TrapModifier
-        {
-            get => trapModifier;
-        }
+        public TrapModifierType.Modifier TrapModifier => trapModifier;
+
+        public LayerMask PlayersLayerMask => playersLayerMask;
 
         // Property used to store the modifiedSpeed value for the trap, which is
         // used in the actual trap functionality to effect the speed of the trap.

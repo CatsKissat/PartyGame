@@ -129,9 +129,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d7df703f3dd3d4aa280b69ab347404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseHasRigidbody: 1
   isKinematic: 1
   isUsingGravity: 0
+  selectRandomMod: 0
   trapModifier: 0
+  playersLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &4661014735815434371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,9 +154,6 @@ MonoBehaviour:
   slowMultiplier: 0.5
   slowDuration: 2.5
   stunDuration: 1.5
-  playersLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
   pushbackStrength: 100
 --- !u!1 &8439169285542302339
 GameObject:

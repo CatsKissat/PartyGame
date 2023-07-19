@@ -7,9 +7,9 @@ namespace BananaSoup.Units
     {
         [SerializeField]
         protected bool baseHasRigidbody = true;
-        [SerializeField, ShowIf("baseHasRigidbody")]
+        [SerializeField, ShowIf(nameof(baseHasRigidbody))]
         protected bool isKinematic;
-        [SerializeField, ShowIf("baseHasRigidbody")]
+        [SerializeField, ShowIf(nameof(baseHasRigidbody))]
         protected bool isUsingGravity;
 
         protected Rigidbody rb;

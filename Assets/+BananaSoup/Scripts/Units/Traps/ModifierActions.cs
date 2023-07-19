@@ -27,8 +27,6 @@ namespace BananaSoup.Traps
         [SerializeField, Tooltip("The duration of the stun effect.")]
         protected float stunDuration = 1.5f;
 
-        [Header("Player variables")]
-        [SerializeField]
         protected LayerMask playersLayerMask;
 
         // Variable used to store the currentModifier of the trap.
@@ -59,6 +57,8 @@ namespace BananaSoup.Traps
             {
                 Debug.LogError($"{name} doesn't have a TrapBase component!");
             }
+
+            playersLayerMask = trapBase.PlayersLayerMask;
         }
 
         /// <summary>
