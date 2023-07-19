@@ -52,15 +52,11 @@ namespace BananaSoup.Units
             }
 
             cameraTargetAssigner.AssingPlayer(transform);
-
-            Debug.Log($"PlayerID {playerID} joined the game.");
         }
 
         private void OnLeave()
         {
             cameraTargetAssigner.RemovePlayerTarget(transform);
-
-            Debug.Log($"PlayerID {playerID} left the game.");
         }
 
         protected override void Start()
@@ -154,6 +150,7 @@ namespace BananaSoup.Units
             }
         }
 
+        [ContextMenu("Kill Player")]
         public void Kill()
         {
             if ( !isDead )
@@ -178,10 +175,7 @@ namespace BananaSoup.Units
         /// <param name="newPosition">New position of the player.</param>
         public void SetPosition(Transform newPosition)
         {
-            //Debug.Log("Player's old position: " + transform.position);
-            //Debug.Log("SpawnPoint's position: " + newPosition.position);
             transform.position = newPosition.position;
-            //Debug.Log("Player's new position: " + transform.position);
         }
     }
 }

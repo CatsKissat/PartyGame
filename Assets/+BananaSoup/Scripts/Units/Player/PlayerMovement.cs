@@ -1,7 +1,7 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using System.Collections;
+using System;
 
 namespace BananaSoup.Units
 {
@@ -10,7 +10,7 @@ namespace BananaSoup.Units
         [SerializeField] private float walkSpeed = 40.0f;
         [SerializeField] private float runSpeed = 60.0f;
 
-        public UnityAction LeaveGame;
+        public event Action LeaveGame;
 
         private float currentWalkSpeed = 0f;
         private float currentRunSpeed = 0f;
@@ -119,7 +119,7 @@ namespace BananaSoup.Units
         {
             if ( context.performed )
             {
-                LeaveGame.Invoke();
+                LeaveGame();
 
                 // NOTE: Fast fix to handle Unity getting bloated to destroy the player GameObject instead of pooling it.
                 //DisablePlayerGameObject();

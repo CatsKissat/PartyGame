@@ -30,7 +30,20 @@ namespace BananaSoup.Debugging
         private bool enableJoining = false;
         #endregion GameManager
 
+        #region DebugUI
+        [SerializeField]
+        [ShowIf(nameof(areDebugControlsEnabled))]
+        [Header("Debug UI")]
+        private GameObject debugUI;
+
+        [SerializeField]
+        [ShowIf(nameof(HasDebugUI))]
+        [Tooltip("If true enable Debug UI")]
+        private bool isDebugUIEnabled = false;
+        #endregion DebugUI
+
         private bool HasGameManager => gameManager && areDebugControlsEnabled;
+        private bool HasDebugUI => debugUI && areDebugControlsEnabled;
 
         private void Awake()
         {
@@ -53,6 +66,14 @@ namespace BananaSoup.Debugging
                 {
                     gameManager.EnableJoining = true;
                     Debug.Log($"{this} set {nameof(gameManager)}'s EnableJoining to {gameManager.EnableJoining}");
+                }
+            }
+
+            if ( debugUI != null )
+            {
+                if ( isDebugUIEnabled )
+                {
+                    debugUI.SetActive(true);
                 }
             }
         }

@@ -382,14 +382,6 @@ public class PlayerCharacterController : PlayerBase
         // TODO: Launch event to inform GameManager that the player has finished
     }
 
-    // For debug only
-    [ContextMenu("Stun player")]
-    private void StunPlayerButton()
-    {
-        float time = 2.0f;
-        StunPlayer(time);
-    }
-
     public void StunPlayer(float time)
     {
         if ( stunRoutine == null && canBeStunned )
