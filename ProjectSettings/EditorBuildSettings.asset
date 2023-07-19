@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/+BananaSoup/Scenes/MainMenu.unity
     guid: 27e61811d1baad24f865500d7c29765c
   - enabled: 1
-    path: Assets/+BananaSoup/Scenes/OutdoorsScene.unity
+    path: Assets/+BananaSoup/Scenes/Level.unity
     guid: 8124e5870f4fd4c779e7a5f994e84ad1
   m_configObjects: {}

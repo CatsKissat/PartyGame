@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2158.3274, g: 2262.887, b: 3286.4927, a: 1}
+  m_IndirectSpecularColor: {r: 2158.3362, g: 2260.5237, b: 3278.395, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -509,7 +509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdownToStartLevel: 3
-  playableLevel: OutdoorsScene
+  playableLevel: Level
 --- !u!1 &540056798
 GameObject:
   m_ObjectHideFlags: 0
@@ -1472,7 +1472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b3c387d1b1abc147bb8d1d4b553b75c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints: []
 --- !u!65 &1463338139
 BoxCollider:
   m_ObjectHideFlags: 0
