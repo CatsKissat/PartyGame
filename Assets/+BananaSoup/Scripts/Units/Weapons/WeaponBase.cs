@@ -3,6 +3,7 @@ using UnityEngine;
 using BananaSoup.PickUpSystem;
 using BananaSoup.Units;
 using BananaSoup.Utils;
+using System.Collections;
 
 namespace BananaSoup.Weapons
 {
@@ -27,8 +28,13 @@ namespace BananaSoup.Weapons
 
         [SerializeField, Tooltip("The transform of the firing point of the weapon.")]
         protected GameObject firingPoint;
+        [SerializeField, Tooltip("The duration the weapon can't be picked up after being thrown.")]
+        float thrownResetTime = 0.5f;
 
         protected bool equipped = false;
+        protected bool thrown = false;
+
+        protected Coroutine resetThrownRoutine = null;
 
         private Collider[] colliders;
 
@@ -47,17 +53,18 @@ namespace BananaSoup.Weapons
         public GameObject GameObject => gameObject;
         public Transform Transform => transform;
         public bool PickedUp => equipped;
+        public bool Thrown => thrown;
 
         public Vector3 Position => transform.position;
 
-        public void OnPickUp(Transform container, Vector3 localScale)
+        public void OnPickUp(Transform container, Vector3 rotation)
         {
             equipped = true;
             rb.isKinematic = true;
 
             transform.rotation = Quaternion.Euler(Vector3.zero);
 
-            transform.localScale = localScale;
+            transform.rotation = Quaternion.Euler(rotation);
             transform.parent = container;
             transform.position = container.position;
 
@@ -99,8 +106,22 @@ namespace BananaSoup.Weapons
             float random = Random.Range(-1f, 1f);
             Vector3 randomRotate = new Vector3(0, 0, random);
             rb.AddTorque(randomRotate * 10);
+
+            if ( resetThrownRoutine == null )
+            {
+                resetThrownRoutine = StartCoroutine(ResetThrown());
+            }
         }
         #endregion
+
+        protected void OnDisable()
+        {
+            if ( resetThrownRoutine != null )
+            {
+                StopCoroutine(resetThrownRoutine);
+                resetThrownRoutine = null;
+            }
+        }
 
         protected override void Start()
         {
@@ -184,6 +205,16 @@ namespace BananaSoup.Weapons
         public virtual void Fire()
         {
             
+        }
+
+        protected IEnumerator ResetThrown()
+        {
+            Debug.Log($"{name} was thrown!");
+            thrown = true;
+            yield return new WaitForSeconds(thrownResetTime);
+            thrown = false;
+            resetThrownRoutine = null;
+            Debug.Log($"{name} can be picked up again!");
         }
     }
 }

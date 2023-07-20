@@ -124,9 +124,9 @@ namespace BananaSoup.PickUpSystem
 
             pickedUpItem = GetNearestPickUpable(pickUpablesInRange);
 
-            if ( pickedUpItem != null )
+            if ( pickedUpItem != null && !pickedUpItem.Thrown)
             {
-                pickedUpItem.OnPickUp(weaponContainer, transform.localScale);
+                pickedUpItem.OnPickUp(weaponContainer, transform.rotation.eulerAngles);
                 itemEquipped = true;
 
                 itemWeaponScript = pickedUpItem.GameObject.GetComponent<WeaponBase>();
@@ -134,10 +134,6 @@ namespace BananaSoup.PickUpSystem
                 {
                     Debug.Log($"{pickedUpItem} doesn't have a component of type {typeof(WeaponBase)}");
                 }
-            }
-            else
-            {
-                Debug.LogError($"{name} should have a pickupable in range, but couldn't find one!");
             }
         }
 

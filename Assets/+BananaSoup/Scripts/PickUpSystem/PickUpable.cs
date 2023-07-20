@@ -7,9 +7,10 @@ namespace BananaSoup.PickUpSystem
         public GameObject GameObject => throw new System.NotImplementedException();
         public Transform Transform => throw new System.NotImplementedException();
         public bool PickedUp => throw new System.NotImplementedException();
+        public bool Thrown => throw new System.NotImplementedException();
 
         public Vector3 Position => throw new System.NotImplementedException();
-        public void OnPickUp(Transform container, Vector3 localScale)
+        public void OnPickUp(Transform container, Vector3 rotation)
         {
             throw new System.NotImplementedException();
         }
@@ -18,6 +19,5 @@ namespace BananaSoup.PickUpSystem
         {
             throw new System.NotImplementedException();
         }
-
     }
 }

@@ -7,9 +7,10 @@ namespace BananaSoup.PickUpSystem
         GameObject GameObject { get; }
         Transform Transform { get; }
         bool PickedUp { get; }
+        bool Thrown { get; }
         Vector3 Position { get; }
 
-        void OnPickUp(Transform container, Vector3 localScale);
+        void OnPickUp(Transform container, Vector3 rotation);
         void OnDrop(Vector3 currentVelocity, Vector3 forward, Vector3 up, float upWardForce, float forwardForce);
     }
 }
