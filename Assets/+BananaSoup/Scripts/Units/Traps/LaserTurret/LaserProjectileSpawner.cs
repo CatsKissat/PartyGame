@@ -104,7 +104,7 @@ namespace BananaSoup.Traps
         }
         private void SetupProjectile(LaserProjectile projectile)
         {
-            projectile.SetupModifierVariables(modActions.SlowAmount, modActions.SlowDuration,
+            projectile.SetupModifierVariables(modActions.SlowDuration, modActions.SlowAmount,
                                                 modActions.StunDuration, trapBase.TrapModifier,
                                                 trapBase.ModifiedSize);
         }

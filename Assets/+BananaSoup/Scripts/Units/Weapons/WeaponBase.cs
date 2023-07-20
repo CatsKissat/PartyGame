@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using BananaSoup.PickUpSystem;
 using BananaSoup.Units;
 using BananaSoup.Utils;
 
 namespace BananaSoup.Weapons
 {
-    public class WeaponBase : UnitBase
+    public class WeaponBase : UnitBase, IPickUpable
     {
-        protected bool equipped = false;
-
+        [Space]
         [SerializeField, Tooltip("The prefab of the item to be pooled and spawned/fired.")]
         protected ProjectileBase prefab;
         [SerializeField, Tooltip("The projectiles alive time.")]
@@ -28,11 +28,11 @@ namespace BananaSoup.Weapons
         [SerializeField, Tooltip("The transform of the firing point of the weapon.")]
         protected GameObject firingPoint;
 
-        private GameObject spriteRendererObject = null;
-        protected Vector3 spriteRotation = Vector3.zero;
+        protected bool equipped = false;
+
+        private Collider[] colliders;
 
         protected ComponentPool<ProjectileBase> pool;
-
         protected Transform projectilePool = null;
 
         // Const string to used to find ProjectilePool GameObject with tag
@@ -42,6 +42,65 @@ namespace BananaSoup.Weapons
         {
             get { return pool; }
         }
+
+        #region IPickUpable
+        public GameObject GameObject => gameObject;
+        public Transform Transform => transform;
+        public bool PickedUp => equipped;
+
+        public Vector3 Position => transform.position;
+
+        public void OnPickUp(Transform container, Vector3 localScale)
+        {
+            equipped = true;
+            rb.isKinematic = true;
+
+            transform.rotation = Quaternion.Euler(Vector3.zero);
+
+            transform.localScale = localScale;
+            transform.parent = container;
+            transform.position = container.position;
+
+            foreach ( Collider col in colliders )
+            {
+                col.isTrigger = true;
+            }
+
+        }
+
+        /// <summary>
+        /// Method called when dropping a weapon.
+        /// The method makes the weapons equipped Bool, Rigidbodys isKinematic value and
+        /// Colliders isTrigger value false.
+        /// Then we make the players current velocity the weapons velocity and add a
+        /// forward and upward force.
+        /// </summary>
+        /// <param name="currentVelocity">The players Rigidbody's current velocity.</param>
+        /// <param name="upWardForce">The desired upward force to apply to the weapon.</param>
+        /// <param name="forwardForce">The desired forward force to apply to the weapon.</param>
+        public void OnDrop(Vector3 currentVelocity, Vector3 forward, Vector3 up, float upWardForce, float forwardForce)
+        {
+            equipped = false;
+
+            rb.isKinematic = false;
+            rb.useGravity = true;
+
+            foreach ( Collider col in colliders )
+            {
+                col.isTrigger = false;
+            }
+
+            // Make players velocity weapons velocity and add force.
+            rb.velocity = currentVelocity;
+            rb.AddForce(up * upWardForce, ForceMode.Impulse);
+            rb.AddForce(forward * forwardForce, ForceMode.Impulse);
+
+            // Randomize the X-rotation of the weapon.
+            float random = Random.Range(-1f, 1f);
+            Vector3 randomRotate = new Vector3(0, 0, random);
+            rb.AddTorque(randomRotate * 10);
+        }
+        #endregion
 
         protected override void Start()
         {
@@ -54,27 +113,27 @@ namespace BananaSoup.Weapons
             GetReferences();
         }
 
+        #region GetReferences
         /// <summary>
         /// Method used to get references and throw error(s) if they can't be found.
         /// </summary>
         private void GetReferences()
         {
+            rb = GetComponent<Rigidbody>();
+            if ( rb == null )
+            {
+                Debug.LogError($"WeaponBase on {name} couldn't find a component of type {typeof(Rigidbody)} on {name}!");
+            }
+
             projectilePool = GameObject.FindGameObjectWithTag(projectilePoolTag).transform;
             if ( projectilePool == null )
             {
                 Debug.LogError($"{name} couldn't find an object with the tag {projectilePoolTag} in the scene!");
             }
 
-            spriteRendererObject = GetComponentInChildren<SpriteRenderer>(true).gameObject;
-            if ( spriteRendererObject == null )
-            {
-                Debug.LogError($"{name} couldn't find a GameObject with a component of type {typeof(SpriteRenderer)} on it's children!");
-            }
-            else
-            {
-                spriteRotation = spriteRendererObject.transform.rotation.eulerAngles;
-            }
+            colliders = GetComponents<Collider>();
         }
+        #endregion
 
         #region Pool
         /// <summary>
@@ -122,9 +181,9 @@ namespace BananaSoup.Weapons
         }
         #endregion
 
-        protected virtual void Fire()
+        public virtual void Fire()
         {
-
+            
         }
     }
 }

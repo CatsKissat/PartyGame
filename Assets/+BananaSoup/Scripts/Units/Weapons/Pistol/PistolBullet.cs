@@ -11,16 +11,13 @@ namespace BananaSoup
 
         protected override void OnTriggerEnter(Collider other)
         {
-            if ( (playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0 )
+            if ( (playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0 
+                && TryGetComponent(out PlayerBase player))
             {
-                // TODO: Kill player
-            }
-            else
-            {
-                return;
+                player.Kill();
             }
 
-            base.OnTriggerEnter(other);
+            OnExpired();
         }
 
         protected override void OnExpired()

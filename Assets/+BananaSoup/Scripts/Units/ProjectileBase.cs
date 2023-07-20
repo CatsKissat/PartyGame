@@ -35,7 +35,7 @@ namespace BananaSoup.Units
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            OnExpired();
+            
         }
 
         private void FixedUpdate()

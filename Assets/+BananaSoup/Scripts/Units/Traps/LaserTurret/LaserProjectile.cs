@@ -10,13 +10,13 @@ namespace BananaSoup.Traps
         private float sizeIncrement = 0f;
 
         // Action variables
-        private float slowAmount;
+        private float slowMultiplier;
         private float slowDuration;
 
         private float stunDuration;
 
         private TrapModifierType.Modifier currentModifier = TrapModifierType.Modifier.Basic;
-        
+
         // Event used to track Expiration of a projectile
         public event Action<LaserProjectile> Expired;
 
@@ -29,16 +29,13 @@ namespace BananaSoup.Traps
 
         protected override void OnTriggerEnter(Collider other)
         {
-            if ( (playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0 )
+            if ( (playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0
+                && other.TryGetComponent(out PlayerBase player) )
             {
-                DetermineModAction(other);
+                DetermineModAction(player);
             }
-            else
-            {
-                return;
-            }
-
-            base.OnTriggerEnter(other);
+            
+            OnExpired();
         }
 
         private void FixedUpdate()
@@ -49,13 +46,13 @@ namespace BananaSoup.Traps
             }
         }
 
-        public void SetupModifierVariables(float slowAmount, float slowDuration, float stunDuration,
-                                                    TrapModifierType.Modifier modifier, float sizeModifier)
+        public void SetupModifierVariables(float slowDuration, float slowMultiplier, float stunDuration,
+                                                    TrapModifierType.Modifier modifier,float sizeModifier)
         {
             currentModifier = modifier;
 
-            this.slowAmount = slowAmount;
             this.slowDuration = slowDuration;
+            this.slowMultiplier = slowMultiplier;
 
             this.stunDuration = stunDuration;
 
@@ -64,7 +61,7 @@ namespace BananaSoup.Traps
 
         private void CheckIfScaleShouldIncrease(float amountToIncrease)
         {
-            if ( amountToIncrease > 0f && sizeIncrement == 0f)
+            if ( amountToIncrease > 0f && sizeIncrement == 0f )
             {
                 Vector3 originalScale = transform.localScale;
                 Vector3 modifiedSize = originalScale + new Vector3(amountToIncrease, amountToIncrease, amountToIncrease);
@@ -81,7 +78,7 @@ namespace BananaSoup.Traps
         {
             base.OnExpired();
 
-            if (Expired != null )
+            if ( Expired != null )
             {
                 Expired(this);
             }
@@ -94,8 +91,8 @@ namespace BananaSoup.Traps
         /// Electric mod stuns the player.
         /// Default case is a bug, where the trap has no active modifier.
         /// </summary>
-        /// <param name="other">The other object which the trap is colliding with.</param>
-        private void DetermineModAction(Collider other)
+        /// <param name="player">The target gameObject with a PlayerBase.</param>
+        private void DetermineModAction(PlayerBase player)
         {
             switch ( currentModifier )
             {
@@ -103,17 +100,20 @@ namespace BananaSoup.Traps
                 case speedMod:
                 case sizeMod:
                     {
-                        Debug.Log($"{other.name} should get killed!");
+                        player.Kill();
+
                         break;
                     }
                 case freezeMod:
                     {
-                        Debug.Log($"{other.name} should get frozen!");
+                        player.Freeze(slowDuration, slowMultiplier);
+
                         break;
                     }
                 case electricMod:
                     {
-                        Debug.Log($"{other.name} should get stunned!");
+                        player.Stun(stunDuration);
+
                         break;
                     }
                 default:

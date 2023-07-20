@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7914577296237509594}
   - component: {fileID: 9134092526712577400}
-  m_Layer: 7
+  m_Layer: 15
   m_Name: PickUpRadius
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5013,6 +5013,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &5876442051445912387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6149595854658137349}
+  m_Layer: 7
+  m_Name: WeaponContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6149595854658137349
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5876442051445912387}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5, y: -0.125, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8259884143321477808}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7534548236268666769
 GameObject:
   m_ObjectHideFlags: 0
@@ -5059,8 +5090,9 @@ Transform:
   - {fileID: 3544108275675571133}
   - {fileID: 8328646888286644463}
   - {fileID: 7914577296237509594}
+  - {fileID: 6149595854658137349}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1712396818753211553
 SpriteRenderer:
@@ -5326,9 +5358,41 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5180dff3-3c56-4d5f-a4c9-0d5003f9c40d
     m_ActionName: MainMenu/LeaveGame[/XInputControllerWindows/buttonEast,/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7838688553479329659}
+        m_TargetAssemblyTypeName: BananaSoup.PickUpSystem.PickUpHandler, Assembly-CSharp
+        m_MethodName: OnPickUpOrFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c1118bcb-83c4-4625-b705-9c76486fbaed
+    m_ActionName: Gameplay/PickUpItem[/XInputControllerWindows/rightTrigger,/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7838688553479329659}
+        m_TargetAssemblyTypeName: BananaSoup.PickUpSystem.PickUpHandler, Assembly-CSharp
+        m_MethodName: OnDropItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7a3c7317-a14d-4c3c-87e9-5d907072d5ff
+    m_ActionName: Gameplay/DropItem[/XInputControllerWindows/rightShoulder,/Keyboard/k]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: MainMenu
+  m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!95 &2758117638130736043
@@ -5547,7 +5611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenuSceneName: MainMenu
-  gameplayLevelSceneName: OutdoorsScene
+  gameplayLevelSceneName: MainMenu
   inputActions: {fileID: -944628639613478452, guid: 192774f50360a9e40ac2299b04da2e9f,
     type: 3}
 --- !u!114 &4513039801384999922
@@ -5574,7 +5638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1429ee888a920e4b8df4459a13853e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpRadius: {fileID: 9134092526712577400}
+  weaponContainer: {fileID: 6149595854658137349}
   dropForwardForce: 2.5
   dropUpwardForce: 2.5
 --- !u!1 &8074560050486849551

@@ -22,15 +22,11 @@ namespace BananaSoup.Traps
         [SerializeField, Tooltip("The time a projectile should stay alive.")]
         private float projectileAliveTime = 2.5f;
 
-        // Vector3 used to store the LaserTurrets sprites rotation.
-        private Vector3 spriteRotation = Vector3.zero;
-
         // Coroutine used to store the ShootCoroutine which can be disabled and
         // nulled if the object is disabled.
         private Coroutine shootCoroutine = null;
         
         // References
-        private GameObject spriteRendererObject = null;
         private LaserProjectileSpawner spawner = null;
 
         private void OnDisable()
@@ -45,15 +41,6 @@ namespace BananaSoup.Traps
             {
                 Debug.LogError($"{name} doesn't have a component of type LaserProjectileSpawner!");
             }
-
-            spriteRendererObject = GetComponentInChildren<SpriteRenderer>(true).gameObject;
-
-            if ( spriteRendererObject == null )
-            {
-                Debug.LogError($"{name} couldn't find a object with SpriteRenderer from it's childobjects!");
-            }
-
-            spriteRotation = spriteRendererObject.transform.rotation.eulerAngles;
         }
 
         public override void Setup()
@@ -82,9 +69,9 @@ namespace BananaSoup.Traps
 
                 if ( projectile != null )
                 {
-                    projectile.Setup(projectileAliveTime, spriteRotation, playersLayerMask, projectileSpeed);
+                    projectile.Setup(projectileAliveTime, transform.rotation.eulerAngles, playersLayerMask, projectileSpeed);
 
-                    projectile.Launch(transform.forward);
+                    projectile.Launch(transform.right);
 
                     projectile.Expired += OnExpired;
                 }

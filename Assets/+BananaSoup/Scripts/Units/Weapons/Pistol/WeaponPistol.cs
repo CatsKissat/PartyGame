@@ -19,7 +19,7 @@ namespace BananaSoup.Weapons
             pool.SetPooledObjectsParent(GetPooledProjectilesTransforms(), projectilePool);
         }
 
-        protected override void Fire()
+        public override void Fire()
         {
             if ( equipped )
             {
@@ -27,9 +27,9 @@ namespace BananaSoup.Weapons
 
                 if ( projectile != null )
                 {
-                    projectile.Setup(projectileAliveTime, spriteRotation, playersLayerMask, projectileSpeed);
+                    projectile.Setup(projectileAliveTime, transform.rotation.eulerAngles, playersLayerMask, projectileSpeed);
 
-                    projectile.Launch(transform.forward);
+                    projectile.Launch(transform.right);
 
                     projectile.Expired += OnExpired;
                 }

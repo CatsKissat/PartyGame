@@ -55,6 +55,24 @@ namespace BananaSoup.PlayerInputs
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PickUpOrFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""c1118bcb-83c4-4625-b705-9c76486fbaed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DropItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a3c7317-a14d-4c3c-87e9-5d907072d5ff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -220,6 +238,50 @@ namespace BananaSoup.PlayerInputs
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14684c56-c2a8-4813-9e67-6f44cb53a7fb"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickUpOrFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d46efd4e-0589-4952-a6a7-a756580f55bb"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickUpOrFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aae72f3f-0b8d-447e-ab23-3d933c7ce00a"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d0735552-374c-4feb-bd67-9dbb4ff76291"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -464,6 +526,8 @@ namespace BananaSoup.PlayerInputs
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
             m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
             m_Gameplay_Run = m_Gameplay.FindAction("Run", throwIfNotFound: true);
+            m_Gameplay_PickUpOrFire = m_Gameplay.FindAction("PickUpOrFire", throwIfNotFound: true);
+            m_Gameplay_DropItem = m_Gameplay.FindAction("DropItem", throwIfNotFound: true);
             // MainMenu
             m_MainMenu = asset.FindActionMap("MainMenu", throwIfNotFound: true);
             m_MainMenu_Move = m_MainMenu.FindAction("Move", throwIfNotFound: true);
@@ -534,6 +598,8 @@ namespace BananaSoup.PlayerInputs
         private readonly InputAction m_Gameplay_Move;
         private readonly InputAction m_Gameplay_Jump;
         private readonly InputAction m_Gameplay_Run;
+        private readonly InputAction m_Gameplay_PickUpOrFire;
+        private readonly InputAction m_Gameplay_DropItem;
         public struct GameplayActions
         {
             private @PlayerInputs m_Wrapper;
@@ -541,6 +607,8 @@ namespace BananaSoup.PlayerInputs
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
             public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
             public InputAction @Run => m_Wrapper.m_Gameplay_Run;
+            public InputAction @PickUpOrFire => m_Wrapper.m_Gameplay_PickUpOrFire;
+            public InputAction @DropItem => m_Wrapper.m_Gameplay_DropItem;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -559,6 +627,12 @@ namespace BananaSoup.PlayerInputs
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
+                @PickUpOrFire.started += instance.OnPickUpOrFire;
+                @PickUpOrFire.performed += instance.OnPickUpOrFire;
+                @PickUpOrFire.canceled += instance.OnPickUpOrFire;
+                @DropItem.started += instance.OnDropItem;
+                @DropItem.performed += instance.OnDropItem;
+                @DropItem.canceled += instance.OnDropItem;
             }
 
             private void UnregisterCallbacks(IGameplayActions instance)
@@ -572,6 +646,12 @@ namespace BananaSoup.PlayerInputs
                 @Run.started -= instance.OnRun;
                 @Run.performed -= instance.OnRun;
                 @Run.canceled -= instance.OnRun;
+                @PickUpOrFire.started -= instance.OnPickUpOrFire;
+                @PickUpOrFire.performed -= instance.OnPickUpOrFire;
+                @PickUpOrFire.canceled -= instance.OnPickUpOrFire;
+                @DropItem.started -= instance.OnDropItem;
+                @DropItem.performed -= instance.OnDropItem;
+                @DropItem.canceled -= instance.OnDropItem;
             }
 
             public void RemoveCallbacks(IGameplayActions instance)
@@ -664,6 +744,8 @@ namespace BananaSoup.PlayerInputs
             void OnMove(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
+            void OnPickUpOrFire(InputAction.CallbackContext context);
+            void OnDropItem(InputAction.CallbackContext context);
         }
         public interface IMainMenuActions
         {
