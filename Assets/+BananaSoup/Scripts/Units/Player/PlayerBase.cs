@@ -23,7 +23,17 @@ namespace BananaSoup.Units
         public int PlayerID => playerID;
         public bool IsStunned => isStunned;
         public bool IsFrozen => isFrozen;
-        public bool IsDead => isDead;
+        public bool IsDead
+        {
+            get
+            {
+                return isDead;
+            }
+            set
+            {
+                isDead = value;
+            }
+        }
 
         public event Action<float> Stunned;
         public event Action<float, float> Frozen;

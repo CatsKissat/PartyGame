@@ -8,20 +8,27 @@ namespace BananaSoup.Managers
 {
     public class GameManager : MonoBehaviour
     {
-        public event Action StartNewRound;
-        public event Action RoundEnded;
+        public event Action StartFinished;
+        public event Action NewRound;
+        public event Action<int> RoundEnded;
         private PlayerInputManager inputManager;
-        private PlayerBase[] players;
+        private PlayerBase[] playerBases;
         private int playersAlive = 0;
         private bool isRoundOver = true;
         private Coroutine winnerCheckRoutine;
+        private int playerAmount;
+        private int winnerID;
+
+        // Debug
+        private bool isDebugSetupCalled;
 
         public PlayerBase[] Players
         {
-            get { return players; }
+            get { return playerBases; }
         }
 
         public int PlayersAlive => playersAlive;
+        public int PlayerAmount => playerAmount;
 
         #region Debug
         private bool skipAutoChangeActionMap;
@@ -47,11 +54,11 @@ namespace BananaSoup.Managers
 
         private void OnDisable()
         {
-            StartNewRound -= SetupNewRound;
+            NewRound -= SetupNewRound;
 
-            if ( players != null )
+            if ( playerBases != null )
             {
-                foreach ( PlayerBase player in players )
+                foreach ( PlayerBase player in playerBases )
                 {
                     player.Killed -= DecreaseAlivePlayers;
                 }
@@ -70,21 +77,32 @@ namespace BananaSoup.Managers
             if ( !skipAutoChangeActionMap )
             {
                 FindPlayersAndInitialize();
-                StartNewRound += SetupNewRound;
+                NewRound += SetupNewRound;
+                StartFinished();
                 FireStartNewRoundEvent();
             }
         }
 
+        // Debug
         public void DebugSetup()
         {
-            FindPlayersAndInitialize();
-            StartNewRound += SetupNewRound;
-            FireStartNewRoundEvent();
+            if ( !isDebugSetupCalled )
+            {
+                isDebugSetupCalled = true;
+                FindPlayersAndInitialize();
+                NewRound += SetupNewRound;
+                StartFinished();
+                FireStartNewRoundEvent();
+            }
+            else
+            {
+                Debug.Log("Setup Joined Players already called. New calls are disabled so the game wont break up.");
+            }
         }
 
         public void FireStartNewRoundEvent()
         {
-            StartNewRound();
+            NewRound();
         }
 
         private void GetReferences()
@@ -122,17 +140,18 @@ namespace BananaSoup.Managers
                 Debug.LogError($"{name} is missing reference(s) to the Player(s) GameObject(s)!");
             }
 
-            players = new PlayerBase[playerGameObjects.Length];
+            playerAmount = playerGameObjects.Length;
+            playerBases = new PlayerBase[playerAmount];
 
             for ( int i = 0; i < playerGameObjects.Length; i++ )
             {
                 // Set the players to corresponding index in players using PlayerID
                 playerGameObjects[i].TryGetComponent(out PlayerBase playerBase);
-                for ( int j = 0; j < playerGameObjects.Length; j++ )
+                for ( int j = 0; j < playerAmount; j++ )
                 {
                     if ( playerBase.PlayerID == j )
                     {
-                        players[j] = playerBase;
+                        playerBases[j] = playerBase;
                     }
                 }
 
@@ -140,9 +159,8 @@ namespace BananaSoup.Managers
             }
 
             // Adding a listener for all players.
-            foreach ( PlayerBase player in players )
+            foreach ( PlayerBase player in playerBases )
             {
-                Debug.Log($"Player {player.PlayerID} added to listener");
                 player.Killed += DecreaseAlivePlayers;
             }
         }
@@ -168,9 +186,17 @@ namespace BananaSoup.Managers
         /// </summary>
         private void SetupNewRound()
         {
-            Debug.Log("Setting a new round");
+            Debug.Log("Setuping a new round");
+
+            // Set all players alive
+            foreach ( PlayerBase player in playerBases )
+            {
+                player.IsDead = false;
+            }
+
+            playersAlive = playerBases.Length;
+
             isRoundOver = false;
-            playersAlive = players.Length;
         }
 
         /// <summary>
@@ -193,18 +219,21 @@ namespace BananaSoup.Managers
 
             if ( playersAlive <= 0 )
             {
-                Debug.Log("Round over. Draw.");
                 isRoundOver = true;
+                RoundEnded(-1);
             }
             else if ( playersAlive == 1 )
             {
-                Debug.Log("Round over. Only one player left.");
                 isRoundOver = true;
-            }
 
-            if ( isRoundOver )
-            {
-                RoundEnded();
+                for ( int i = 0; i < playerBases.Length; i++ )
+                {
+                    if ( !playerBases[i].IsDead )
+                    {
+                        winnerID = playerBases[i].PlayerID;
+                        RoundEnded(winnerID);
+                    }
+                }
             }
         }
 

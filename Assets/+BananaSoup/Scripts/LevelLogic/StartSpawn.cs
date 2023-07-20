@@ -14,12 +14,12 @@ namespace BananaSoup.LevelLogic
 
             Initialize();
 
-            gameManager.StartNewRound += SetPlayersToSpawnPoints;
+            gameManager.NewRound += SetPlayersToSpawnPoints;
         }
 
         private void OnDisable()
         {
-            gameManager.StartNewRound -= SetPlayersToSpawnPoints;
+            gameManager.NewRound -= SetPlayersToSpawnPoints;
         }
 
         private void GetReferences()
