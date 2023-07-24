@@ -1,5 +1,6 @@
 using UnityEngine;
 using BananaSoup.Managers;
+using TMPro;
 
 namespace BananaSoup.ScoreSystem
 {
@@ -7,6 +8,7 @@ namespace BananaSoup.ScoreSystem
     {
         [SerializeField] private GameObject playerScorePanelPrefab;
         [SerializeField] private GameObject drawPanel;
+        [SerializeField] private GameObject winnerPanel;
         private PlayerScorePanel[] playerScorePanel;
         private GameManager gameManager;
         private ScorePanel scorePanel;
@@ -20,10 +22,12 @@ namespace BananaSoup.ScoreSystem
             // Making sure that the panels aren't active when starting the game.
             scorePanel.gameObject.SetActive(false);
             drawPanel.SetActive(false);
+            winnerPanel.gameObject.SetActive(false);
 
             gameManager.StartFinished += Setup;
             gameManager.RoundEnded += UpdateScore;
             gameManager.NewRound += HideScores;
+            gameManager.WinnerFound += ShowEndResults;
         }
 
         private void OnDisable()
@@ -31,6 +35,7 @@ namespace BananaSoup.ScoreSystem
             gameManager.StartFinished -= Setup;
             gameManager.RoundEnded -= UpdateScore;
             gameManager.NewRound -= HideScores;
+            gameManager.WinnerFound -= ShowEndResults;
         }
 
         private void GetReferences()
@@ -90,6 +95,15 @@ namespace BananaSoup.ScoreSystem
             playerScorePanel[previousWinner].HideWinnerText();
         }
 
+        private void ShowEndResults(int winnerID)
+        {
+            TMP_Text text = winnerPanel.GetComponent<TMP_Text>();
+            string winnerText = $"Player {winnerID} is the Winner!";
+            text.text = winnerText;
+
+            winnerPanel.gameObject.SetActive(true);
+        }
+
         // NOTE: My check list
         // ScoreManager has reference to the GameManager
         // ScoreManager has (reference?) to playerIDs
@@ -105,5 +119,6 @@ namespace BananaSoup.ScoreSystem
         // Set all player back alive when new round
         // Set players' controls to ScoreScreen when in Scoreboard
         // Set players' controls to Gameplay when leaving Scoreboard
+        // TODO: ScoreManager gets scores from PlayerBase
     }
 }

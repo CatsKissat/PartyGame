@@ -20,11 +20,23 @@ namespace BananaSoup.Units
         private PlayerMovement playerMovement;
         private CameraTargetAssigner cameraTargetAssigner;
         private PlayerActionMapSelector actionMapSelector;
+        private int wins;
 
         public int PlayerID => playerID;
         public bool IsStunned => isStunned;
         public bool IsFrozen => isFrozen;
         public bool IsDead => isDead;
+        public int Wins
+        {
+            get
+            {
+                return wins;
+            }
+            set
+            {
+                wins = value;
+            }
+        }
 
         public event Action<float> Stunned;
         public event Action<float, float> Frozen;

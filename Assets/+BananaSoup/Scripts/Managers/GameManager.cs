@@ -8,9 +8,11 @@ namespace BananaSoup.Managers
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] int totalWinsNeeded = 3;
         public event Action StartFinished;
         public event Action NewRound;
         public event Action<int> RoundEnded;
+        public event Action<int> WinnerFound;
         private PlayerInputManager inputManager;
         private PlayerBase[] playerBases;
         private int playersAlive = 0;
@@ -18,6 +20,7 @@ namespace BananaSoup.Managers
         private Coroutine winnerCheckRoutine;
         private int playerAmount;
         private int winnerID;
+        private bool hasWinner;
 
         // Debug
         private bool isDebugSetupCalled;
@@ -61,13 +64,15 @@ namespace BananaSoup.Managers
                 foreach ( PlayerBase player in playerBases )
                 {
                     player.Killed -= DecreaseAlivePlayers;
-                    player.Continue -= InvokeNewRoundEvent;
+                    player.Continue -= InvokeNewRoundOrEndGame;
                 }
             }
         }
 
         private void Setup()
         {
+            hasWinner = false;
+
             GetReferences();
 
             if ( !enableJoining )
@@ -80,7 +85,7 @@ namespace BananaSoup.Managers
                 FindPlayersAndInitialize();
                 NewRound += SetupNewRound;
                 StartFinished();
-                InvokeNewRoundEvent();
+                InvokeNewRoundOrEndGame();
             }
         }
 
@@ -93,7 +98,7 @@ namespace BananaSoup.Managers
                 FindPlayersAndInitialize();
                 NewRound += SetupNewRound;
                 StartFinished();
-                InvokeNewRoundEvent();
+                InvokeNewRoundOrEndGame();
             }
             else
             {
@@ -101,9 +106,22 @@ namespace BananaSoup.Managers
             }
         }
 
-        public void InvokeNewRoundEvent()
+        public void InvokeNewRoundOrEndGame()
         {
-            NewRound();
+            for ( int i = 0; i < playerBases.Length; i++ )
+            {
+                if ( playerBases[i].Wins >= totalWinsNeeded )
+                {
+                    WinnerFound(playerBases[i].PlayerID);
+                    hasWinner = true;
+                    break;
+                }
+            }
+
+            if ( !hasWinner )
+            {
+                NewRound();
+            }
         }
 
         private void GetReferences()
@@ -165,7 +183,7 @@ namespace BananaSoup.Managers
                 player.Killed += DecreaseAlivePlayers;
 
                 // Add listener for player OnContinue
-                player.Continue += InvokeNewRoundEvent;
+                player.Continue += InvokeNewRoundOrEndGame;
             }
         }
 
@@ -190,8 +208,6 @@ namespace BananaSoup.Managers
         /// </summary>
         private void SetupNewRound()
         {
-            Debug.Log("Setuping a new round");
-
             // Call method to initialize itself for each player
             foreach ( PlayerBase player in playerBases )
             {
@@ -221,11 +237,13 @@ namespace BananaSoup.Managers
         {
             yield return new WaitForSeconds(0.1f);
 
+            // Check are all the players dead
             if ( playersAlive <= 0 )
             {
                 isRoundOver = true;
                 RoundEnded(-1);
             }
+            // Check is there only one player alive
             else if ( playersAlive == 1 )
             {
                 isRoundOver = true;
@@ -237,6 +255,7 @@ namespace BananaSoup.Managers
                         playerBases[i].SetActionMapToScoreboard();
                         winnerID = playerBases[i].PlayerID;
                         RoundEnded(winnerID);
+                        playerBases[i].Wins++;
                     }
                 }
             }
