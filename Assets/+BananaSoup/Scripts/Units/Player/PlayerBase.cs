@@ -19,26 +19,18 @@ namespace BananaSoup.Units
         private PlayerSpriteSelector playerSpriteSelector;
         private PlayerMovement playerMovement;
         private CameraTargetAssigner cameraTargetAssigner;
+        private PlayerActionMapSelector actionMapSelector;
 
         public int PlayerID => playerID;
         public bool IsStunned => isStunned;
         public bool IsFrozen => isFrozen;
-        public bool IsDead
-        {
-            get
-            {
-                return isDead;
-            }
-            set
-            {
-                isDead = value;
-            }
-        }
+        public bool IsDead => isDead;
 
         public event Action<float> Stunned;
         public event Action<float, float> Frozen;
         public event Action<float> FrozenContinuously;
         public event Action Killed;
+        public event Action Continue;
 
         public virtual void PlayerFinished() { }
 
@@ -104,7 +96,13 @@ namespace BananaSoup.Units
             playerSpriteSelector = GetComponent<PlayerSpriteSelector>();
             if ( playerSpriteSelector == null )
             {
-                Debug.Log($"{name} is missing a PlayerSpriteSelector!");
+                Debug.LogError($"{name} is missing a PlayerSpriteSelector!");
+            }
+
+            actionMapSelector = GetComponent<PlayerActionMapSelector>();
+            if ( actionMapSelector == null )
+            {
+                Debug.LogError($"{name} is missing a reference to PlayerActionMapSelector!");
             }
         }
 
@@ -160,7 +158,6 @@ namespace BananaSoup.Units
             }
         }
 
-        [ContextMenu("Kill Player")]
         public void Kill()
         {
             if ( !isDead )
@@ -170,8 +167,15 @@ namespace BananaSoup.Units
                 if ( Killed != null )
                 {
                     Killed();
+
+                    SetActionMapToScoreboard();
                 }
             }
+        }
+
+        public void SetActionMapToScoreboard()
+        {
+            actionMapSelector.SetActionMapOnDeath();
         }
 
         public void Pushback(Vector3 direction, float pushbackStrength)
@@ -186,6 +190,23 @@ namespace BananaSoup.Units
         public void SetPosition(Transform newPosition)
         {
             transform.position = newPosition.position;
+        }
+
+        /// <summary>
+        /// Sets correct settings for the player when new round is being called.
+        /// </summary>
+        public void InitializePlayerOnNewRound()
+        {
+            isDead = false;
+            actionMapSelector.SetActionMapOnNewRound();
+        }
+
+        public void OnContinue(InputAction.CallbackContext context)
+        {
+            if ( context.performed )
+            {
+                Continue();
+            }
         }
     }
 }

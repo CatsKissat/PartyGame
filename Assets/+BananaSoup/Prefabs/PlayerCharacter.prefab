@@ -5390,6 +5390,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 7a3c7317-a14d-4c3c-87e9-5d907072d5ff
     m_ActionName: Gameplay/DropItem[/XInputControllerWindows/rightShoulder,/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5655243588930166948}
+        m_TargetAssemblyTypeName: BananaSoup.Units.PlayerBase, Assembly-CSharp
+        m_MethodName: OnContinue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f037df9a-a182-493d-a10e-f6fa20644f58
+    m_ActionName: Scoreboard/Continue[/Keyboard/space,/XInputControllerWindows/buttonSouth]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -5611,7 +5627,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenuSceneName: MainMenu
-  gameplayLevelSceneName: MainMenu
+  levelSceneName: Level
   inputActions: {fileID: -944628639613478452, guid: 192774f50360a9e40ac2299b04da2e9f,
     type: 3}
 --- !u!114 &4513039801384999922

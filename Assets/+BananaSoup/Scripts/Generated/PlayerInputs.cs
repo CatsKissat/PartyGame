@@ -517,6 +517,199 @@ namespace BananaSoup.PlayerInputs
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Scoreboard"",
+            ""id"": ""3cd5f4b8-c889-4ae2-8267-bebc34e4aff3"",
+            ""actions"": [
+                {
+                    ""name"": ""Continue"",
+                    ""type"": ""Button"",
+                    ""id"": ""f037df9a-a182-493d-a10e-f6fa20644f58"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""27917ddb-b31b-414d-a534-8477065a2cb6"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78af6575-a231-4818-accd-d560304cf9c8"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99678f24-423d-4a84-9bd5-225d69ceba40"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a18a528b-88f2-4a58-b84b-fdce29d1771b"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ae1b4673-f1eb-40a7-87b9-5faae171e631"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0dddacbd-b75c-46e6-b35a-4396ed8ac309"",
+                    ""path"": ""<Gamepad>/dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""024ca471-93dd-44cf-b2b1-ee064f999e6c"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea641f12-bc77-49f5-bc10-7436fc5826dc"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c2f932a5-5390-4175-8320-1dfe6c633637"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""95da1da1-50e7-460d-907c-6327ca7b1e8f"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2cbc5765-adc9-4c1f-84e3-6cd7673dfbdd"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05bcfd89-6b6d-409a-915e-8df1b457a966"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5a90444f-1cc6-466a-b8e0-fd5d216a151b"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb8cf54a-a1ec-488f-9d19-a80de900a7b7"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0fb27bea-5e59-4add-8096-bf89e819b3b4"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ac9f486-0bfb-47ae-8cf2-454de82af583"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -534,6 +727,9 @@ namespace BananaSoup.PlayerInputs
             m_MainMenu_Jump = m_MainMenu.FindAction("Jump", throwIfNotFound: true);
             m_MainMenu_Run = m_MainMenu.FindAction("Run", throwIfNotFound: true);
             m_MainMenu_LeaveGame = m_MainMenu.FindAction("LeaveGame", throwIfNotFound: true);
+            // Scoreboard
+            m_Scoreboard = asset.FindActionMap("Scoreboard", throwIfNotFound: true);
+            m_Scoreboard_Continue = m_Scoreboard.FindAction("Continue", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -739,6 +935,52 @@ namespace BananaSoup.PlayerInputs
             }
         }
         public MainMenuActions @MainMenu => new MainMenuActions(this);
+
+        // Scoreboard
+        private readonly InputActionMap m_Scoreboard;
+        private List<IScoreboardActions> m_ScoreboardActionsCallbackInterfaces = new List<IScoreboardActions>();
+        private readonly InputAction m_Scoreboard_Continue;
+        public struct ScoreboardActions
+        {
+            private @PlayerInputs m_Wrapper;
+            public ScoreboardActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Continue => m_Wrapper.m_Scoreboard_Continue;
+            public InputActionMap Get() { return m_Wrapper.m_Scoreboard; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(ScoreboardActions set) { return set.Get(); }
+            public void AddCallbacks(IScoreboardActions instance)
+            {
+                if (instance == null || m_Wrapper.m_ScoreboardActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_ScoreboardActionsCallbackInterfaces.Add(instance);
+                @Continue.started += instance.OnContinue;
+                @Continue.performed += instance.OnContinue;
+                @Continue.canceled += instance.OnContinue;
+            }
+
+            private void UnregisterCallbacks(IScoreboardActions instance)
+            {
+                @Continue.started -= instance.OnContinue;
+                @Continue.performed -= instance.OnContinue;
+                @Continue.canceled -= instance.OnContinue;
+            }
+
+            public void RemoveCallbacks(IScoreboardActions instance)
+            {
+                if (m_Wrapper.m_ScoreboardActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IScoreboardActions instance)
+            {
+                foreach (var item in m_Wrapper.m_ScoreboardActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_ScoreboardActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public ScoreboardActions @Scoreboard => new ScoreboardActions(this);
         public interface IGameplayActions
         {
             void OnMove(InputAction.CallbackContext context);
@@ -753,6 +995,10 @@ namespace BananaSoup.PlayerInputs
             void OnJump(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
             void OnLeaveGame(InputAction.CallbackContext context);
+        }
+        public interface IScoreboardActions
+        {
+            void OnContinue(InputAction.CallbackContext context);
         }
     }
 }

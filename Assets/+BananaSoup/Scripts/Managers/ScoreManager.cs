@@ -99,11 +99,11 @@ namespace BananaSoup.ScoreSystem
         // GameManager gives information if it's a draw
         // ScoreManager updates player x's score, when there is a winner
         // ScoreManager updates UI if it's a draw
-        // TODO: ScoreManager closes ScorePanel and gives calls an event to start new round when player pushes a button
+        // ScoreManager closes ScorePanel and gives calls an event to start new round when player pushes a button
         // TODO: ScoreManager calls an event to end the game if match winner is found.
         // TODO: Set the players in score order from highest to lowest in ScorePanel
         // Set all player back alive when new round
-        // TODO: Set players' controls to ScoreScreen when in Scoreboard
-        // TODO: Set players' controls to Gameplay when leaving Scoreboard
+        // Set players' controls to ScoreScreen when in Scoreboard
+        // Set players' controls to Gameplay when leaving Scoreboard
     }
 }

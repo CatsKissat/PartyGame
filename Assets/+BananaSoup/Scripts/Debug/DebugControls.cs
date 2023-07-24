@@ -74,6 +74,7 @@ namespace BananaSoup.Debugging
                 if ( isDebugUIEnabled )
                 {
                     debugUI.SetActive(true);
+                    Debug.Log($"{this} set {nameof(debugUI)}'s visibility to {debugUI.activeInHierarchy}");
                 }
             }
         }

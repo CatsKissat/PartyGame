@@ -8,16 +8,17 @@ namespace BananaSoup
     public class PlayerActionMapSelector : MonoBehaviour
     {
         [SerializeField, Scene] private string mainMenuSceneName;
-        [SerializeField, Scene] private string gameplayLevelSceneName;
+        [SerializeField, Scene] private string levelSceneName;
         [SerializeField] private InputActionAsset inputActions;
         private PlayerInput playerInput;
         private const string mainMenuActionMapName = "MainMenu";
         private const string gameplayActionMapName = "Gameplay";
+        private const string scoreboardActionMapName = "Scoreboard";
 
         public void Setup()
         {
             GetReferences();
-            SetActionMap();
+            SetActionMapOnSceneLoad();
         }
 
         private void GetReferences()
@@ -34,20 +35,28 @@ namespace BananaSoup
             }
         }
 
-        private void SetActionMap()
+        private void SetActionMapOnSceneLoad()
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
 
             if ( currentSceneName == mainMenuSceneName )
             {
-                //Debug.Log($"Changing {name}'s Action Map to {mainMenuActionMapName}");
                 playerInput.SwitchCurrentActionMap(mainMenuActionMapName);
             }
-            else if ( currentSceneName == gameplayLevelSceneName )
+            else if ( currentSceneName == levelSceneName )
             {
-                //Debug.Log($"Changing {name}'s Action Map to {gameplayActionMapName}");
-                playerInput.SwitchCurrentActionMap(gameplayActionMapName);
+                SetActionMapOnNewRound();
             }
+        }
+
+        public void SetActionMapOnDeath()
+        {
+            playerInput.SwitchCurrentActionMap(scoreboardActionMapName);
+        }
+
+        public void SetActionMapOnNewRound()
+        {
+            playerInput.SwitchCurrentActionMap(gameplayActionMapName);
         }
     }
 }

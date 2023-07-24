@@ -61,6 +61,7 @@ namespace BananaSoup.Managers
                 foreach ( PlayerBase player in playerBases )
                 {
                     player.Killed -= DecreaseAlivePlayers;
+                    player.Continue -= InvokeNewRoundEvent;
                 }
             }
         }
@@ -79,7 +80,7 @@ namespace BananaSoup.Managers
                 FindPlayersAndInitialize();
                 NewRound += SetupNewRound;
                 StartFinished();
-                FireStartNewRoundEvent();
+                InvokeNewRoundEvent();
             }
         }
 
@@ -92,7 +93,7 @@ namespace BananaSoup.Managers
                 FindPlayersAndInitialize();
                 NewRound += SetupNewRound;
                 StartFinished();
-                FireStartNewRoundEvent();
+                InvokeNewRoundEvent();
             }
             else
             {
@@ -100,7 +101,7 @@ namespace BananaSoup.Managers
             }
         }
 
-        public void FireStartNewRoundEvent()
+        public void InvokeNewRoundEvent()
         {
             NewRound();
         }
@@ -158,10 +159,13 @@ namespace BananaSoup.Managers
                 InitializingActionMapSetup(playerGameObjects, i);
             }
 
-            // Adding a listener for all players.
             foreach ( PlayerBase player in playerBases )
             {
+                // Add listener for player death
                 player.Killed += DecreaseAlivePlayers;
+
+                // Add listener for player OnContinue
+                player.Continue += InvokeNewRoundEvent;
             }
         }
 
@@ -188,10 +192,10 @@ namespace BananaSoup.Managers
         {
             Debug.Log("Setuping a new round");
 
-            // Set all players alive
+            // Call method to initialize itself for each player
             foreach ( PlayerBase player in playerBases )
             {
-                player.IsDead = false;
+                player.InitializePlayerOnNewRound();
             }
 
             playersAlive = playerBases.Length;
@@ -230,6 +234,7 @@ namespace BananaSoup.Managers
                 {
                     if ( !playerBases[i].IsDead )
                     {
+                        playerBases[i].SetActionMapToScoreboard();
                         winnerID = playerBases[i].PlayerID;
                         RoundEnded(winnerID);
                     }
