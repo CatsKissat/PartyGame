@@ -27,27 +27,25 @@ namespace BananaSoup.Traps
         private const TrapModifierType.Modifier speedMod = TrapModifierType.Modifier.Speed;
         private const TrapModifierType.Modifier sizeMod = TrapModifierType.Modifier.Size;
 
-        protected override void OnTriggerEnter(Collider other)
+        /// <summary>
+        /// Method called in OnTriggerEnter inherited from the ProjectileBase.
+        /// </summary>
+        /// <param name="player"></param>
+        protected override void TriggerEnterAction(PlayerBase player)
         {
-            if ( (playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0
-                && other.TryGetComponent(out PlayerBase player) )
-            {
-                DetermineModAction(player);
-            }
-            
-            OnExpired();
+            DetermineModAction(player);
         }
 
-        private void FixedUpdate()
-        {
-            if ( isLaunched )
-            {
-                projectileMover.Move(direction);
-            }
-        }
-
+        /// <summary>
+        /// Method used to setup the modifier variables for the projectile.
+        /// </summary>
+        /// <param name="slowDuration">The desired duration of the slow.</param>
+        /// <param name="slowMultiplier">The desired multiplier of the slow. (< 1)</param>
+        /// <param name="stunDuration">The desired duration of a stun.</param>
+        /// <param name="modifier">The current modifier of the Turret.</param>
+        /// <param name="sizeModifier">The sizeModifier float value of the Turret.</param>
         public void SetupModifierVariables(float slowDuration, float slowMultiplier, float stunDuration,
-                                                    TrapModifierType.Modifier modifier,float sizeModifier)
+                                                    TrapModifierType.Modifier modifier, float sizeModifier)
         {
             currentModifier = modifier;
 
@@ -59,6 +57,11 @@ namespace BananaSoup.Traps
             CheckIfScaleShouldIncrease(sizeModifier);
         }
 
+        /// <summary>
+        /// Method called in SetupModifierVariables to check if the projectiles scale
+        /// should be increased.
+        /// </summary>
+        /// <param name="amountToIncrease">The float amount to increase the projectiles scale by.</param>
         private void CheckIfScaleShouldIncrease(float amountToIncrease)
         {
             if ( amountToIncrease > 0f && sizeIncrement == 0f )
@@ -74,6 +77,9 @@ namespace BananaSoup.Traps
             }
         }
 
+        /// <summary>
+        /// Method called when the projectile expires.
+        /// </summary>
         protected override void OnExpired()
         {
             base.OnExpired();

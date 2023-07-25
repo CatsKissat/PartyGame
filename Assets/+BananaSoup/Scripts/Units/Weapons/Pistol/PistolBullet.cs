@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 using BananaSoup.Units;
 
 namespace BananaSoup.Weapons
@@ -9,17 +8,19 @@ namespace BananaSoup.Weapons
         // Event used to track Expiration of a projectile
         public event Action<PistolBullet> Expired;
 
-        protected override void OnTriggerEnter(Collider other)
+        /// <summary>
+        /// Method called in the inherited OnTriggerEnter.
+        /// Used to kill the colliding player.
+        /// </summary>
+        /// <param name="player"></param>
+        protected override void TriggerEnterAction(PlayerBase player)
         {
-            if ( (playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0 
-                && other.TryGetComponent(out PlayerBase player))
-            {
-                player.Kill();
-            }
-
-            OnExpired();
+            player.Kill();
         }
 
+        /// <summary>
+        /// Method called when the projectile expires.
+        /// </summary>
         protected override void OnExpired()
         {
             base.OnExpired();

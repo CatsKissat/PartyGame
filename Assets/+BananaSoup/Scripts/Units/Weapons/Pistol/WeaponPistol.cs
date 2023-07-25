@@ -11,6 +11,10 @@ namespace BananaSoup.Weapons
 
         private new ComponentPool<PistolBullet> pool;
 
+        /// <summary>
+        /// Call the inherited WeaponBase start with base.Start();
+        /// Then setup the pool for this pistol.
+        /// </summary>
         protected override void Start()
         {
             base.Start();
@@ -19,6 +23,13 @@ namespace BananaSoup.Weapons
             pool.SetPooledObjectsParent(GetPooledProjectilesTransforms(), projectilePool);
         }
 
+        /// <summary>
+        /// Method called to fire a projectile from the weapon.
+        /// First Create a projectile to the firingPoint.
+        /// Then if the projectile is not null Setup the projectile with required parameters.
+        /// Then Launch the projectile in the desired direction and make the projectiles
+        /// Expired event listen to this components OnExpired.
+        /// </summary>
         public override void Fire()
         {
             if ( equippedByAPlayer )
@@ -66,15 +77,25 @@ namespace BananaSoup.Weapons
             return item;
         }
 
-        protected bool Recycle(PistolBullet item)
+        /// <summary>
+        /// Method used to call the pools Recycle method.
+        /// </summary>
+        /// <param name="projectile">The projectile to recycle.</param>
+        /// <returns>True if a projectile was recycled, false if not.</returns>
+        protected bool Recycle(PistolBullet projectile)
         {
-            return pool.Recycle(item);
+            return pool.Recycle(projectile);
         }
 
-        private void OnExpired(PistolBullet bullet)
+        /// <summary>
+        /// Stop listening to this components OnExpired on the projectiles Expired event.
+        /// Recycle the projectile.
+        /// </summary>
+        /// <param name="projectile">The projectile to recycle.</param>
+        private void OnExpired(PistolBullet projectile)
         {
-            bullet.Expired -= OnExpired;
-            Recycle(bullet);
+            projectile.Expired -= OnExpired;
+            Recycle(projectile);
         }
         #endregion
     }

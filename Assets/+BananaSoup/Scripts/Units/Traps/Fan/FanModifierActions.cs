@@ -20,6 +20,9 @@ namespace BananaSoup.Traps
         private const string playerManagerTag = "PlayerManager";
         private const string playerTag = "Player";
 
+        /// <summary>
+        /// Used to get a reference to the PlayerInputManager/PlayerManager.
+        /// </summary>
         private void Start()
         {
             playerManager = GameObject.FindGameObjectWithTag(playerManagerTag).GetComponent<PlayerInputManager>();
@@ -31,6 +34,10 @@ namespace BananaSoup.Traps
         }
 
         //TODO: Where and when is this called?
+        /// <summary>
+        /// Method used to get an array of existing players and order them by PlayerID's.
+        /// Then set the length of the playersInTriggerzone array to the amount of players.
+        /// </summary>
         public void GetPlayers()
         {
             if ( players == null )
@@ -54,6 +61,14 @@ namespace BananaSoup.Traps
             playersInTriggerzone = new PlayerBase[playerManager.playerCount];
         }
 
+        /// <summary>
+        /// When a player enters the trigger collider of the fan add them to the
+        /// the corresponding slot in the playersInTriggerzone array and
+        /// increase amountOfPlayersInTrigger by one.
+        /// If the entering object is not on the player LayerMask and doesn't have a
+        /// PlayerBase return.
+        /// </summary>
+        /// <param name="other">The other GameObjects collider.</param>
         protected override void OnTriggerEnter(Collider other)
         {
             if ( (playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0
@@ -63,8 +78,6 @@ namespace BananaSoup.Traps
 
                 playersInTriggerzone[playerID] = players[playerID];
 
-                Debug.Log($"Player with ID: {playerID} entered the trigger of {name}!");
-
                 amountOfPlayersInTrigger++;
             }
             else
@@ -73,6 +86,16 @@ namespace BananaSoup.Traps
             }
         }
 
+        /// <summary>
+        /// Check if the exiting object is on the player LayerMask and has a PlayerBase.
+        /// If not return, otherwise
+        /// remove the player from the playersInTriggerzone array with the players
+        /// PlayerID.
+        /// Check if the current modifier of the fan is freezeMod, if it is freeze
+        /// the player on exit.
+        /// Otherwise return.
+        /// </summary>
+        /// <param name="other"></param>
         private void OnTriggerExit(Collider other)
         {
             if ( (playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0
@@ -94,6 +117,9 @@ namespace BananaSoup.Traps
             }
         }
 
+        /// <summary>
+        /// Used to determine the correct action towards players on a constant loop.
+        /// </summary>
         private void FixedUpdate()
         {
             if ( amountOfPlayersInTrigger > 0 )
@@ -102,6 +128,9 @@ namespace BananaSoup.Traps
             }
         }
 
+        /// <summary>
+        /// Used to determine the correct action based on the current modifier of the trap.
+        /// </summary>
         private void DetermineModAction()
         {
             switch ( currentModifier )
@@ -136,6 +165,11 @@ namespace BananaSoup.Traps
             }
         }
 
+        /// <summary>
+        /// The default pushback action of the trap.
+        /// Simply pushback the player towards the traps transform.forward with the
+        /// set pushbackStrength.
+        /// </summary>
         private void PushbackAction()
         {
             foreach ( PlayerBase player in playersInTriggerzone )
@@ -144,6 +178,9 @@ namespace BananaSoup.Traps
             }
         }
 
+        /// <summary>
+        /// Method used to constantly freeze the player with the slowMultiplier.
+        /// </summary>
         private void FreezeAction()
         {
             foreach ( PlayerBase player in playersInTriggerzone )
@@ -152,11 +189,18 @@ namespace BananaSoup.Traps
             }
         }
 
+        /// <summary>
+        /// Method used to freeze the player when they exit the fans triggerzone.
+        /// </summary>
+        /// <param name="player">The player to freeze.</param>
         private void FreezeOnExit(PlayerBase player)
         {
             player.Freeze(slowDuration, slowMultiplier);
         }
 
+        /// <summary>
+        /// Method used to stun the player in the triggerzone.
+        /// </summary>
         private void StunAction()
         {
             foreach ( PlayerBase player in playersInTriggerzone )
@@ -165,6 +209,10 @@ namespace BananaSoup.Traps
             }
         }
 
+        /// <summary>
+        /// Method used to increase the pushbackStrength with the speed float inherited
+        /// from the TrapBase.
+        /// </summary>
         public void IncreasePushback()
         {
             pushbackStrength += speed;

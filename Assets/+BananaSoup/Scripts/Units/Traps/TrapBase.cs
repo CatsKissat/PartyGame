@@ -49,6 +49,16 @@ namespace BananaSoup.Traps
             set => modifiedSize = value;
         }
 
+        /// <summary>
+        /// First call the inherited UnitBase Start with base.Start().
+        /// Then get the Rigidbodies of any child GameObject's into an array.
+        /// If childRigidbodies isn't null set the useGravity and isKinematic values
+        /// of the child Rigidbodies corresponding with the serialized variables.
+        /// Then get a reference to the ModifierActions component, if it can't be found
+        /// log an error.
+        /// Then check if the trap should select a random mod if not then just setup the
+        /// currently selected serialize modifier.
+        /// </summary>
         protected override void Start()
         {
             base.Start();
@@ -76,7 +86,6 @@ namespace BananaSoup.Traps
             }
             else
             {
-                Debug.Log($"Current modifier for {name} is: {trapModifier}");
                 modActions.SetupModifier();
             }
         }

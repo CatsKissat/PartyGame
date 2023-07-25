@@ -1,9 +1,9 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using BananaSoup.PickUpSystem;
 using BananaSoup.Units;
 using BananaSoup.Utils;
-using System.Collections;
 
 namespace BananaSoup.Weapons
 {
@@ -58,6 +58,16 @@ namespace BananaSoup.Weapons
 
         public Vector3 Position => transform.position;
 
+        /// <summary>
+        /// Method called when the weapon is picked up.
+        /// Used to set the weapons equippedByAPlayer true, set the weapons Rigidbody
+        /// to be kinematic, set the weapons rotation with the parameter rotation,
+        /// set the weapons parent to be the parameter Transform container,
+        /// set the position to be the containers position and then set the weapons
+        /// colliders to be triggers.
+        /// </summary>
+        /// <param name="container">The desired container for the weapon.</param>
+        /// <param name="rotation">The desired rotation for the weapon.</param>
         public void OnPickUp(Transform container, Vector3 rotation)
         {
             equippedByAPlayer = true;
@@ -113,6 +123,10 @@ namespace BananaSoup.Weapons
         }
         #endregion
 
+        /// <summary>
+        /// If resetThrownRoutine isn't null when the GameObject is disabled
+        /// stop the resetThrownRoutine coroutine and null it.
+        /// </summary>
         protected void OnDisable()
         {
             if ( resetThrownRoutine != null )
@@ -122,12 +136,31 @@ namespace BananaSoup.Weapons
             }
         }
 
+        /// <summary>
+        /// If the weapons thrown bool is true the GameObject is enabled set it false.
+        /// </summary>
+        protected void OnEnable()
+        {
+            if ( thrown )
+            {
+                thrown = false;
+            }
+        }
+
+        /// <summary>
+        /// Call the UnitBase Start() here with base.Start().
+        /// Then call the Setup() method.
+        /// </summary>
         protected override void Start()
         {
             base.Start();
             Setup();
         }
 
+        /// <summary>
+        /// Method used to Setup the weapon.
+        /// Call GetReferences method.
+        /// </summary>
         protected virtual void Setup()
         {
             GetReferences();
@@ -201,11 +234,17 @@ namespace BananaSoup.Weapons
         }
         #endregion
 
+        /// <summary>
+        /// Method used to fire the weapon.
+        /// </summary>
         public virtual void Fire()
         {
             
         }
 
+        /// <summary>
+        /// Coroutine to add a delay to picking up the weapon again after it is thrown.
+        /// </summary>
         protected IEnumerator ResetThrown()
         {
             thrown = true;

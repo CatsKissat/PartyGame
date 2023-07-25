@@ -14,6 +14,10 @@ namespace BananaSoup.Units
 
         protected Rigidbody rb;
 
+        /// <summary>
+        /// If the base is supposed to have a rigidbody call the GetReferences() and
+        /// SetupRigidbody() methods.
+        /// </summary>
         protected virtual void Start()
         {
             if ( baseHasRigidbody )
@@ -23,6 +27,10 @@ namespace BananaSoup.Units
             }
         }
 
+        /// <summary>
+        /// Used to get a reference to the GameObject's Rigidbody.
+        /// If it can't be found log an error.
+        /// </summary>
         private void GetReferences()
         {
             rb = GetComponent<Rigidbody>();
@@ -32,6 +40,9 @@ namespace BananaSoup.Units
             }
         }
 
+        /// <summary>
+        /// Method used to setup the Rigidbody with the serialized values isUsingGravity and isKinematic.
+        /// </summary>
         protected virtual void SetupRigidbody()
         {
             rb.useGravity = isUsingGravity;

@@ -34,6 +34,9 @@ namespace BananaSoup.Traps
             TryStopAndNullCoroutine(shootCoroutine);
         }
 
+        /// <summary>
+        /// Get reference to the LaserProjectileSpawner, if it can't be found log an error.
+        /// </summary>
         private void Awake()
         {
             spawner = GetComponent<LaserProjectileSpawner>();
