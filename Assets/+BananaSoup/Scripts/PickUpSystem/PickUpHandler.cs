@@ -32,13 +32,21 @@ namespace BananaSoup.PickUpSystem
         private IPickUpable pickedUpItem = null;
         private WeaponBase itemWeaponScript = null;
 
+        private PlayerCharacterController controller = null;
+
 
         private void Start()
         {
             rb = GetComponent<Rigidbody>();
             if ( rb == null )
             {
-                Debug.LogError($"PickUpHandler couldn't find a Rigidbody on {name}!");
+                Debug.LogError($"PickUpHandler on {name} couldn't find a Rigidbody on {name}!");
+            }
+
+            controller = GetComponent<PlayerCharacterController>();
+            if ( controller == null )
+            {
+                Debug.LogError($"PickUpHandler on {name} couldn't find a PlayerCharacterController component on {name}!");
             }
         }
 
@@ -92,6 +100,11 @@ namespace BananaSoup.PickUpSystem
         /// </summary>
         public void OnPickUpOrFire(InputAction.CallbackContext context)
         {
+            if ( controller.IsDead )
+            {
+                return;
+            }
+
             if ( !itemEquipped && context.performed )
             {
                 OnPickUpItem();
@@ -112,6 +125,11 @@ namespace BananaSoup.PickUpSystem
         /// </summary>
         public void OnDropItem(InputAction.CallbackContext context)
         {
+            if ( controller.IsDead )
+            {
+                return;
+            }
+
             if ( !itemEquipped )
             {
                 return;
