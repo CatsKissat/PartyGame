@@ -90,11 +90,21 @@ namespace BananaSoup.Units
         #region OnInputs
         public void OnMove(InputAction.CallbackContext context)
         {
+            if ( controller.IsDead )
+            {
+                return;
+            }
+
             moveInput = context.ReadValue<float>();
         }
 
         public void OnRun(InputAction.CallbackContext context)
         {
+            if ( controller.IsDead )
+            {
+                return;
+            }
+
             if ( context.performed )
             {
                 moveSpeed = currentRunSpeed;
@@ -109,6 +119,11 @@ namespace BananaSoup.Units
 
         public void OnJump(InputAction.CallbackContext context)
         {
+            if ( controller.IsDead )
+            {
+                return;
+            }
+
             if ( context.performed )
             {
                 jump = true;
