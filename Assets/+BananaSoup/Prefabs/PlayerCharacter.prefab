@@ -5023,7 +5023,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6149595854658137349}
   m_Layer: 7
-  m_Name: WeaponContainer
+  m_Name: ItemContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5654,9 +5654,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1429ee888a920e4b8df4459a13853e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponContainer: {fileID: 6149595854658137349}
+  itemContainer: {fileID: 6149595854658137349}
   dropForwardForce: 2.5
   dropUpwardForce: 2.5
+  resetItemEquipped: 0.5
 --- !u!1 &8074560050486849551
 GameObject:
   m_ObjectHideFlags: 0

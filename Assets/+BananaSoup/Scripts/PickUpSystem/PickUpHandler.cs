@@ -1,29 +1,37 @@
-using BananaSoup.Weapons;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using BananaSoup.Weapons;
 
 namespace BananaSoup.PickUpSystem
 {
     public class PickUpHandler : MonoBehaviour
     {
-        [SerializeField]
-        private Transform weaponContainer = null;
+        [SerializeField, Tooltip("The desired child GameObject where you want to store equipped item(s).")]
+        private Transform itemContainer = null;
 
         [Space]
 
-        [SerializeField]
+        [SerializeField, Tooltip("The forward force added to an item when dropping it.")]
         private float dropForwardForce = 2.5f;
-        [SerializeField]
+        [SerializeField, Tooltip("The upward force added to an item when dropping it.")]
         private float dropUpwardForce = 2.5f;
 
+        [Space]
+
+        [SerializeField, Tooltip("Time in seconds when the player can pick up an item after having one taken away.")]
+        private float resetItemEquipped = 0.5f;
+
         private bool itemEquipped = false;
+
+        private Rigidbody rb = null;
+        private Coroutine itemTakenRoutine = null;
 
         private List<IPickUpable> pickUpablesInRange = new List<IPickUpable>();
         private IPickUpable pickedUpItem = null;
         private WeaponBase itemWeaponScript = null;
 
-        private Rigidbody rb = null;
 
         private void Start()
         {
@@ -34,6 +42,12 @@ namespace BananaSoup.PickUpSystem
             }
         }
 
+        #region OnTriggers
+        /// <summary>
+        /// OnTriggerEnter to add IPickUpables to the pickUpablesInRange list when they
+        /// enter the players pick up radius (collider).
+        /// </summary>
+        /// <param name="other">The other GameObject's collider.</param>
         private void OnTriggerEnter(Collider other)
         {
             if ( other.TryGetComponent(out IPickUpable pickUpable) )
@@ -42,16 +56,18 @@ namespace BananaSoup.PickUpSystem
                 {
                     if ( pickUpable == p )
                     {
-                        Debug.Log("The pickUpable is already on the list!");
                         return;
                     }
                 }
-
                 pickUpablesInRange.Add(pickUpable);
-                Debug.Log("Added a pickupable to pickupables!");
             }
         }
 
+        /// <summary>
+        /// OnTriggerExit to remove IPickUpables from the pickUpablesInRange list when
+        /// they leave the pick up radius (collider) of the player.
+        /// </summary>
+        /// <param name="other">The other GameObject's collider.</param>
         private void OnTriggerExit(Collider other)
         {
             if ( other.TryGetComponent(out IPickUpable pickUpable) )
@@ -61,16 +77,19 @@ namespace BananaSoup.PickUpSystem
                     if ( p == pickUpable )
                     {
                         pickUpablesInRange.Remove(pickUpable);
-                        Debug.Log("Removed a pickupable from pickupables!");
                         return;
                     }
                 }
-
-                Debug.Log("No pickupables to remove!");
             }
         }
+        #endregion
 
         #region OnInputs
+        /// <summary>
+        /// Method called when pressing the PickUpOrFire keybind.
+        /// If the player doesn't have an item equipped call OnPickUpItem method.
+        /// If the player has an item equipped call OnFire method.
+        /// </summary>
         public void OnPickUpOrFire(InputAction.CallbackContext context)
         {
             if ( !itemEquipped && context.performed )
@@ -79,16 +98,22 @@ namespace BananaSoup.PickUpSystem
             }
             else if ( itemEquipped && context.performed )
             {
-                Debug.Log("Player is trying to fire the weapon!");
                 OnFire();
             }
         }
 
+        /// <summary>
+        /// Method called when pressing the DropItem keybind.
+        /// If no item is equipped return.
+        /// If an item is equipped set its parent to null and call the items OnDrop method with
+        /// correct parameters.
+        /// Set pickedUpItem to be null and itemEquipped to false, and if there is a
+        /// reference to a itemWeaponScript null it.
+        /// </summary>
         public void OnDropItem(InputAction.CallbackContext context)
         {
             if ( !itemEquipped )
             {
-                Debug.Log($"{name} tried to drop an item, but doesn't have one!");
                 return;
             }
 
@@ -108,17 +133,25 @@ namespace BananaSoup.PickUpSystem
                 }
                 else
                 {
-                    Debug.Log($"{name} tried to drop an item, but doesn't have one!");
+                    return;
                 }
             }
         }
         #endregion
 
+        /// <summary>
+        /// Method used when picking up an item.
+        /// Returns if there are no IPickUpables in range of the player.
+        /// If there are use GetNearestPickUpable to get the closest one to the player
+        /// and then check if it is equipped by a player, if it is reset the other players
+        /// PickUpHandler weapon references and itemEquipped.
+        /// Then call the pickedUpItem's OnPickUp method to set the parent and rotation of the
+        /// weapon and get a reference to the weapons WeaponBase if it has one.
+        /// </summary>
         private void OnPickUpItem()
         {
             if ( pickUpablesInRange.Count == 0 )
             {
-                Debug.Log($"There are no items to pick up near {name}!");
                 return;
             }
 
@@ -126,7 +159,13 @@ namespace BananaSoup.PickUpSystem
 
             if ( pickedUpItem != null && !pickedUpItem.Thrown)
             {
-                pickedUpItem.OnPickUp(weaponContainer, transform.rotation.eulerAngles);
+                if ( pickedUpItem.EquippedByAPlayer )
+                {
+                    PickUpHandler otherPickUpHandler = pickedUpItem.RootParent.GetComponent<PickUpHandler>();
+                    otherPickUpHandler.ItemTakenAway();
+                }
+
+                pickedUpItem.OnPickUp(itemContainer, transform.rotation.eulerAngles);
                 itemEquipped = true;
 
                 itemWeaponScript = pickedUpItem.GameObject.GetComponent<WeaponBase>();
@@ -137,6 +176,9 @@ namespace BananaSoup.PickUpSystem
             }
         }
 
+        /// <summary>
+        /// Method used to call the Fire method on the currently equipped weapon.
+        /// </summary>
         private void OnFire()
         {
             if ( itemWeaponScript != null )
@@ -145,6 +187,14 @@ namespace BananaSoup.PickUpSystem
             }
         }
 
+        /// <summary>
+        /// Method used to get the nearest IPickUpable close to the player.
+        /// The method goes through a list of IPickUpables and calculates which one is
+        /// the closest to the player by comparing the distance between the player and
+        /// the IPickUpables.
+        /// </summary>
+        /// <param name="pickUpables">The list of IPickUpables that are near the player.</param>
+        /// <returns>The nearest IPickUpable to the player.</returns>
         private IPickUpable GetNearestPickUpable(List<IPickUpable> pickUpables)
         {
             IPickUpable closestPickupable = null;
@@ -163,5 +213,49 @@ namespace BananaSoup.PickUpSystem
 
             return closestPickupable;
         }
+
+        #region ItemTakenByAnotherPlayer
+        /// <summary>
+        /// Method used to handle other player taking away the weapon from the current
+        /// holder. Reset references and itemEquipped bool.
+        /// </summary>
+        public void ItemTakenAway()
+        {
+            if ( pickedUpItem != null )
+            {
+                pickedUpItem = null;
+            }
+
+            if ( itemWeaponScript != null )
+            {
+                itemWeaponScript = null;
+            }
+
+            if ( itemEquipped )
+            {
+                if ( itemTakenRoutine == null )
+                {
+                    itemTakenRoutine = StartCoroutine(ItemTaken());
+                }
+                else
+                {
+                    StopCoroutine(itemTakenRoutine);
+                    itemTakenRoutine = null;
+                    itemTakenRoutine = StartCoroutine(ItemTaken());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Coroutine used to reset itemEquipped bool so that the player can't immediately
+        /// steal back the weapon that was taken away from them.
+        /// </summary>
+        private IEnumerator ItemTaken()
+        {
+            yield return new WaitForSeconds(resetItemEquipped);
+            itemEquipped = false;
+            itemTakenRoutine = null;
+        }
+        #endregion
     }
 }

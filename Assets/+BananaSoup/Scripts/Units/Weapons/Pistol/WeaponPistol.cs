@@ -21,7 +21,7 @@ namespace BananaSoup.Weapons
 
         public override void Fire()
         {
-            if ( equipped )
+            if ( equippedByAPlayer )
             {
                 PistolBullet projectile = Create(firingPoint.transform.position);
 

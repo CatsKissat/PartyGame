@@ -6,7 +6,8 @@ namespace BananaSoup.PickUpSystem
     {
         public GameObject GameObject => throw new System.NotImplementedException();
         public Transform Transform => throw new System.NotImplementedException();
-        public bool PickedUp => throw new System.NotImplementedException();
+        public Transform RootParent => throw new System.NotImplementedException();
+        public bool EquippedByAPlayer => throw new System.NotImplementedException();
         public bool Thrown => throw new System.NotImplementedException();
 
         public Vector3 Position => throw new System.NotImplementedException();

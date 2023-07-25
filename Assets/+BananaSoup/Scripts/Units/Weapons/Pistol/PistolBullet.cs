@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using BananaSoup.Units;
 
-namespace BananaSoup
+namespace BananaSoup.Weapons
 {
     public class PistolBullet : ProjectileBase
     {
@@ -12,7 +12,7 @@ namespace BananaSoup
         protected override void OnTriggerEnter(Collider other)
         {
             if ( (playersLayerMask.value & (1 << other.transform.gameObject.layer)) > 0 
-                && TryGetComponent(out PlayerBase player))
+                && other.TryGetComponent(out PlayerBase player))
             {
                 player.Kill();
             }

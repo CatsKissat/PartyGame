@@ -31,7 +31,7 @@ namespace BananaSoup.Weapons
         [SerializeField, Tooltip("The duration the weapon can't be picked up after being thrown.")]
         float thrownResetTime = 0.5f;
 
-        protected bool equipped = false;
+        protected bool equippedByAPlayer = false;
         protected bool thrown = false;
 
         protected Coroutine resetThrownRoutine = null;
@@ -52,17 +52,16 @@ namespace BananaSoup.Weapons
         #region IPickUpable
         public GameObject GameObject => gameObject;
         public Transform Transform => transform;
-        public bool PickedUp => equipped;
+        public Transform RootParent => transform.root;
+        public bool EquippedByAPlayer => equippedByAPlayer;
         public bool Thrown => thrown;
 
         public Vector3 Position => transform.position;
 
         public void OnPickUp(Transform container, Vector3 rotation)
         {
-            equipped = true;
+            equippedByAPlayer = true;
             rb.isKinematic = true;
-
-            transform.rotation = Quaternion.Euler(Vector3.zero);
 
             transform.rotation = Quaternion.Euler(rotation);
             transform.parent = container;
@@ -87,7 +86,7 @@ namespace BananaSoup.Weapons
         /// <param name="forwardForce">The desired forward force to apply to the weapon.</param>
         public void OnDrop(Vector3 currentVelocity, Vector3 forward, Vector3 up, float upWardForce, float forwardForce)
         {
-            equipped = false;
+            equippedByAPlayer = false;
 
             rb.isKinematic = false;
             rb.useGravity = true;
@@ -97,12 +96,12 @@ namespace BananaSoup.Weapons
                 col.isTrigger = false;
             }
 
-            // Make players velocity weapons velocity and add force.
+            // Give weapons Rigidbody the players velocity and add force.
             rb.velocity = currentVelocity;
             rb.AddForce(up * upWardForce, ForceMode.Impulse);
             rb.AddForce(forward * forwardForce, ForceMode.Impulse);
 
-            // Randomize the X-rotation of the weapon.
+            // Randomize the Z-rotation of the weapon.
             float random = Random.Range(-1f, 1f);
             Vector3 randomRotate = new Vector3(0, 0, random);
             rb.AddTorque(randomRotate * 10);
@@ -209,12 +208,10 @@ namespace BananaSoup.Weapons
 
         protected IEnumerator ResetThrown()
         {
-            Debug.Log($"{name} was thrown!");
             thrown = true;
             yield return new WaitForSeconds(thrownResetTime);
             thrown = false;
             resetThrownRoutine = null;
-            Debug.Log($"{name} can be picked up again!");
         }
     }
 }

@@ -6,7 +6,8 @@ namespace BananaSoup.PickUpSystem
     {
         GameObject GameObject { get; }
         Transform Transform { get; }
-        bool PickedUp { get; }
+        Transform RootParent { get; }
+        bool EquippedByAPlayer { get; }
         bool Thrown { get; }
         Vector3 Position { get; }
 
