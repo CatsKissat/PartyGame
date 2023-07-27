@@ -5544,7 +5544,7 @@ MonoBehaviour:
   isKinematic: 0
   isUsingGravity: 1
   stunCooldown: 1
-  m_JumpForce: 400
+  m_JumpForce: 520
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
