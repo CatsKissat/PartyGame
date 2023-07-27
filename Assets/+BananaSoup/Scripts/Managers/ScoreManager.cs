@@ -1,6 +1,7 @@
 using UnityEngine;
-using BananaSoup.Managers;
+using System.Collections;
 using TMPro;
+using BananaSoup.Managers;
 
 namespace BananaSoup.ScoreSystem
 {
@@ -9,11 +10,29 @@ namespace BananaSoup.ScoreSystem
         [SerializeField] private GameObject playerScorePanelPrefab;
         [SerializeField] private GameObject drawPanel;
         [SerializeField] private GameObject winnerPanel;
+        [SerializeField] private GameObject continuePanel;
         private PlayerScorePanel[] playerScorePanel;
         private GameManager gameManager;
         private ScorePanel scorePanel;
         private PlayersPanel playersPanel;
         private int previousWinner;
+        private bool isScorescreenActive;
+        private bool allowContinue;
+        private float continueTimer = 2.0f;
+        private Coroutine continueRoutine;
+
+        public bool IsScorescreenActive => isScorescreenActive;
+        public bool AllowContinue
+        {
+            get
+            {
+                return allowContinue;
+            }
+            set
+            {
+                allowContinue = value;
+            }
+        }
 
         private void Awake()
         {
@@ -36,6 +55,8 @@ namespace BananaSoup.ScoreSystem
             gameManager.RoundEnded -= UpdateScore;
             gameManager.NewRound -= HideScores;
             gameManager.WinnerFound -= ShowEndResults;
+
+            TryEndRoutine();
         }
 
         private void GetReferences()
@@ -75,7 +96,11 @@ namespace BananaSoup.ScoreSystem
 
         private void UpdateScore(int winnerID)
         {
+            continuePanel.SetActive(false);
+
             scorePanel.gameObject.SetActive(true);
+
+            isScorescreenActive = true;
 
             if ( winnerID >= 0 )
             {
@@ -86,6 +111,9 @@ namespace BananaSoup.ScoreSystem
             {
                 drawPanel.SetActive(true);
             }
+
+            TryEndRoutine();
+            continueRoutine = StartCoroutine(WaitBeforeContinue());
         }
 
         private void HideScores()
@@ -93,6 +121,7 @@ namespace BananaSoup.ScoreSystem
             drawPanel.SetActive(false);
             scorePanel.gameObject.SetActive(false);
             playerScorePanel[previousWinner].HideWinnerText();
+            isScorescreenActive = false;
         }
 
         private void ShowEndResults(int winnerID)
@@ -102,6 +131,22 @@ namespace BananaSoup.ScoreSystem
             text.text = winnerText;
 
             winnerPanel.gameObject.SetActive(true);
+        }
+
+        private IEnumerator WaitBeforeContinue()
+        {
+            yield return new WaitForSeconds(continueTimer);
+            allowContinue = true;
+            continuePanel.SetActive(true);
+        }
+
+        private void TryEndRoutine()
+        {
+            if ( continueRoutine != null )
+            {
+                StopCoroutine(continueRoutine);
+                continueRoutine = null;
+            }
         }
 
         // NOTE: My check list
@@ -120,5 +165,6 @@ namespace BananaSoup.ScoreSystem
         // Set players' controls to ScoreScreen when in Scoreboard
         // Set players' controls to Gameplay when leaving Scoreboard
         // TODO: ScoreManager gets scores from PlayerBase
+        // TODO: Wait x time before accepting Continue
     }
 }

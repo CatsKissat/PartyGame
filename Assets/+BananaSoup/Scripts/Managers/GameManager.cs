@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using BananaSoup.Units;
+using BananaSoup.ScoreSystem;
 
 namespace BananaSoup.Managers
 {
@@ -21,6 +22,7 @@ namespace BananaSoup.Managers
         private int playerAmount;
         private int winnerID;
         private bool hasWinner;
+        private ScoreManager scoreManager;
 
         // Debug
         private bool isDebugSetupCalled;
@@ -64,7 +66,7 @@ namespace BananaSoup.Managers
                 foreach ( PlayerBase player in playerBases )
                 {
                     player.Killed -= DecreaseAlivePlayers;
-                    player.Continue -= InvokeNewRoundOrEndGame;
+                    player.Continue -= TryInvokeNewRound;
                 }
             }
         }
@@ -106,6 +108,16 @@ namespace BananaSoup.Managers
             }
         }
 
+        private void TryInvokeNewRound()
+        {
+            if ( !scoreManager.IsScorescreenActive || !scoreManager.AllowContinue )
+            {
+                return;
+            }
+
+            InvokeNewRoundOrEndGame();
+        }
+
         public void InvokeNewRoundOrEndGame()
         {
             for ( int i = 0; i < playerBases.Length; i++ )
@@ -114,12 +126,14 @@ namespace BananaSoup.Managers
                 {
                     WinnerFound(playerBases[i].PlayerID);
                     hasWinner = true;
+                    scoreManager.AllowContinue = false;
                     break;
                 }
             }
 
             if ( !hasWinner )
             {
+                scoreManager.AllowContinue = false;
                 NewRound();
             }
         }
@@ -136,6 +150,12 @@ namespace BananaSoup.Managers
             if ( inputManager == null )
             {
                 Debug.LogError($"{name} is missing a reference to PlayerInputManager!");
+            }
+
+            scoreManager = FindObjectOfType<ScoreManager>();
+            if ( scoreManager == null )
+            {
+                Debug.LogError($"{name} is missing a reference to the ScoreManager!");
             }
         }
 
@@ -183,7 +203,7 @@ namespace BananaSoup.Managers
                 player.Killed += DecreaseAlivePlayers;
 
                 // Add listener for player OnContinue
-                player.Continue += InvokeNewRoundOrEndGame;
+                player.Continue += TryInvokeNewRound;
             }
         }
 

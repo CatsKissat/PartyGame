@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2158.3518, g: 2260.5745, b: 3278.4224, a: 1}
+  m_IndirectSpecularColor: {r: 2158.6926, g: 2263.3538, b: 3286.813, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -587,6 +587,7 @@ MonoBehaviour:
     type: 3}
   drawPanel: {fileID: 1899396561}
   winnerPanel: {fileID: 2041426493}
+  continuePanel: {fileID: 1233052930}
 --- !u!1 &157207112
 GameObject:
   m_ObjectHideFlags: 0
