@@ -4,6 +4,7 @@ using UnityEngine;
 using BananaSoup.PickUpSystem;
 using BananaSoup.Units;
 using BananaSoup.Utils;
+using BananaSoup.Managers;
 
 namespace BananaSoup.Weapons
 {
@@ -37,6 +38,7 @@ namespace BananaSoup.Weapons
         protected Coroutine resetThrownRoutine = null;
 
         private Collider[] colliders;
+        private GameManager gameManager;
 
         protected ComponentPool<ProjectileBase> pool;
         protected Transform projectilePool = null;
@@ -129,11 +131,9 @@ namespace BananaSoup.Weapons
         /// </summary>
         protected void OnDisable()
         {
-            if ( resetThrownRoutine != null )
-            {
-                StopCoroutine(resetThrownRoutine);
-                resetThrownRoutine = null;
-            }
+            TryEndRoutine();
+
+            gameManager.NewRound -= SetupNewRound;
         }
 
         /// <summary>
@@ -164,6 +164,8 @@ namespace BananaSoup.Weapons
         protected virtual void Setup()
         {
             GetReferences();
+
+            gameManager.NewRound += SetupNewRound;
         }
 
         #region GetReferences
@@ -185,6 +187,12 @@ namespace BananaSoup.Weapons
             }
 
             colliders = GetComponents<Collider>();
+
+            gameManager = FindObjectOfType<GameManager>();
+            if ( gameManager == null )
+            {
+                Debug.LogError($"{name} is missing a reference to the GameManager!");
+            }
         }
         #endregion
 
@@ -239,7 +247,7 @@ namespace BananaSoup.Weapons
         /// </summary>
         public virtual void Fire()
         {
-            
+
         }
 
         /// <summary>
@@ -251,6 +259,23 @@ namespace BananaSoup.Weapons
             yield return new WaitForSeconds(thrownResetTime);
             thrown = false;
             resetThrownRoutine = null;
+        }
+
+        private void SetupNewRound()
+        {
+            TryEndRoutine();
+
+            equippedByAPlayer = false;
+            thrown = false;
+        }
+
+        private void TryEndRoutine()
+        {
+            if ( resetThrownRoutine != null )
+            {
+                StopCoroutine(resetThrownRoutine);
+                resetThrownRoutine = null;
+            }
         }
     }
 }

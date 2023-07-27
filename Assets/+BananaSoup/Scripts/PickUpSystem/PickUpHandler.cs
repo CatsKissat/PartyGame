@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using BananaSoup.Weapons;
+using BananaSoup.Managers;
 
 namespace BananaSoup.PickUpSystem
 {
@@ -33,9 +34,24 @@ namespace BananaSoup.PickUpSystem
         private WeaponBase itemWeaponScript = null;
 
         private PlayerCharacterController controller = null;
+        private GameManager gameManager;
 
 
         private void Start()
+        {
+            GetReferences();
+
+            gameManager.NewRound += EmptyHandsOnNewRound;
+        }
+
+        private void OnDisable()
+        {
+            TryEndRoutine();
+
+            gameManager.NewRound -= EmptyHandsOnNewRound;
+        }
+
+        private void GetReferences()
         {
             rb = GetComponent<Rigidbody>();
             if ( rb == null )
@@ -47,6 +63,12 @@ namespace BananaSoup.PickUpSystem
             if ( controller == null )
             {
                 Debug.LogError($"PickUpHandler on {name} couldn't find a PlayerCharacterController component on {name}!");
+            }
+
+            gameManager = FindObjectOfType<GameManager>();
+            if ( gameManager == null )
+            {
+                Debug.LogError($"PickUpHandler on {name} couldn't find the GameManager component!");
             }
         }
 
@@ -175,7 +197,7 @@ namespace BananaSoup.PickUpSystem
 
             pickedUpItem = GetNearestPickUpable(pickUpablesInRange);
 
-            if ( pickedUpItem != null && !pickedUpItem.Thrown)
+            if ( pickedUpItem != null && !pickedUpItem.Thrown )
             {
                 if ( pickedUpItem.EquippedByAPlayer )
                 {
@@ -275,5 +297,22 @@ namespace BananaSoup.PickUpSystem
             itemTakenRoutine = null;
         }
         #endregion
+
+        private void EmptyHandsOnNewRound()
+        {
+            TryEndRoutine();
+
+            itemEquipped = false;
+            itemWeaponScript = null;
+        }
+
+        private void TryEndRoutine()
+        {
+            if ( itemTakenRoutine != null )
+            {
+                StopCoroutine(itemTakenRoutine);
+                itemTakenRoutine = null;
+            }
+        }
     }
 }
