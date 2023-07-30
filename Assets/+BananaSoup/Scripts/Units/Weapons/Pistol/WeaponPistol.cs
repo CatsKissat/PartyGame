@@ -32,6 +32,11 @@ namespace BananaSoup.Weapons
         /// </summary>
         public override void Fire()
         {
+            if ( bulletsLeft <= 0 )
+            {
+                return;
+            }
+
             if ( equippedByAPlayer )
             {
                 PistolBullet projectile = Create(firingPoint.transform.position);
@@ -43,6 +48,8 @@ namespace BananaSoup.Weapons
                     projectile.Launch(transform.right);
 
                     projectile.Expired += OnExpired;
+
+                    ReduceBulletsLeft();
                 }
             }
         }

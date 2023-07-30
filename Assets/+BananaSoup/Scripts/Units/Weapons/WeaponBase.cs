@@ -22,6 +22,8 @@ namespace BananaSoup.Weapons
 
         [Space]
 
+        [SerializeField, Tooltip("The amount of bullets the gun has.")]
+        protected int bullets = 10;
         [SerializeField, Tooltip("The desired speed of the projectile.")]
         protected float projectileSpeed = 2.5f;
 
@@ -34,6 +36,8 @@ namespace BananaSoup.Weapons
 
         protected bool equippedByAPlayer = false;
         protected bool thrown = false;
+
+        protected int bulletsLeft = 0;
 
         protected Coroutine resetThrownRoutine = null;
 
@@ -164,6 +168,7 @@ namespace BananaSoup.Weapons
         protected virtual void Setup()
         {
             GetReferences();
+            bulletsLeft = bullets;
 
             gameManager.NewRound += SetupNewRound;
         }
@@ -247,7 +252,18 @@ namespace BananaSoup.Weapons
         /// </summary>
         public virtual void Fire()
         {
+            
+        }
 
+        /// <summary>
+        /// Method used to reduce bullets left in the weapon.
+        /// </summary>
+        protected void ReduceBulletsLeft()
+        {
+            if ( bulletsLeft > 0 )
+            {
+                bulletsLeft--;
+            }
         }
 
         /// <summary>
