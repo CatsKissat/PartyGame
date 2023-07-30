@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
@@ -47,6 +48,8 @@ namespace BananaSoup.Weapons
         protected ComponentPool<ProjectileBase> pool;
         protected Transform projectilePool = null;
 
+        public event Action WeaponPickedUp;
+
         // Const string to used to find ProjectilePool GameObject with tag
         private const string projectilePoolTag = "ProjectilePool";
 
@@ -88,6 +91,10 @@ namespace BananaSoup.Weapons
                 col.isTrigger = true;
             }
 
+            if ( WeaponPickedUp != null )
+            {
+                WeaponPickedUp();
+            }
         }
 
         /// <summary>
@@ -118,7 +125,7 @@ namespace BananaSoup.Weapons
             rb.AddForce(forward * forwardForce, ForceMode.Impulse);
 
             // Randomize the Z-rotation of the weapon.
-            float random = Random.Range(-1f, 1f);
+            float random = UnityEngine.Random.Range(-1f, 1f);
             Vector3 randomRotate = new Vector3(0, 0, random);
             rb.AddTorque(randomRotate * 10);
 
