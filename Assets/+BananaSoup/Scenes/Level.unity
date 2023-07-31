@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2160.134, g: 2264.514, b: 3287.9067, a: 1}
+  m_IndirectSpecularColor: {r: 2158.3284, g: 2260.5237, b: 3278.4263, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1947,8 +1947,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   areDebugControlsEnabled: 1
   gameManager: {fileID: 462612065}
-  skipAutoChangeActionMap: 1
-  enableJoining: 1
+  skipAutoChangeActionMap: 0
+  enableJoining: 0
   debugUI: {fileID: 395811115}
   isDebugUIEnabled: 1
 --- !u!1001 &372856928

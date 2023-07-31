@@ -40,15 +40,16 @@ namespace BananaSoup.PickUpSystem
         private void Start()
         {
             GetReferences();
-
-            gameManager.NewRound += SetupNewRound;
         }
 
         private void OnDisable()
         {
-            TryStopAndNullRoutine(itemTakenRoutine);
+            TryStopAndNullRoutine(ref itemTakenRoutine);
 
-            gameManager.NewRound -= SetupNewRound;
+            if ( gameManager != null )
+            {
+                gameManager.NewRound -= SetupNewRound; 
+            }
         }
 
         private void GetReferences()
@@ -64,12 +65,21 @@ namespace BananaSoup.PickUpSystem
             {
                 Debug.LogError($"PickUpHandler on {name} couldn't find a PlayerCharacterController component on {name}!");
             }
+        }
 
+        /// <summary>
+        /// Method called from GameManager to add listener to GameManager's NewRound event.
+        /// </summary>
+        public void AddListenerToNewRoundEvent()
+        {
             gameManager = FindObjectOfType<GameManager>();
             if ( gameManager == null )
             {
-                Debug.LogError($"PickUpHandler on {name} couldn't find the GameManager component!");
+                Debug.LogWarning($"PickUpHandler on {name} couldn't find an object of type {typeof(GameManager)}!");
+                return;
             }
+
+            gameManager.NewRound += SetupNewRound;
         }
 
         #region OnTriggers
@@ -298,9 +308,14 @@ namespace BananaSoup.PickUpSystem
         }
         #endregion
 
+        /// <summary>
+        /// Method called when setting up a new round.
+        /// Reset the variables to be as they should on start of a new round and
+        /// try to stop and null itemTakenRoutine, and then empty the pickUpablesInRange list.
+        /// </summary>
         private void SetupNewRound()
         {
-            TryStopAndNullRoutine(itemTakenRoutine);
+            TryStopAndNullRoutine(ref itemTakenRoutine);
 
             itemEquipped = false;
             itemWeaponScript = null;
@@ -308,7 +323,7 @@ namespace BananaSoup.PickUpSystem
             pickUpablesInRange = new List<IPickUpable>();
         }
 
-        private void TryStopAndNullRoutine(Coroutine routine)
+        private void TryStopAndNullRoutine(ref Coroutine routine)
         {
             if ( routine != null )
             {

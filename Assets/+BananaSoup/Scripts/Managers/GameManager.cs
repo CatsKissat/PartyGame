@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using BananaSoup.Units;
+using BananaSoup.PickUpSystem;
 using BananaSoup.ScoreSystem;
+using BananaSoup.Units;
+using BananaSoup.Blocks;
 
 namespace BananaSoup.Managers
 {
@@ -85,6 +87,7 @@ namespace BananaSoup.Managers
             if ( !skipAutoChangeActionMap )
             {
                 FindPlayersAndInitialize();
+                FindPedestalsAndAddListener();
                 NewRound += SetupNewRound;
                 StartFinished();
                 InvokeNewRoundOrEndGame();
@@ -98,6 +101,7 @@ namespace BananaSoup.Managers
             {
                 isDebugSetupCalled = true;
                 FindPlayersAndInitialize();
+                FindPedestalsAndAddListener();
                 NewRound += SetupNewRound;
                 StartFinished();
                 InvokeNewRoundOrEndGame();
@@ -204,6 +208,28 @@ namespace BananaSoup.Managers
 
                 // Add listener for player OnContinue
                 player.Continue += TryInvokeNewRound;
+
+                // Call players PickUpHandler's AddListenerToNewRoundEvent to add
+                // listener for PickUpHandler's NewRound event to setup player(s)
+                // correctly at the start of a new round.
+                if ( player.TryGetComponent(out PickUpHandler playerPickUpHandler) )
+                {
+                    playerPickUpHandler.AddListenerToNewRoundEvent();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Method used to find weapon pedestals from the scene and then call their
+        /// AddListenerToNewRoundEvent method.
+        /// </summary>
+        private void FindPedestalsAndAddListener()
+        {
+            WeaponPedestal[] pedestals = GameObject.FindObjectsOfType<WeaponPedestal>();
+
+            foreach ( WeaponPedestal pedestal in pedestals )
+            {
+                pedestal.AddListenerToNewRoundEvent();
             }
         }
 

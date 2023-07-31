@@ -145,7 +145,7 @@ namespace BananaSoup.Weapons
         /// </summary>
         protected void OnDisable()
         {
-            TryStopAndNullRoutine(resetThrownRoutine);
+            TryStopAndNullRoutine(ref resetThrownRoutine);
 
             gameManager.NewRound -= SetupNewRound;
         }
@@ -300,7 +300,7 @@ namespace BananaSoup.Weapons
                 return;
             }
 
-            TryStopAndNullRoutine(resetThrownRoutine);
+            TryStopAndNullRoutine(ref resetThrownRoutine);
 
             equippedByAPlayer = false;
             thrown = false;
@@ -310,7 +310,7 @@ namespace BananaSoup.Weapons
         /// Method used to try to stop and null a coroutine.
         /// </summary>
         /// <param name="routine">The routine to try to stop and null.</param>
-        private void TryStopAndNullRoutine(Coroutine routine)
+        private void TryStopAndNullRoutine(ref Coroutine routine)
         {
             if ( routine != null )
             {
