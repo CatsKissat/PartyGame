@@ -41,14 +41,14 @@ namespace BananaSoup.PickUpSystem
         {
             GetReferences();
 
-            gameManager.NewRound += EmptyHandsOnNewRound;
+            gameManager.NewRound += SetupNewRound;
         }
 
         private void OnDisable()
         {
-            TryEndRoutine();
+            TryStopAndNullRoutine(itemTakenRoutine);
 
-            gameManager.NewRound -= EmptyHandsOnNewRound;
+            gameManager.NewRound -= SetupNewRound;
         }
 
         private void GetReferences()
@@ -298,20 +298,22 @@ namespace BananaSoup.PickUpSystem
         }
         #endregion
 
-        private void EmptyHandsOnNewRound()
+        private void SetupNewRound()
         {
-            TryEndRoutine();
+            TryStopAndNullRoutine(itemTakenRoutine);
 
             itemEquipped = false;
             itemWeaponScript = null;
+
+            pickUpablesInRange = new List<IPickUpable>();
         }
 
-        private void TryEndRoutine()
+        private void TryStopAndNullRoutine(Coroutine routine)
         {
-            if ( itemTakenRoutine != null )
+            if ( routine != null )
             {
-                StopCoroutine(itemTakenRoutine);
-                itemTakenRoutine = null;
+                StopCoroutine(routine);
+                routine = null;
             }
         }
     }

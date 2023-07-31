@@ -35,6 +35,8 @@ namespace BananaSoup.Weapons
         [SerializeField, Tooltip("The duration the weapon can't be picked up after being thrown.")]
         float thrownResetTime = 0.5f;
 
+        public bool onPedestal = false;
+
         protected bool equippedByAPlayer = false;
         protected bool thrown = false;
 
@@ -80,6 +82,7 @@ namespace BananaSoup.Weapons
         public void OnPickUp(Transform container, Vector3 rotation)
         {
             equippedByAPlayer = true;
+            onPedestal = false;
             rb.isKinematic = true;
 
             transform.rotation = Quaternion.Euler(rotation);
@@ -142,7 +145,7 @@ namespace BananaSoup.Weapons
         /// </summary>
         protected void OnDisable()
         {
-            TryEndRoutine();
+            TryStopAndNullRoutine(resetThrownRoutine);
 
             gameManager.NewRound -= SetupNewRound;
         }
@@ -284,20 +287,35 @@ namespace BananaSoup.Weapons
             resetThrownRoutine = null;
         }
 
+        /// <summary>
+        /// Method called when a new round starts. Used to destroy weapons which aren't
+        /// on a pedestal and to ensure that the ones on pedestals are on their desired
+        /// state(s).
+        /// </summary>
         private void SetupNewRound()
         {
-            TryEndRoutine();
+            if ( !onPedestal )
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            TryStopAndNullRoutine(resetThrownRoutine);
 
             equippedByAPlayer = false;
             thrown = false;
         }
 
-        private void TryEndRoutine()
+        /// <summary>
+        /// Method used to try to stop and null a coroutine.
+        /// </summary>
+        /// <param name="routine">The routine to try to stop and null.</param>
+        private void TryStopAndNullRoutine(Coroutine routine)
         {
-            if ( resetThrownRoutine != null )
+            if ( routine != null )
             {
-                StopCoroutine(resetThrownRoutine);
-                resetThrownRoutine = null;
+                StopCoroutine(routine);
+                routine = null;
             }
         }
     }

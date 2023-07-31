@@ -1,6 +1,7 @@
-using BananaSoup.Weapons;
 using System.Collections;
 using UnityEngine;
+using BananaSoup.Managers;
+using BananaSoup.Weapons;
 
 namespace BananaSoup.Blocks
 {
@@ -24,16 +25,25 @@ namespace BananaSoup.Blocks
 
         private WeaponBase spawnedWeapon = null;
 
+        private GameManager gameManager = null;
+
         private void OnDisable()
         {
             TryStopAndNullRoutine(spawnNewWeaponRoutine);
+            gameManager.NewRound -= Setup;
         }
 
         protected override void Start()
         {
             base.Start();
 
-            Setup();
+            gameManager = FindObjectOfType<GameManager>();
+            if ( gameManager == null )
+            {
+                Debug.LogError($"{name} couldn't find an object of type {typeof(GameManager)}!");
+            }
+
+            gameManager.NewRound += Setup;
         }
 
         private void Setup()
@@ -48,6 +58,7 @@ namespace BananaSoup.Blocks
             {
                 spawnedWeapon = Instantiate(weapon, weaponPlacementVector, Quaternion.identity);
                 spawnedWeapon.WeaponPickedUp += WeaponPickedUp;
+                spawnedWeapon.onPedestal = true;
             }
         }
 
