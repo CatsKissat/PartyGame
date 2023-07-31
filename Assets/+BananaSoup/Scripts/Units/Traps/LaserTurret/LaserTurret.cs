@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using BananaSoup.Units;
 
 namespace BananaSoup.Traps
 {
@@ -68,7 +69,7 @@ namespace BananaSoup.Traps
         {
             while ( true )
             {
-                LaserProjectile projectile = spawner.Create(firingPoint.transform.position);
+                ProjectileBase projectile = spawner.Create(firingPoint.transform.position);
 
                 if ( projectile != null )
                 {
@@ -88,7 +89,7 @@ namespace BananaSoup.Traps
         /// Recycle the projectile when this happens.
         /// </summary>
         /// <param name="projectile">The projectile in question.</param>
-        private void OnExpired(LaserProjectile projectile)
+        private void OnExpired(ProjectileBase projectile)
         {
             projectile.Expired -= OnExpired;
             spawner.Recycle(projectile);

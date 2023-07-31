@@ -13,7 +13,7 @@ namespace BananaSoup.Weapons
     {
         [Space]
         [SerializeField, Tooltip("The prefab of the item to be pooled and spawned/fired.")]
-        protected ProjectileBase prefab;
+        protected ProjectileBase bulletPrefab;
         [SerializeField, Tooltip("The projectiles alive time.")]
         protected float projectileAliveTime = 5.0f;
         [SerializeField, Tooltip("The capacity of the pool.")]
@@ -27,6 +27,8 @@ namespace BananaSoup.Weapons
         protected int bullets = 10;
         [SerializeField, Tooltip("The desired speed of the projectile.")]
         protected float projectileSpeed = 2.5f;
+        [SerializeField, Tooltip("The desired fire rate of the weapon.")]
+        protected float fireRate = 0.25f;
 
         [Space]
 
@@ -39,10 +41,12 @@ namespace BananaSoup.Weapons
 
         protected bool equippedByAPlayer = false;
         protected bool thrown = false;
+        protected bool onCooldown = false;
 
         protected int bulletsLeft = 0;
 
         protected Coroutine resetThrownRoutine = null;
+        protected Coroutine fireRateRoutine = null;
 
         private Collider[] colliders;
         private GameManager gameManager;
@@ -146,6 +150,7 @@ namespace BananaSoup.Weapons
         protected void OnDisable()
         {
             TryStopAndNullRoutine(ref resetThrownRoutine);
+            TryStopAndNullRoutine(ref fireRateRoutine);
 
             gameManager.NewRound -= SetupNewRound;
         }
@@ -169,6 +174,9 @@ namespace BananaSoup.Weapons
         {
             base.Start();
             Setup();
+
+            pool = new ComponentPool<ProjectileBase>(bulletPrefab, capacity);
+            pool.SetPooledObjectsParent(GetPooledProjectilesTransforms(), projectilePool);
         }
 
         /// <summary>
@@ -255,6 +263,17 @@ namespace BananaSoup.Weapons
         {
             return pool.Recycle(item);
         }
+
+        /// <summary>
+        /// Stop listening to this components OnExpired on the projectiles Expired event.
+        /// Recycle the projectile.
+        /// </summary>
+        /// <param name="projectile">The projectile to recycle.</param>
+        protected void OnExpired(ProjectileBase projectile)
+        {
+            projectile.Expired -= OnExpired;
+            Recycle(projectile);
+        }
         #endregion
 
         /// <summary>
@@ -288,6 +307,17 @@ namespace BananaSoup.Weapons
         }
 
         /// <summary>
+        /// Coroutine used to have a firerate on a weapon.
+        /// </summary>
+        protected IEnumerator FireRateRoutine()
+        {
+            onCooldown = true;
+            yield return new WaitForSeconds(fireRate);
+            onCooldown = false;
+            fireRateRoutine = null;
+        }
+
+        /// <summary>
         /// Method called when a new round starts. Used to destroy weapons which aren't
         /// on a pedestal and to ensure that the ones on pedestals are on their desired
         /// state(s).
@@ -296,14 +326,29 @@ namespace BananaSoup.Weapons
         {
             if ( !onPedestal )
             {
+                DestroyPooledBullets();
                 Destroy(gameObject);
                 return;
             }
 
             TryStopAndNullRoutine(ref resetThrownRoutine);
+            TryStopAndNullRoutine(ref fireRateRoutine);
 
             equippedByAPlayer = false;
             thrown = false;
+        }
+
+        /// <summary>
+        /// Method used to destroy the pooled bullets of a weapon that is being destroyed.
+        /// </summary>
+        protected virtual void DestroyPooledBullets()
+        {
+            List<ProjectileBase> pooledProjectiles = pool.GetAllItems();
+
+            foreach ( ProjectileBase projectile in pooledProjectiles )
+            {
+                Destroy(projectile.gameObject);
+            }
         }
 
         /// <summary>

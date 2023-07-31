@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using BananaSoup.Utils;
+using System;
 
 namespace BananaSoup.Units
 {
@@ -22,6 +23,8 @@ namespace BananaSoup.Units
 
         // References
         protected ProjectileMover projectileMover;
+
+        public event Action<ProjectileBase> Expired;
 
         private void Awake()
         {
@@ -116,6 +119,11 @@ namespace BananaSoup.Units
             {
                 StopCoroutine(aliveTimerRoutine);
                 aliveTimerRoutine = null;
+            }
+
+            if ( Expired != null )
+            {
+                Expired(this);
             }
         }
 

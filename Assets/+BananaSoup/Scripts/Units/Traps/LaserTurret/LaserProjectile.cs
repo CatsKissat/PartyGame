@@ -17,9 +17,6 @@ namespace BananaSoup.Traps
 
         private TrapModifierType.Modifier currentModifier = TrapModifierType.Modifier.Basic;
 
-        // Event used to track Expiration of a projectile
-        public event Action<LaserProjectile> Expired;
-
         // Constants for modifier types for readability
         private const TrapModifierType.Modifier basicMod = TrapModifierType.Modifier.Basic;
         private const TrapModifierType.Modifier freezeMod = TrapModifierType.Modifier.Freeze;
@@ -74,19 +71,6 @@ namespace BananaSoup.Traps
             else
             {
                 return;
-            }
-        }
-
-        /// <summary>
-        /// Method called when the projectile expires.
-        /// </summary>
-        protected override void OnExpired()
-        {
-            base.OnExpired();
-
-            if ( Expired != null )
-            {
-                Expired(this);
             }
         }
 

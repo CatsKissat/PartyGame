@@ -1,17 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
 using BananaSoup.Utils;
+using BananaSoup.Units;
 
 namespace BananaSoup.Traps
 {
     public class LaserProjectileSpawner : MonoBehaviour
     {
         [SerializeField, Tooltip("The prefab of the item to be pooled and spawned/fired.")]
-        private LaserProjectile prefab;
+        private ProjectileBase prefab;
         [SerializeField, Tooltip("The capacity of the pool.")]
         private int capacity = 1;
 
-        private ComponentPool<LaserProjectile> pool;
+        private ComponentPool<ProjectileBase> pool;
 
         private TrapBase trapBase = null;
         private ModifierActions modActions = null;
@@ -20,18 +21,18 @@ namespace BananaSoup.Traps
         // Const string to used to find ProjectilePool GameObject with tag
         private const string projectilePoolTag = "ProjectilePool";
 
-        protected ComponentPool<LaserProjectile> Pool
+        protected ComponentPool<ProjectileBase> Pool
         {
             get { return pool; }
         }
 
-        public LaserProjectile Prefab
+        public ProjectileBase Prefab
         {
             get { return this.prefab; }
             protected set { this.prefab = value; }
         }
 
-        public void Setup(LaserProjectile prefab = null)
+        public void Setup(ProjectileBase prefab = null)
         {
             GetReferences();
 
@@ -40,7 +41,7 @@ namespace BananaSoup.Traps
                 this.prefab = prefab;
             }
 
-            pool = new ComponentPool<LaserProjectile>(Prefab, capacity);
+            pool = new ComponentPool<ProjectileBase>(Prefab, capacity);
             pool.SetPooledObjectsParent(GetPooledProjectilesTransforms(), projectilePool);
         }
 
@@ -75,7 +76,7 @@ namespace BananaSoup.Traps
         /// <returns>A Transform array of the projectiles transforms.</returns>
         private Transform[] GetPooledProjectilesTransforms()
         {
-            List<LaserProjectile> projectiles = pool.GetAllItems();
+            List<ProjectileBase> projectiles = pool.GetAllItems();
             Transform[] projectileTransforms = new Transform[capacity];
 
             for ( int i = 0; i < capacity; i++ )
@@ -91,9 +92,9 @@ namespace BananaSoup.Traps
         /// </summary>
         /// <param name="position">The position where the item should be placed.</param>
         /// <returns>The item created in the given position.</returns>
-        public LaserProjectile Create(Vector3 position)
+        public ProjectileBase Create(Vector3 position)
         {
-            LaserProjectile item = pool.Get();
+            ProjectileBase item = pool.Get();
             if ( item != null )
             {
                 item.transform.position = position;
@@ -102,11 +103,14 @@ namespace BananaSoup.Traps
 
             return item;
         }
-        private void SetupProjectile(LaserProjectile projectile)
+        private void SetupProjectile(ProjectileBase projectile)
         {
-            projectile.SetupModifierVariables(modActions.SlowDuration, modActions.SlowAmount,
-                                                modActions.StunDuration, trapBase.TrapModifier,
-                                                trapBase.ModifiedSize);
+            if ( projectile.TryGetComponent(out LaserProjectile laserProjectile ))
+            {
+                laserProjectile.SetupModifierVariables(modActions.SlowDuration, modActions.SlowAmount,
+                                                        modActions.StunDuration, trapBase.TrapModifier,
+                                                        trapBase.ModifiedSize); 
+            }
         }
 
         /// <summary>
@@ -114,7 +118,7 @@ namespace BananaSoup.Traps
         /// </summary>
         /// <param name="item">The item to be recycled.</param>
         /// <returns>True if successful, otherwise false.</returns>
-        public bool Recycle(LaserProjectile item)
+        public bool Recycle(ProjectileBase item)
         {
             return pool.Recycle(item);
         }
