@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 1844446ca11b96f48b4c915b1cf68c96
+guid: 6fb1817ad0c22dd4387396d4397b33a1
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pipes
+    second: {fileID: 2100000, guid: 1b9376bbc2a4c3c4188b9d3a387a556f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
