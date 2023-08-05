@@ -239,7 +239,7 @@ Material:
     - _Foam_Cutoff: 0.5
     - _Foam_Scale: 31.26
     - _Foam_Speed: 0.06
-    - _Frequency: 7.81
+    - _Frequency: -3.86
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0
@@ -269,7 +269,7 @@ Material:
     - _Normal_2_Speed: -25
     - _Normal_Speed: 50
     - _Normal_Strength: 1.1
-    - _Normal_Tiling: 33.6
+    - _Normal_Tiling: 42.63
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
     - _OpaqueCullMode: 2
@@ -343,7 +343,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Deep_Water: {r: 0.013082949, g: 0.033598907, b: 0.13207549, a: 0.69411767}
+    - _Deep_Water: {r: 0.13333334, g: 0.011764701, b: 0.03553292, a: 0.69411767}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _Direction: {r: 12.9, g: 6.98, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
