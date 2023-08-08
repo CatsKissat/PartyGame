@@ -46,6 +46,7 @@ Material:
     - _DoubleSidedEnable: 1
     - _EmissionAmount: 17.37
     - _Offset_Speed_X: 0.06
+    - _Tiling_X: 1.73
     - _Tiling_Y: 1.24
     - _ZTestGBuffer: 3
     m_Colors: []
