@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7587388378783647680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.125, y: 0.125, z: 0}
+  m_LocalPosition: {x: 0.173, y: 0.108, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -61,12 +61,12 @@ Transform:
   m_GameObject: {fileID: 7996849150761972245}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8950056808303784485}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7339028693147161278
 SpriteRenderer:
@@ -109,7 +109,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 843fe4349e9fece4c86b8d84573ad6fe, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ce11c3d3da7b57a48a8d9dd56469a734, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -135,7 +135,8 @@ MonoBehaviour:
   baseHasRigidbody: 1
   isKinematic: 1
   isUsingGravity: 0
-  prefab: {fileID: 4652787460274860252, guid: 60824b70cbe7a23428e23dbc0677a75b, type: 3}
+  bulletPrefab: {fileID: 4652787460274860252, guid: 60824b70cbe7a23428e23dbc0677a75b,
+    type: 3}
   projectileAliveTime: 5
   capacity: 10
   playersLayerMask:
@@ -143,10 +144,10 @@ MonoBehaviour:
     m_Bits: 128
   bullets: 10
   projectileSpeed: 7.5
+  fireRate: 0.25
   firingPoint: {fileID: 7587388378783647680}
   thrownResetTime: 0.5
-  bulletPrefab: {fileID: 4652787460274860252, guid: 60824b70cbe7a23428e23dbc0677a75b,
-    type: 3}
+  onPedestal: 0
 --- !u!54 &2518745618461853564
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -193,8 +194,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.15266514, y: 0.25621724, z: 0.2}
-  m_Center: {x: -0.21157217, y: -0.107048154, z: 0}
+  m_Size: {x: 0.20076433, y: 0.24675642, z: 0.2}
+  m_Center: {x: -0.16279839, y: -0.10231767, z: 0}
 --- !u!65 &2080817481496987449
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -214,5 +215,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5758095, y: 0.22149634, z: 0.2}
-  m_Center: {x: 0, y: 0.13214457, z: 0}
+  m_Size: {x: 0.5358637, y: 0.1773453, z: 0.2}
+  m_Center: {x: 0.023126805, y: 0.11006919, z: 0}

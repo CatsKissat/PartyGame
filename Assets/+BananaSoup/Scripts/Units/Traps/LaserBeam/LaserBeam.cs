@@ -86,8 +86,8 @@ namespace BananaSoup.Traps
         private void SetBeamScale()
         {
             distanceBetweenBeamers = Vector3.Distance(leftBeamer.transform.position, rightBeamer.transform.position);
-            Vector3 beamScale = new Vector3(distanceBetweenBeamers, 0.02f, 1.0f);
-            beam.transform.localScale = beamScale;
+            SpriteRenderer beamRenderer = beam.GetComponent<SpriteRenderer>();
+            beamRenderer.size += new Vector2(distanceBetweenBeamers, 0f);
         }
 
         /// <summary>

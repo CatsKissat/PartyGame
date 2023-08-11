@@ -20,17 +20,21 @@ namespace BananaSoup.Blocks
         private float newWeaponSpawnTime = 15.0f;
 
         private Vector3 weaponPlacementVector = Vector3.zero;
+        private bool listeningToNewRoundEvent = false;
 
         private Coroutine spawnNewWeaponRoutine = null;
 
         private WeaponBase spawnedWeapon = null;
-
         private GameManager gameManager = null;
 
         private void OnDisable()
         {
             TryStopAndNullRoutine(ref spawnNewWeaponRoutine);
-            gameManager.NewRound -= Setup;
+            if ( listeningToNewRoundEvent )
+            {
+                gameManager.NewRound -= Setup;
+                listeningToNewRoundEvent = false;
+            }
         }
 
         protected override void Start()
@@ -51,6 +55,7 @@ namespace BananaSoup.Blocks
             }
 
             gameManager.NewRound += Setup;
+            listeningToNewRoundEvent = true;
         }
 
         /// <summary>

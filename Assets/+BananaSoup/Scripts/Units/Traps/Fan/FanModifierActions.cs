@@ -174,7 +174,7 @@ namespace BananaSoup.Traps
         {
             foreach ( PlayerBase player in playersInTriggerzone )
             {
-                player.Pushback(transform.forward, pushbackStrength);
+                player.Pushback(transform.right, pushbackStrength);
             }
         }
 
